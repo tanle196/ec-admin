@@ -1,0 +1,2 @@
+# ec-admin
+Admin page
