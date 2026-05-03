@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "generate:api": "openapi-generator-cli generate",
+    "gen:api": "openapi-ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "format:check": "prettier --check .",
@@ -67,7 +68,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.4.0",
-    "@openapitools/openapi-generator-cli": "^2.32.0",
+    "@hey-api/openapi-ts": "^0.97.0",
     "@tanstack/eslint-plugin-query": "^5.99.0",
     "@tanstack/react-query-devtools": "^5.99.0",
     "@tanstack/react-router-devtools": "^1.166.13",
