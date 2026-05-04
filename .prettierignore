@@ -17,3 +17,5 @@
 
 # Ignore auto generated routeTree.gen.ts
 /src/routeTree.gen.ts
+
+/src/api
