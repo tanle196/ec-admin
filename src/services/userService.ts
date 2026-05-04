@@ -4,10 +4,10 @@ import {
   usersControllerGetProfile,
 } from '@/api/main'
 
-export const getUserList = (query: UserListQueryDto) => {
+export const getUserListService = (query: UserListQueryDto) => {
   return usersControllerFindAll({ query })
 }
 
-export const getProfile = () => {
+export const getProfileService = () => {
   return usersControllerGetProfile()
 }
