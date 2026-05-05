@@ -11,6 +11,7 @@ export const useSyncUser = () => {
     if (auth.user?.email === profile.data.email) return
 
     auth.setUser({
+      name: profile.data.name,
       email: profile.data.email,
       role: profile.data.roles,
       accountNo: '1111',

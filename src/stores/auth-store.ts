@@ -4,6 +4,7 @@ import { ACCESS_TOKEN } from '@/constants/cookies'
 
 interface AuthUser {
   accountNo: string
+  name: string
   email: string
   role: string[]
   exp: number

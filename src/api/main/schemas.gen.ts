@@ -209,6 +209,11 @@ export const UserPaginatedResponseDtoSchema = {
 export const UserProfileDtoSchema = {
     type: 'object',
     properties: {
+        name: {
+            type: 'string',
+            example: 'Name',
+            description: 'Tên người dùng'
+        },
         email: {
             type: 'string',
             example: 'user@example.com',
@@ -239,6 +244,7 @@ export const UserProfileDtoSchema = {
         }
     },
     required: [
+        'name',
         'email',
         'roles',
         'permissions'

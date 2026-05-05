@@ -100,6 +100,10 @@ export type UserPaginatedResponseDto = {
 
 export type UserProfileDto = {
     /**
+     * Tên người dùng
+     */
+    name: string;
+    /**
      * Email người dùng
      */
     email: string;
