@@ -6,6 +6,7 @@ import { SearchProvider } from '@/context/search-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { useSyncUser } from '@/features/users/hooks'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
@@ -13,6 +14,12 @@ type AuthenticatedLayoutProps = {
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
   const defaultOpen = getCookie('sidebar_state') !== 'false'
+  const { isLoading } = useSyncUser()
+
+  if (isLoading) {
+    return 'Loading....'
+  }
+
   return (
     <SearchProvider>
       <LayoutProvider>

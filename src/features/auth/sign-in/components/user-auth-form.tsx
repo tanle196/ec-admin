@@ -42,8 +42,8 @@ export function UserAuthForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'superadmin@example.com',
+      password: 'SuperAdmin@123',
     },
   })
 
@@ -58,7 +58,6 @@ export function UserAuthForm({
         className={cn('grid gap-3', className)}
         {...props}
       >
-        11111
         <FormField
           control={form.control}
           name='email'

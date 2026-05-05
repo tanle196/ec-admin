@@ -1,11 +1,17 @@
 import { createClient } from '@/api/main/client'
+import { getCookie } from '@/lib/cookies'
+import { ACCESS_TOKEN } from '@/constants/cookies'
 
-export const client = createClient({
-  baseURL: import.meta.env.VITE_API_URL,
-})
-// src/api/clientFactory.ts
+const getToken = () => {
+  const token = getCookie(ACCESS_TOKEN)
+  if (!token) return undefined
 
-const getToken = () => getCookie(ACCESS_TOKEN)
+  try {
+    return JSON.parse(token) // bỏ dấu "" nếu có
+  } catch {
+    return token // không có dấu "" thì dùng thẳng
+  }
+}
 
 export const createApiClient = () => {
   const client = createClient({

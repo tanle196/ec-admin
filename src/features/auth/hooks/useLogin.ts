@@ -1,10 +1,10 @@
 // hooks/useAuth.ts
 import { useMutation } from '@tanstack/react-query'
-import { loggedInService } from '@/services/authService'
+import { authService } from '@/features/auth/api/authService'
 
 // login
 export const useLogin = () => {
   return useMutation({
-    mutationFn: loggedInService,
+    mutationFn: authService.login,
   })
 }
