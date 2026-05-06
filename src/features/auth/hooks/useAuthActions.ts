@@ -20,15 +20,14 @@ export const useAuthActions = () => {
   ) => {
     try {
       setIsLoading(true)
-      const loginPromise = login(data)
+      const loginPromise = login({ body: data })
       toast.promise(loginPromise, {
         id: 'login',
         loading: 'Signing in...',
         success: 'Welcome back!',
         error: 'Login failed',
       })
-      const res = await loginPromise
-      const { accessToken, refreshToken } = res.data ?? {}
+      const { accessToken, refreshToken } = await loginPromise
 
       if (accessToken) {
         auth.setAccessToken(accessToken)

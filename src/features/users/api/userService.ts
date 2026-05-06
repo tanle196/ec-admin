@@ -1,13 +1,7 @@
-import {
-  type UserListQueryDto,
-  usersControllerFindAll,
-  usersControllerGetProfile,
-} from '@/api/main'
-import { apiClient } from '@/lib/api/client'
+import { usersControllerFindAll, usersControllerGetProfile } from '@/api/main'
+import { mainService } from '@/lib/api/client'
 
 export const userService = {
-  getList: (query: UserListQueryDto) =>
-    usersControllerFindAll({ query, client: apiClient }),
-
-  getProfile:()=> usersControllerGetProfile({ client: apiClient }),
+  getList: mainService.request(usersControllerFindAll),
+  getProfile: mainService.request(usersControllerGetProfile),
 }

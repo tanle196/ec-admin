@@ -13,7 +13,7 @@ const getToken = () => {
   }
 }
 
-export const createApiClient = () => {
+const createApiClient = () => {
   const client = createClient({
     baseURL: import.meta.env.VITE_API_URL,
   })
@@ -31,4 +31,24 @@ export const createApiClient = () => {
   return client
 }
 
-export const apiClient = createApiClient()
+const apiClient = createApiClient()
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ApiFn = (params: any) => Promise<any>
+
+const createService = (client: typeof apiClient) => ({
+  request:
+    <F extends ApiFn>(fn: F) =>
+    async (
+      options: Parameters<F>[0]
+    ): Promise<NonNullable<Awaited<ReturnType<F>>['data']>> => {
+      const res = await fn({
+        ...options,
+        client,
+      })
+
+      if (res.data) return res.data
+      throw res.error
+    },
+})
+export const mainService = createService(apiClient)
