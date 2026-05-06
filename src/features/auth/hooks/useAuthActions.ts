@@ -3,7 +3,6 @@ import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { setCookie } from '@/lib/cookies'
-import { sleep } from '@/lib/utils'
 import { REFRESH_TOKEN } from '@/constants/cookies'
 import { useProfile } from '@/features/users/hooks/useProfile'
 import { useLogin } from './useLogin'
@@ -19,37 +18,38 @@ export const useAuthActions = () => {
     data: { email: string; password: string },
     redirectTo?: string
   ) => {
-    toast.promise(sleep(0), {
-      loading: 'Signing in...',
-      success: async () => {
-        try {
-          setIsLoading(true)
-          const loginResponse = await login(data)
-          const { accessToken, refreshToken } = loginResponse.data ?? {}
-          if (accessToken) {
-            auth.setAccessToken(accessToken)
-          }
+    try {
+      setIsLoading(true)
+      const loginPromise = login(data)
+      toast.promise(loginPromise, {
+        id: 'login',
+        loading: 'Signing in...',
+        success: 'Welcome back!',
+        error: 'Login failed',
+      })
+      const res = await loginPromise
+      const { accessToken, refreshToken } = res.data ?? {}
 
-          if (refreshToken) {
-            setCookie(REFRESH_TOKEN, JSON.stringify(refreshToken))
-          }
+      if (accessToken) {
+        auth.setAccessToken(accessToken)
+      }
 
-          await getUserProfile()
+      if (refreshToken) {
+        setCookie(REFRESH_TOKEN, JSON.stringify(refreshToken))
+      }
 
-          // Redirect to the stored location or default to dashboard
-          const targetPath = redirectTo || '/'
-          navigate({ to: targetPath, replace: true })
+      await getUserProfile()
 
-          return `Welcome back, ${data.email}!`
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-          //noop
-        } finally {
-          setIsLoading(false)
-        }
-      },
-      error: 'Error',
-    })
+      // Redirect to the stored location or default to dashboard
+      const targetPath = redirectTo || '/'
+      navigate({ to: targetPath, replace: true })
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      //noop
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleLogout = () => {
