@@ -63,7 +63,7 @@ export const queryClient = new QueryClient({
 // Create a new router instance
 export const router = createRouter({
   routeTree,
-  context: { queryClient, auth: useAuthStore.getState().auth },
+  context: { queryClient },
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
 })
