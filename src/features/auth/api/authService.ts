@@ -1,7 +1,14 @@
-import { authControllerLogin, type LoginDto } from '@/api/main'
-import { apiClient } from '@/lib/api/client'
+import {
+  authControllerForgotPassword,
+  authControllerLogin,
+  authControllerResetPassword,
+  authControllerRegister,
+} from '@/api/main'
+import { mainService } from '@/lib/api/client'
 
 export const authService = {
-  login: async (body: LoginDto) =>
-    authControllerLogin({ body, client: apiClient }),
+  login: mainService.request(authControllerLogin),
+  register: mainService.request(authControllerRegister),
+  forgetPassword: mainService.request(authControllerForgotPassword),
+  resetPassword: mainService.request(authControllerResetPassword),
 }

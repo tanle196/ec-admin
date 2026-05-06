@@ -3,6 +3,7 @@ import { Slot } from '@radix-ui/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { SIDEBAR_COOKIE_NAME } from '@/constants/cookies'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,7 +23,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'

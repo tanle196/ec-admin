@@ -1,6 +1,7 @@
 import { Outlet } from '@tanstack/react-router'
 import { getCookie } from '@/lib/cookies'
 import { cn } from '@/lib/utils'
+import { SIDEBAR_COOKIE_NAME } from '@/constants/cookies'
 import { LayoutProvider } from '@/context/layout-provider'
 import { SearchProvider } from '@/context/search-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
@@ -13,7 +14,7 @@ type AuthenticatedLayoutProps = {
 }
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
-  const defaultOpen = getCookie('sidebar_state') !== 'false'
+  const defaultOpen = getCookie(SIDEBAR_COOKIE_NAME) !== 'false'
   const { isLoading } = useSyncUser()
 
   if (isLoading) {
