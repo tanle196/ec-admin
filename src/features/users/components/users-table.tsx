@@ -4,13 +4,9 @@ import {
   type VisibilityState,
   flexRender,
   getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { type UserListQueryDto } from '@/api/main'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import {
@@ -22,26 +18,42 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { roles } from '../data/data'
+import { roleList } from '../data/data'
 import { type User } from '../data/schema'
+import { useUsers } from '../hooks'
 import { DataTableBulkActions } from './data-table-bulk-actions'
 import { usersColumns as columns } from './users-columns'
 
 type DataTableProps = {
-  data: User[]
   search: Record<string, unknown>
   navigate: NavigateFn
 }
 
-export function UsersTable({ data, search, navigate }: DataTableProps) {
+export function UsersTable({ search, navigate }: DataTableProps) {
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
+  const [query, setQuery] = useState<UserListQueryDto>({
+    page: 1,
+    limit: 10,
+  })
+
+  const { data: response, isSuccess } = useUsers(query)
+  const data: User[] = (response?.data?.data ?? []).map((user) => {
+    return {
+      id: user.id,
+      name: user.fullName,
+      email: user.email,
+      status: 'active',
+      roles: (user.roles ?? []).map((role) => role.name),
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }
+  })
 
   // Local state management for table (uncomment to use local-only state, not synced with URL)
   // const [columnFilters, onColumnFiltersChange] = useState<ColumnFiltersState>([])
-  // const [pagination, onPaginationChange] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 })
 
   // Synced with URL states (keys/defaults mirror users route search schema)
   const {
@@ -67,6 +79,10 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
   const table = useReactTable({
     data,
     columns,
+    rowCount: response?.data?.total ?? 0,
+    manualPagination: true, // ← server handles pages
+    manualFiltering: true, // ← server handles filters
+    manualSorting: true, // ← server handles sorting (if applicable)
     state: {
       sorting,
       pagination,
@@ -80,17 +96,31 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
-    getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    // Remove these — they only apply to client-side data:
+    // getPaginationRowModel: getPaginationRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    // getSortedRowModel: getSortedRowModel(),
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
   useEffect(() => {
     ensurePageInRange(table.getPageCount())
   }, [table, ensurePageInRange])
+
+  useEffect(() => {
+    setQuery({
+      page: pagination.pageIndex + 1,
+      limit: pagination.pageSize,
+    })
+  }, [pagination])
+
+  useEffect(() => {
+    if (isSuccess) {
+      ensurePageInRange(response?.data?.total ?? 0, { resetTo: 'first' })
+    }
+  }, [ensurePageInRange, isSuccess, response?.data?.total])
 
   return (
     <div
@@ -117,7 +147,7 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
           {
             columnId: 'role',
             title: 'Role',
-            options: roles.map((role) => ({ ...role })),
+            options: roleList.map((role) => ({ ...role })),
           },
         ]}
       />

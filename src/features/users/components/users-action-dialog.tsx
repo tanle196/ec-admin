@@ -24,7 +24,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { SelectDropdown } from '@/components/select-dropdown'
-import { roles } from '../data/data'
+import { roleList } from '../data/data'
 import { type User } from '../data/schema'
 
 const formSchema = z
@@ -264,7 +264,7 @@ export function UsersActionDialog({
                       onValueChange={field.onChange}
                       placeholder='Select a role'
                       className='col-span-4'
-                      items={roles.map(({ label, value }) => ({
+                      items={roleList.map(({ label, value }) => ({
                         label,
                         value,
                       }))}

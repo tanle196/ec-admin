@@ -64,7 +64,7 @@ export const RegisterDtoSchema = {
     ]
 } as const;
 
-export const UserResponseDtoSchema = {
+export const UserInformationResponseDtoSchema = {
     type: 'object',
     properties: {
         id: {
@@ -176,6 +176,135 @@ export const UserListQueryDtoSchema = {
     }
 } as const;
 
+export const PermissionResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: '123e4567-e89b-12d3-a456-426614174000',
+            description: 'Permission unique identifier'
+        },
+        description: {
+            type: 'string',
+            example: 'Read users permission',
+            description: 'Permission description'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2024-01-01T00:00:00.000Z',
+            description: 'Permission creation date'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2024-01-01T00:00:00.000Z',
+            description: 'Permission last update date'
+        }
+    },
+    required: [
+        'id',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const RoleResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: '123e4567-e89b-12d3-a456-426614174000',
+            description: 'Role unique identifier'
+        },
+        name: {
+            type: 'string',
+            example: 'admin',
+            description: 'Role name'
+        },
+        description: {
+            type: 'string',
+            example: 'Administrator role with full access',
+            description: 'Role description'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2024-01-01T00:00:00.000Z',
+            description: 'Role creation date'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2024-01-01T00:00:00.000Z',
+            description: 'Role last update date'
+        },
+        permissions: {
+            description: 'Permissions assigned to this role',
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/PermissionResponseDto'
+            }
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const UserResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: 'c1a2b3',
+            description: 'User ID'
+        },
+        email: {
+            type: 'string',
+            example: 'user@gmail.com'
+        },
+        fullName: {
+            type: 'string',
+            example: 'Tan Nguyen'
+        },
+        roles: {
+            example: [
+                {
+                    id: '123e4567-e89b-12d3-a456-426614174000',
+                    name: 'admin'
+                }
+            ],
+            description: 'Roles to assign to the user',
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RoleResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-05-03T10:00:00Z'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-05-03T10:00:00Z'
+        }
+    },
+    required: [
+        'id',
+        'email',
+        'fullName',
+        'roles',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
 export const UserPaginatedResponseDtoSchema = {
     type: 'object',
     properties: {
@@ -278,85 +407,6 @@ export const CreateRoleDtoSchema = {
     },
     required: [
         'name'
-    ]
-} as const;
-
-export const PermissionResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'string',
-            example: '123e4567-e89b-12d3-a456-426614174000',
-            description: 'Permission unique identifier'
-        },
-        description: {
-            type: 'string',
-            example: 'Read users permission',
-            description: 'Permission description'
-        },
-        createdAt: {
-            format: 'date-time',
-            type: 'string',
-            example: '2024-01-01T00:00:00.000Z',
-            description: 'Permission creation date'
-        },
-        updatedAt: {
-            format: 'date-time',
-            type: 'string',
-            example: '2024-01-01T00:00:00.000Z',
-            description: 'Permission last update date'
-        }
-    },
-    required: [
-        'id',
-        'createdAt',
-        'updatedAt'
-    ]
-} as const;
-
-export const RoleResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'string',
-            example: '123e4567-e89b-12d3-a456-426614174000',
-            description: 'Role unique identifier'
-        },
-        name: {
-            type: 'string',
-            example: 'admin',
-            description: 'Role name'
-        },
-        description: {
-            type: 'string',
-            example: 'Administrator role with full access',
-            description: 'Role description'
-        },
-        createdAt: {
-            format: 'date-time',
-            type: 'string',
-            example: '2024-01-01T00:00:00.000Z',
-            description: 'Role creation date'
-        },
-        updatedAt: {
-            format: 'date-time',
-            type: 'string',
-            example: '2024-01-01T00:00:00.000Z',
-            description: 'Role last update date'
-        },
-        permissions: {
-            description: 'Permissions assigned to this role',
-            type: 'array',
-            items: {
-                $ref: '#/components/schemas/PermissionResponseDto'
-            }
-        }
-    },
-    required: [
-        'id',
-        'name',
-        'createdAt',
-        'updatedAt'
     ]
 } as const;
 

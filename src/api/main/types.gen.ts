@@ -37,7 +37,7 @@ export type RegisterDto = {
     password: string;
 };
 
-export type UserResponseDto = {
+export type UserInformationResponseDto = {
     /**
      * User unique identifier
      */
@@ -91,47 +91,6 @@ export type UserListQueryDto = {
     role?: string;
 };
 
-export type UserPaginatedResponseDto = {
-    total: number;
-    page: number;
-    limit: number;
-    data: Array<UserResponseDto>;
-};
-
-export type UserProfileDto = {
-    /**
-     * Tên người dùng
-     */
-    name: string;
-    /**
-     * Email người dùng
-     */
-    email: string;
-    /**
-     * Danh sách role của người dùng
-     */
-    roles: Array<string>;
-    /**
-     * Danh sách permission của người dùng
-     */
-    permissions: Array<string>;
-};
-
-export type CreateRoleDto = {
-    /**
-     * Role name
-     */
-    name: string;
-    /**
-     * Role description
-     */
-    description?: string;
-    /**
-     * List of permission IDs for the role
-     */
-    permissions?: Array<string>;
-};
-
 export type PermissionResponseDto = {
     /**
      * Permission unique identifier
@@ -176,6 +135,62 @@ export type RoleResponseDto = {
      * Permissions assigned to this role
      */
     permissions?: Array<PermissionResponseDto>;
+};
+
+export type UserResponseDto = {
+    /**
+     * User ID
+     */
+    id: string;
+    email: string;
+    fullName: string;
+    /**
+     * Roles to assign to the user
+     */
+    roles: Array<RoleResponseDto>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type UserPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<UserResponseDto>;
+};
+
+export type UserProfileDto = {
+    /**
+     * Tên người dùng
+     */
+    name: string;
+    /**
+     * Email người dùng
+     */
+    email: string;
+    /**
+     * Danh sách role của người dùng
+     */
+    roles: Array<string>;
+    /**
+     * Danh sách permission của người dùng
+     */
+    permissions: Array<string>;
+};
+
+export type CreateRoleDto = {
+    /**
+     * Role name
+     */
+    name: string;
+    /**
+     * Role description
+     */
+    description?: string;
+    /**
+     * List of permission IDs for the role
+     */
+    permissions?: Array<string>;
 };
 
 export type UpdateRoleDto = {
@@ -288,7 +303,7 @@ export type AuthControllerRegisterResponses = {
     /**
      * User registered successfully
      */
-    201: UserResponseDto;
+    201: UserInformationResponseDto;
 };
 
 export type AuthControllerRegisterResponse = AuthControllerRegisterResponses[keyof AuthControllerRegisterResponses];
@@ -304,7 +319,7 @@ export type AuthControllerActiveResponses = {
     /**
      * Account activated successfully
      */
-    200: UserResponseDto;
+    200: UserInformationResponseDto;
 };
 
 export type AuthControllerActiveResponse = AuthControllerActiveResponses[keyof AuthControllerActiveResponses];

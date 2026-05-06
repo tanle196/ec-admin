@@ -23,7 +23,7 @@ export function UsersDeleteDialog({
   const [value, setValue] = useState('')
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.username) return
+    if (value.trim() !== currentRow.name) return
 
     onOpenChange(false)
     showSubmittedData(currentRow, 'The following user has been deleted:')
@@ -34,7 +34,7 @@ export function UsersDeleteDialog({
       open={open}
       onOpenChange={onOpenChange}
       form='users-delete-form'
-      disabled={value.trim() !== currentRow.username}
+      disabled={value.trim() !== currentRow.name}
       title={
         <span className='text-destructive'>
           <AlertTriangle
@@ -55,11 +55,11 @@ export function UsersDeleteDialog({
         >
           <p className='mb-2'>
             Are you sure you want to delete{' '}
-            <span className='font-bold'>{currentRow.username}</span>?
+            <span className='font-bold'>{currentRow.name}</span>?
             <br />
             This action will permanently remove the user with the role of{' '}
             <span className='font-bold'>
-              {currentRow.role.toUpperCase()}
+              {currentRow.roles.map((item) => item.toUpperCase())}
             </span>{' '}
             from the system. This cannot be undone.
           </p>

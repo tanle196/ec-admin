@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { callTypes, roles } from '../data/data'
+import { callTypes, roleList } from '../data/data'
 import { type User } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
@@ -58,9 +58,8 @@ export const usersColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => {
-      const { firstName, lastName } = row.original
-      const fullName = `${firstName} ${lastName}`
-      return <LongText className='max-w-36'>{fullName}</LongText>
+      const { name } = row.original
+      return <LongText className='max-w-36'>{name}</LongText>
     },
     meta: { className: 'w-36' },
   },
@@ -72,14 +71,6 @@ export const usersColumns: ColumnDef<User>[] = [
     cell: ({ row }) => (
       <div className='w-fit ps-2 text-nowrap'>{row.getValue('email')}</div>
     ),
-  },
-  {
-    accessorKey: 'phoneNumber',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Phone Number' />
-    ),
-    cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>,
-    enableSorting: false,
   },
   {
     accessorKey: 'status',
@@ -109,18 +100,27 @@ export const usersColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title='Role' />
     ),
     cell: ({ row }) => {
-      const { role } = row.original
-      const userType = roles.find(({ value }) => value === role)
+      const { roles } = row.original
+      const userTypes = roleList.filter(({ value }) =>
+        roles.some((role) => value === role)
+      )
 
-      if (!userType) {
+      if (!userTypes || !userTypes.length) {
         return null
       }
 
       return (
         <div className='flex items-center gap-x-2'>
-          {userType.icon && (
-            <userType.icon size={16} className='text-muted-foreground' />
-          )}
+          {userTypes.map((userType) => {
+            return (
+              <span key={userType.value}>
+                {userType.icon && (
+                  <userType.icon size={16} className='text-muted-foreground' />
+                )}
+              </span>
+            )
+          })}
+
           <span className='text-sm capitalize'>{row.getValue('role')}</span>
         </div>
       )
