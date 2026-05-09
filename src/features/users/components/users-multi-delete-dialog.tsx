@@ -4,11 +4,12 @@ import { useState } from 'react'
 import { type Table } from '@tanstack/react-table'
 import { AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
-import { sleep } from '@/lib/utils'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { useDeleteUser } from '../hooks'
+import { type User } from '../data/schema'
 
 type UserMultiDeleteDialogProps<TData> = {
   open: boolean
@@ -24,6 +25,7 @@ export function UsersMultiDeleteDialog<TData>({
   table,
 }: UserMultiDeleteDialogProps<TData>) {
   const [value, setValue] = useState('')
+  const { mutateAsync: deleteUser, isPending } = useDeleteUser()
 
   const selectedRows = table.getFilteredSelectedRowModel().rows
 
@@ -33,18 +35,17 @@ export function UsersMultiDeleteDialog<TData>({
       return
     }
 
+    const selectedUsers = selectedRows.map((row) => row.original as User)
     onOpenChange(false)
 
-    toast.promise(sleep(2000), {
+    toast.promise(Promise.all(selectedUsers.map((user) => deleteUser(user.id))), {
       loading: 'Deleting users...',
       success: () => {
         setValue('')
         table.resetRowSelection()
-        return `Deleted ${selectedRows.length} ${
-          selectedRows.length > 1 ? 'users' : 'user'
-        }`
+        return `Deleted ${selectedUsers.length} ${selectedUsers.length > 1 ? 'users' : 'user'}`
       },
-      error: 'Error',
+      error: 'Error deleting users',
     })
   }
 
@@ -54,6 +55,7 @@ export function UsersMultiDeleteDialog<TData>({
       onOpenChange={onOpenChange}
       form='users-multi-delete-form'
       disabled={value.trim() !== CONFIRM_WORD}
+      isLoading={isPending}
       title={
         <span className='text-destructive'>
           <AlertTriangle

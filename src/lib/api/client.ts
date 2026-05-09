@@ -40,7 +40,7 @@ const createService = (client: typeof apiClient) => ({
   request:
     <F extends ApiFn>(fn: F) =>
     async (
-      options: Parameters<F>[0]
+      ...[options]: Parameters<F>
     ): Promise<NonNullable<Awaited<ReturnType<F>>['data']>> => {
       const res = await fn({
         ...options,

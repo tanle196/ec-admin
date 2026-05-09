@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { useDeleteUser } from '../hooks'
 import { type User } from '../data/schema'
 
 type UserDeleteDialogProps = {
@@ -21,12 +21,12 @@ export function UsersDeleteDialog({
   currentRow,
 }: UserDeleteDialogProps) {
   const [value, setValue] = useState('')
+  const { mutate: deleteUser, isPending } = useDeleteUser()
 
   const handleDelete = () => {
     if (value.trim() !== currentRow.username) return
-
     onOpenChange(false)
-    showSubmittedData(currentRow, 'The following user has been deleted:')
+    deleteUser(currentRow.id)
   }
 
   return (
@@ -35,6 +35,7 @@ export function UsersDeleteDialog({
       onOpenChange={onOpenChange}
       form='users-delete-form'
       disabled={value.trim() !== currentRow.username}
+      isLoading={isPending}
       title={
         <span className='text-destructive'>
           <AlertTriangle

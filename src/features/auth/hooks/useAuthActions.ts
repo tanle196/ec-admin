@@ -1,58 +1,66 @@
-import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { setCookie } from '@/lib/cookies'
 import { REFRESH_TOKEN } from '@/constants/cookies'
 import { useProfile } from '@/features/users/hooks/useProfile'
+import { userKeys } from '@/features/users/queryKeys'
 import { useLogin } from './useLogin'
 
 export const useAuthActions = () => {
-  const { mutateAsync: login } = useLogin()
-  const [isLoading, setIsLoading] = useState(false)
+  const { mutateAsync: login, isPending } = useLogin()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { auth } = useAuthStore()
-  const { refetch: getUserProfile } = useProfile({ enabled: false })
+  const { refetch: getUserProfile, isFetching: isFetchingProfile } = useProfile({ enabled: false })
+  const setUser = useAuthStore((s) => s.auth.setUser)
+
+  const isLoading = isPending || isFetchingProfile
 
   const handleLogin = async (
     data: { email: string; password: string },
     redirectTo?: string
   ) => {
-    try {
-      setIsLoading(true)
-      const loginPromise = login({ body: data })
-      toast.promise(loginPromise, {
-        id: 'login',
-        loading: 'Signing in...',
-        success: 'Welcome back!',
-        error: 'Login failed',
-      })
-      const { accessToken, refreshToken } = await loginPromise
+    const loginFlow = (async () => {
+      const { accessToken, refreshToken } = await login({ body: data })
 
       if (accessToken) {
         auth.setAccessToken(accessToken)
       }
-
       if (refreshToken) {
         setCookie(REFRESH_TOKEN, JSON.stringify(refreshToken))
       }
 
-      await getUserProfile()
+      try {
+        const { data: profile } = await getUserProfile()
+        if (profile) {
+          setUser({ name: profile.name, email: profile.email, role: profile.roles })
+        }
+      } catch {
+        auth.reset()
+        throw new Error('Failed to load user profile')
+      }
+    })()
 
-      // Redirect to the stored location or default to dashboard
-      const targetPath = redirectTo || '/'
-      navigate({ to: targetPath, replace: true })
+    toast.promise(loginFlow, {
+      id: 'login',
+      loading: 'Signing in...',
+      success: 'Welcome back!',
+      error: 'Login failed',
+    })
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      //noop
-    } finally {
-      setIsLoading(false)
+    try {
+      await loginFlow
+      navigate({ to: redirectTo || '/', replace: true })
+    } catch {
+      //noop - toast.promise handles error display
     }
   }
 
   const handleLogout = () => {
     auth.reset()
+    queryClient.removeQueries({ queryKey: userKeys.profile() })
     navigate({ to: '/sign-in' })
   }
 

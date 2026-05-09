@@ -14,12 +14,12 @@ const setUserMock = vi.fn()
 const setAccessTokenMock = vi.fn()
 
 vi.mock('@/stores/auth-store', () => ({
-  useAuthStore: () => ({
-    auth: {
-      setUser: setUserMock,
-      setAccessToken: setAccessTokenMock,
-    },
-  }),
+  useAuthStore: (selector?: (s: unknown) => unknown) => {
+    const state = {
+      auth: { setUser: setUserMock, setAccessToken: setAccessTokenMock },
+    }
+    return selector ? selector(state) : state
+  },
 }))
 
 vi.mock('@tanstack/react-router', async (importOriginal) => {
@@ -94,9 +94,7 @@ describe('UserAuthForm', () => {
       expect(setUserMock).toHaveBeenCalledWith(
         expect.objectContaining({
           email: 'a@b.com',
-          accountNo: expect.any(String),
           role: expect.any(Array),
-          exp: expect.any(Number),
         })
       )
       expect(setAccessTokenMock).toHaveBeenCalledOnce()

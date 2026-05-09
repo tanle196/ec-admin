@@ -1,13 +1,11 @@
 import { create } from 'zustand'
 import { getCookie, removeCookie, setCookie } from '@/lib/cookies'
-import { ACCESS_TOKEN } from '@/constants/cookies'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/cookies'
 
 interface AuthUser {
-  accountNo: string
   name: string
   email: string
   role: string[]
-  exp: number
 }
 
 export interface AuthState {
@@ -43,6 +41,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       reset: () =>
         set((state) => {
           removeCookie(ACCESS_TOKEN)
+          removeCookie(REFRESH_TOKEN)
           return {
             ...state,
             auth: { ...state.auth, user: null, accessToken: '' },
