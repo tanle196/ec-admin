@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { z } from 'zod'
+import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
@@ -23,6 +24,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { SelectDropdown } from '@/components/select-dropdown'
 import { useCreatePermission, usePermissionMeta } from '../hooks'
 
@@ -48,6 +50,7 @@ const formSchema = z.object({
     'assign.role',
   ]),
   description: z.string().optional(),
+  isSystem: z.boolean(),
 })
 
 type PermissionForm = z.infer<typeof formSchema>
@@ -75,12 +78,18 @@ export function PermissionsActionDialog({
       module: '',
       action: 'read',
       description: '',
+      isSystem: false,
     },
   })
 
   useEffect(() => {
     if (open) {
-      form.reset({ module: '', action: 'read', description: '' })
+      form.reset({
+        module: '',
+        action: 'read',
+        description: '',
+        isSystem: false,
+      })
     }
   }, [open, form])
 
@@ -90,7 +99,13 @@ export function PermissionsActionDialog({
         toast.success('Permission created successfully.')
         onOpenChange(false)
       },
-      onError: () => toast.error('Failed to create permission.'),
+      onError: (error) => {
+        if (error instanceof AxiosError && error.response?.status === 409) {
+          toast.error('Permission already exists for this module and action.')
+        } else {
+          toast.error('Failed to create permission.')
+        }
+      },
     })
   }
 
@@ -166,6 +181,21 @@ export function PermissionsActionDialog({
                     <Input placeholder='Optional description...' {...field} />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='isSystem'
+              render={({ field }) => (
+                <FormItem className='flex items-center justify-between'>
+                  <FormLabel>System Permission</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

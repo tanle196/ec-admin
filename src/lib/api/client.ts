@@ -48,7 +48,7 @@ const createService = (client: typeof apiClient) => ({
       })
 
       if (res.data) return res.data
-      throw res.error
+      throw res
     },
 })
 

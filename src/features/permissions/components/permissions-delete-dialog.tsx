@@ -1,6 +1,7 @@
 'use client'
 
 import { AlertTriangle } from 'lucide-react'
+import { AxiosError } from 'axios'
 import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ConfirmDialog } from '@/components/confirm-dialog'
@@ -26,7 +27,13 @@ export function PermissionsDeleteDialog({
         toast.success('Permission deleted successfully.')
         onOpenChange(false)
       },
-      onError: () => toast.error('Failed to delete permission.'),
+      onError: (error) => {
+        if (error instanceof AxiosError && error.response?.status === 409) {
+          toast.error('Cannot delete: this permission is assigned to one or more roles.')
+        } else {
+          toast.error('Failed to delete permission.')
+        }
+      },
     })
   }
 

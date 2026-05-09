@@ -25,7 +25,9 @@ export const queryClient = new QueryClient({
       staleTime: 10 * 1000, // 10s
     },
     mutations: {
-      onError: (error) => {
+      onError: (error, _variables, _context, mutation) => {
+        if (mutation.meta?.suppressErrorToast) return
+
         handleServerError(error)
 
         if (error instanceof AxiosError) {
@@ -72,5 +74,13 @@ export const router = createRouter({
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
+  }
+}
+
+declare module '@tanstack/react-query' {
+  interface Register {
+    mutationMeta: {
+      suppressErrorToast?: boolean
+    }
   }
 }

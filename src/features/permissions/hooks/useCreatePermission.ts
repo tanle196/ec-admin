@@ -9,6 +9,7 @@ export const useCreatePermission = () => {
   return useMutation({
     mutationFn: (body: CreatePermissionDto) =>
       permissionService.create({ body }),
+    meta: { suppressErrorToast: true },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: permissionKeys.all })
     },

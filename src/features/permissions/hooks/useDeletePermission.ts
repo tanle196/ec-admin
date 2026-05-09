@@ -7,6 +7,7 @@ export const useDeletePermission = () => {
 
   return useMutation({
     mutationFn: (id: string) => permissionService.remove({ path: { id } }),
+    meta: { suppressErrorToast: true },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: permissionKeys.all })
     },
