@@ -8,7 +8,7 @@ export const useProfile = (options?: { enabled?: boolean }) => {
 
   return useQuery({
     queryKey: ['profile'],
-    queryFn: userService.getProfile,
+    queryFn: () => userService.getProfile(undefined),
     enabled: options?.enabled ?? (!!auth.accessToken && !auth.user),
     staleTime: Infinity,
     gcTime: Infinity,

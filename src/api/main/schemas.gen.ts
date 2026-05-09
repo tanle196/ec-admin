@@ -380,6 +380,101 @@ export const UserProfileDtoSchema = {
     ]
 } as const;
 
+export const UserDetailDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: 'uuid-v4'
+        },
+        email: {
+            type: 'string',
+            example: 'user@example.com'
+        },
+        fullName: {
+            type: 'string',
+            example: 'Tan Nguyen',
+            nullable: true
+        },
+        avatar: {
+            type: 'string',
+            example: 'https://...',
+            nullable: true
+        },
+        roles: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RoleResponseDto'
+            }
+        },
+        permissions: {
+            description: 'Direct permissions',
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/PermissionResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00Z'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00Z'
+        }
+    },
+    required: [
+        'id',
+        'email',
+        'fullName',
+        'avatar',
+        'roles',
+        'permissions',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const AssignRolesDtoSchema = {
+    type: 'object',
+    properties: {
+        roleIds: {
+            example: [
+                '9d1c9c9e-8b7e-4f12-9f8b-123456789abc'
+            ],
+            description: 'Danh sách role ID',
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        }
+    },
+    required: [
+        'roleIds'
+    ]
+} as const;
+
+export const AssignUserPermissionsDtoSchema = {
+    type: 'object',
+    properties: {
+        permissionIds: {
+            example: [
+                '9d1c9c9e-8b7e-4f12-9f8b-123456789abc'
+            ],
+            description: 'Danh sách permission ID gán trực tiếp cho user',
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        }
+    },
+    required: [
+        'permissionIds'
+    ]
+} as const;
+
 export const CreateRoleDtoSchema = {
     type: 'object',
     properties: {

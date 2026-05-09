@@ -40,13 +40,17 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   })
 
   const { data: response, isSuccess } = useUsers(query)
-  const data: User[] = (response?.data?.data ?? []).map((user) => {
+  const data: User[] = (response?.data ?? []).map((user) => {
+    const parts = user.fullName.trim().split(/\s+/)
     return {
       id: user.id,
-      name: user.fullName,
+      firstName: parts[0] ?? '',
+      lastName: parts.slice(1).join(' '),
+      username: user.email,
       email: user.email,
+      phoneNumber: '',
       status: 'active',
-      roles: (user.roles ?? []).map((role) => role.name),
+      role: (user.roles ?? [])[0]?.name ?? '',
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     }
@@ -68,9 +72,8 @@ export function UsersTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: false },
     columnFilters: [
-      // username per-column text filter
+      // email text filter (URL key 'username' maps to API's email param)
       { columnId: 'username', searchKey: 'username', type: 'string' },
-      { columnId: 'status', searchKey: 'status', type: 'array' },
       { columnId: 'role', searchKey: 'role', type: 'array' },
     ],
   })
@@ -79,7 +82,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   const table = useReactTable({
     data,
     columns,
-    rowCount: response?.data?.total ?? 0,
+    rowCount: response?.total ?? 0,
     manualPagination: true, // ← server handles pages
     manualFiltering: true, // ← server handles filters
     manualSorting: true, // ← server handles sorting (if applicable)
@@ -110,17 +113,23 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   }, [table, ensurePageInRange])
 
   useEffect(() => {
+    const emailFilter = columnFilters.find((f) => f.id === 'username')
+    const roleFilter = columnFilters.find((f) => f.id === 'role')
     setQuery({
       page: pagination.pageIndex + 1,
       limit: pagination.pageSize,
+      email: (emailFilter?.value as string | undefined) || undefined,
+      role: (Array.isArray(roleFilter?.value) ? roleFilter.value[0] : undefined) as
+        | string
+        | undefined,
     })
-  }, [pagination])
+  }, [pagination, columnFilters])
 
   useEffect(() => {
     if (isSuccess) {
-      ensurePageInRange(response?.data?.total ?? 0, { resetTo: 'first' })
+      ensurePageInRange(response?.total ?? 0, { resetTo: 'first' })
     }
-  }, [ensurePageInRange, isSuccess, response?.data?.total])
+  }, [ensurePageInRange, isSuccess, response?.total])
 
   return (
     <div
@@ -134,16 +143,6 @@ export function UsersTable({ search, navigate }: DataTableProps) {
         searchPlaceholder='Filter users...'
         searchKey='username'
         filters={[
-          {
-            columnId: 'status',
-            title: 'Status',
-            options: [
-              { label: 'Active', value: 'active' },
-              { label: 'Inactive', value: 'inactive' },
-              { label: 'Invited', value: 'invited' },
-              { label: 'Suspended', value: 'suspended' },
-            ],
-          },
           {
             columnId: 'role',
             title: 'Role',

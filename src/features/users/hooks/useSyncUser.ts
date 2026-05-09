@@ -7,17 +7,17 @@ export const useSyncUser = () => {
   const { data: profile, isLoading } = useProfile()
 
   useEffect(() => {
-    if (!profile?.data) return
-    if (auth.user?.email === profile.data.email) return
+    if (!profile) return
+    if (auth.user?.email === profile.email) return
 
     auth.setUser({
-      name: profile.data.name,
-      email: profile.data.email,
-      role: profile.data.roles,
+      name: profile.name,
+      email: profile.email,
+      role: profile.roles,
       accountNo: '1111',
       exp: 123,
     })
-  }, [auth, profile?.data])
+  }, [auth, profile])
 
   return { isLoading }
 }

@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import { permissionsControllerCreateResponseTransformer, permissionsControllerFindAllResponseTransformer, permissionsControllerFindOneResponseTransformer, permissionsControllerUpdateResponseTransformer, rolesControllerAssignPermissionsResponseTransformer, rolesControllerCreateRoleResponseTransformer, rolesControllerFindAllResponseTransformer, rolesControllerFindOneResponseTransformer, rolesControllerUpdateResponseTransformer, usersControllerFindAllResponseTransformer } from './transformers.gen';
-import type { AppControllerHealthData, AppControllerHealthResponses, AuthControllerActiveData, AuthControllerActiveResponses, AuthControllerForgotPasswordData, AuthControllerForgotPasswordResponses, AuthControllerGoogleCallbackData, AuthControllerGoogleCallbackResponses, AuthControllerGoogleLoginData, AuthControllerGoogleLoginResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRefreshData, AuthControllerRefreshResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, AuthControllerResetPasswordData, AuthControllerResetPasswordResponses, PermissionsControllerCreateData, PermissionsControllerCreateResponses, PermissionsControllerFindAllData, PermissionsControllerFindAllResponses, PermissionsControllerFindOneData, PermissionsControllerFindOneResponses, PermissionsControllerGetMetaData, PermissionsControllerGetMetaResponses, PermissionsControllerRemoveData, PermissionsControllerRemoveResponses, PermissionsControllerUpdateData, PermissionsControllerUpdateResponses, RolesControllerAssignPermissionsData, RolesControllerAssignPermissionsResponses, RolesControllerCreateRoleData, RolesControllerCreateRoleResponses, RolesControllerFindAllData, RolesControllerFindAllResponses, RolesControllerFindOneData, RolesControllerFindOneResponses, RolesControllerRemoveData, RolesControllerRemoveResponses, RolesControllerUpdateData, RolesControllerUpdateResponses, UsersControllerFindAllData, UsersControllerFindAllResponses, UsersControllerGetProfileData, UsersControllerGetProfileResponses } from './types.gen';
+import { permissionsControllerCreateResponseTransformer, permissionsControllerFindAllResponseTransformer, permissionsControllerFindOneResponseTransformer, permissionsControllerUpdateResponseTransformer, rolesControllerAssignPermissionsResponseTransformer, rolesControllerCreateRoleResponseTransformer, rolesControllerFindAllResponseTransformer, rolesControllerFindOneResponseTransformer, rolesControllerUpdateResponseTransformer, usersControllerAssignPermissionsResponseTransformer, usersControllerAssignRolesResponseTransformer, usersControllerFindAllResponseTransformer, usersControllerFindOneResponseTransformer, usersControllerUpdateResponseTransformer } from './transformers.gen';
+import type { AppControllerHealthData, AppControllerHealthResponses, AuthControllerActiveData, AuthControllerActiveResponses, AuthControllerForgotPasswordData, AuthControllerForgotPasswordResponses, AuthControllerGoogleCallbackData, AuthControllerGoogleCallbackResponses, AuthControllerGoogleLoginData, AuthControllerGoogleLoginResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRefreshData, AuthControllerRefreshResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, AuthControllerResetPasswordData, AuthControllerResetPasswordResponses, PermissionsControllerCreateData, PermissionsControllerCreateResponses, PermissionsControllerFindAllData, PermissionsControllerFindAllResponses, PermissionsControllerFindOneData, PermissionsControllerFindOneResponses, PermissionsControllerGetMetaData, PermissionsControllerGetMetaResponses, PermissionsControllerRemoveData, PermissionsControllerRemoveResponses, PermissionsControllerUpdateData, PermissionsControllerUpdateResponses, RolesControllerAssignPermissionsData, RolesControllerAssignPermissionsResponses, RolesControllerCreateRoleData, RolesControllerCreateRoleResponses, RolesControllerFindAllData, RolesControllerFindAllResponses, RolesControllerFindOneData, RolesControllerFindOneResponses, RolesControllerRemoveData, RolesControllerRemoveResponses, RolesControllerUpdateData, RolesControllerUpdateResponses, UsersControllerAssignPermissionsData, UsersControllerAssignPermissionsResponses, UsersControllerAssignRolesData, UsersControllerAssignRolesResponses, UsersControllerFindAllData, UsersControllerFindAllResponses, UsersControllerFindOneData, UsersControllerFindOneResponses, UsersControllerGetProfileData, UsersControllerGetProfileResponses, UsersControllerRemoveData, UsersControllerRemoveResponses, UsersControllerUpdateData, UsersControllerUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -110,7 +110,7 @@ export const authControllerGoogleCallback = <ThrowOnError extends boolean = fals
 });
 
 /**
- * List all users (admin only)
+ * List all users
  */
 export const usersControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<UsersControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<UsersControllerFindAllResponses, unknown, ThrowOnError>({
     responseTransformer: usersControllerFindAllResponseTransformer,
@@ -126,6 +126,59 @@ export const usersControllerGetProfile = <ThrowOnError extends boolean = false>(
     responseType: 'json',
     url: '/users/profile',
     ...options
+});
+
+/**
+ * Delete user
+ */
+export const usersControllerRemove = <ThrowOnError extends boolean = false>(options: Options<UsersControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<UsersControllerRemoveResponses, unknown, ThrowOnError>({ url: '/users/{id}', ...options });
+
+/**
+ * Get user by id with roles and permissions
+ */
+export const usersControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<UsersControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<UsersControllerFindOneResponses, unknown, ThrowOnError>({
+    responseTransformer: usersControllerFindOneResponseTransformer,
+    responseType: 'json',
+    url: '/users/{id}',
+    ...options
+});
+
+/**
+ * Update user fullName or avatar
+ */
+export const usersControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<UsersControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<UsersControllerUpdateResponses, unknown, ThrowOnError>({
+    responseTransformer: usersControllerUpdateResponseTransformer,
+    responseType: 'json',
+    url: '/users/{id}',
+    ...options
+});
+
+/**
+ * Assign roles to user (replaces existing)
+ */
+export const usersControllerAssignRoles = <ThrowOnError extends boolean = false>(options: Options<UsersControllerAssignRolesData, ThrowOnError>) => (options.client ?? client).put<UsersControllerAssignRolesResponses, unknown, ThrowOnError>({
+    responseTransformer: usersControllerAssignRolesResponseTransformer,
+    responseType: 'json',
+    url: '/users/{id}/roles',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Assign direct permissions to user (replaces existing)
+ */
+export const usersControllerAssignPermissions = <ThrowOnError extends boolean = false>(options: Options<UsersControllerAssignPermissionsData, ThrowOnError>) => (options.client ?? client).put<UsersControllerAssignPermissionsResponses, unknown, ThrowOnError>({
+    responseTransformer: usersControllerAssignPermissionsResponseTransformer,
+    responseType: 'json',
+    url: '/users/{id}/permissions',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 /**

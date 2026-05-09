@@ -58,8 +58,10 @@ export const usersColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => {
-      const { name } = row.original
-      return <LongText className='max-w-36'>{name}</LongText>
+      const { firstName, lastName } = row.original
+      return (
+        <LongText className='max-w-36'>{`${firstName} ${lastName}`.trim()}</LongText>
+      )
     },
     meta: { className: 'w-36' },
   },
@@ -100,28 +102,19 @@ export const usersColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title='Role' />
     ),
     cell: ({ row }) => {
-      const { roles } = row.original
-      const userTypes = roleList.filter(({ value }) =>
-        roles.some((role) => value === role)
-      )
+      const { role } = row.original
+      const userType = roleList.find(({ value }) => value === role)
 
-      if (!userTypes || !userTypes.length) {
+      if (!userType) {
         return null
       }
 
       return (
         <div className='flex items-center gap-x-2'>
-          {userTypes.map((userType) => {
-            return (
-              <span key={userType.value}>
-                {userType.icon && (
-                  <userType.icon size={16} className='text-muted-foreground' />
-                )}
-              </span>
-            )
-          })}
-
-          <span className='text-sm capitalize'>{row.getValue('role')}</span>
+          {userType.icon && (
+            <userType.icon size={16} className='text-muted-foreground' />
+          )}
+          <span className='text-sm capitalize'>{role}</span>
         </div>
       )
     },

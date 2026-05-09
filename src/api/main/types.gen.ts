@@ -178,6 +178,34 @@ export type UserProfileDto = {
     permissions: Array<string>;
 };
 
+export type UserDetailDto = {
+    id: string;
+    email: string;
+    fullName: string | null;
+    avatar: string | null;
+    roles: Array<RoleResponseDto>;
+    /**
+     * Direct permissions
+     */
+    permissions: Array<PermissionResponseDto>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type AssignRolesDto = {
+    /**
+     * Danh sách role ID
+     */
+    roleIds: Array<string>;
+};
+
+export type AssignUserPermissionsDto = {
+    /**
+     * Danh sách permission ID gán trực tiếp cho user
+     */
+    permissionIds: Array<string>;
+};
+
 export type CreateRoleDto = {
     /**
      * Role name
@@ -429,6 +457,84 @@ export type UsersControllerGetProfileResponses = {
 };
 
 export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];
+
+export type UsersControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}';
+};
+
+export type UsersControllerRemoveResponses = {
+    /**
+     * User deleted
+     */
+    204: void;
+};
+
+export type UsersControllerRemoveResponse = UsersControllerRemoveResponses[keyof UsersControllerRemoveResponses];
+
+export type UsersControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}';
+};
+
+export type UsersControllerFindOneResponses = {
+    200: UserDetailDto;
+};
+
+export type UsersControllerFindOneResponse = UsersControllerFindOneResponses[keyof UsersControllerFindOneResponses];
+
+export type UsersControllerUpdateData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}';
+};
+
+export type UsersControllerUpdateResponses = {
+    200: UserDetailDto;
+};
+
+export type UsersControllerUpdateResponse = UsersControllerUpdateResponses[keyof UsersControllerUpdateResponses];
+
+export type UsersControllerAssignRolesData = {
+    body: AssignRolesDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}/roles';
+};
+
+export type UsersControllerAssignRolesResponses = {
+    200: UserDetailDto;
+};
+
+export type UsersControllerAssignRolesResponse = UsersControllerAssignRolesResponses[keyof UsersControllerAssignRolesResponses];
+
+export type UsersControllerAssignPermissionsData = {
+    body: AssignUserPermissionsDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/{id}/permissions';
+};
+
+export type UsersControllerAssignPermissionsResponses = {
+    200: UserDetailDto;
+};
+
+export type UsersControllerAssignPermissionsResponse = UsersControllerAssignPermissionsResponses[keyof UsersControllerAssignPermissionsResponses];
 
 export type RolesControllerFindAllData = {
     body?: never;

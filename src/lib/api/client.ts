@@ -6,14 +6,14 @@ const getToken = () => {
   const token = getCookie(ACCESS_TOKEN)
   if (!token) return undefined
 
-  try {
-    return JSON.parse(token) // bỏ dấu "" nếu có
-  } catch {
-    return token // không có dấu "" thì dùng thẳng
+  // Token may be stored as a JSON-encoded string (e.g. `"abc"`) — unwrap if so
+  if (token.startsWith('"') && token.endsWith('"')) {
+    return token.slice(1, -1)
   }
+  return token
 }
 
-const createApiClient = () => {
+export const createApiClient = () => {
   const client = createClient({
     baseURL: import.meta.env.VITE_API_URL,
   })
@@ -51,4 +51,5 @@ const createService = (client: typeof apiClient) => ({
       throw res.error
     },
 })
+
 export const mainService = createService(apiClient)
