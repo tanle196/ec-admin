@@ -1,9 +1,10 @@
 'use client'
 
+import { useEffect } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { showSubmittedData } from '@/lib/show-submitted-data'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -24,8 +25,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { SelectDropdown } from '@/components/select-dropdown'
-import { roleList } from '../data/data'
+import { useRoles } from '@/features/roles/hooks'
 import { type User } from '../data/schema'
+import { useAssignUserRoles } from '../hooks'
 
 const formSchema = z
   .object({
@@ -37,7 +39,7 @@ const formSchema = z
       error: (iss) => (iss.input === '' ? 'Email is required.' : undefined),
     }),
     password: z.string().transform((pwd) => pwd.trim()),
-    role: z.string().min(1, 'Role is required.'),
+    roleId: z.string().min(1, 'Role is required.'),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
     isEdit: z.boolean(),
   })
@@ -91,6 +93,7 @@ const formSchema = z
       path: ['confirmPassword'],
     }
   )
+
 type UserForm = z.infer<typeof formSchema>
 
 type UserActionDialogProps = {
@@ -105,13 +108,28 @@ export function UsersActionDialog({
   onOpenChange,
 }: UserActionDialogProps) {
   const isEdit = !!currentRow
+  const { data } = useRoles()
+  const { mutate: assignRoles, isPending: isAssigning } = useAssignUserRoles()
+
+  const roleOptions = (data?.data ?? []).map((r) => ({
+    label: r.name,
+    value: r.id,
+  }))
+
+  const currentRoleId = currentRow?.roles[0]?.id ?? ''
+
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
       ? {
-          ...currentRow,
+          firstName: currentRow?.fullName?.split(' ')[0] ?? '',
+          lastName: currentRow?.fullName?.split(' ').slice(1).join(' ') ?? '',
+          username: currentRow?.email ?? '',
+          email: currentRow?.email ?? '',
+          phoneNumber: '',
           password: '',
           confirmPassword: '',
+          roleId: currentRoleId,
           isEdit,
         }
       : {
@@ -119,7 +137,7 @@ export function UsersActionDialog({
           lastName: '',
           username: '',
           email: '',
-          role: '',
+          roleId: '',
           phoneNumber: '',
           password: '',
           confirmPassword: '',
@@ -127,10 +145,53 @@ export function UsersActionDialog({
         },
   })
 
+  useEffect(() => {
+    if (open) {
+      form.reset(
+        isEdit
+          ? {
+              firstName: currentRow?.fullName?.split(' ')[0] ?? '',
+              lastName:
+                currentRow?.fullName?.split(' ').slice(1).join(' ') ?? '',
+              username: currentRow?.email ?? '',
+              email: currentRow?.email ?? '',
+              phoneNumber: '',
+              password: '',
+              confirmPassword: '',
+              roleId: currentRow?.roles[0]?.id ?? '',
+              isEdit,
+            }
+          : {
+              firstName: '',
+              lastName: '',
+              username: '',
+              email: '',
+              roleId: '',
+              phoneNumber: '',
+              password: '',
+              confirmPassword: '',
+              isEdit,
+            }
+      )
+    }
+  }, [open, currentRow, isEdit, form])
+
   const onSubmit = (values: UserForm) => {
-    form.reset()
-    showSubmittedData(values)
-    onOpenChange(false)
+    if (isEdit && currentRow) {
+      assignRoles(
+        { id: currentRow.id, roleIds: [values.roleId] },
+        {
+          onSuccess: () => {
+            toast.success('User roles updated successfully.')
+            onOpenChange(false)
+          },
+          onError: () => toast.error('Failed to update user roles.'),
+        }
+      )
+    } else {
+      // Create flow: placeholder until a create user API is available
+      toast.info('User creation via API not yet implemented.')
+    }
   }
 
   const isPasswordTouched = !!form.formState.dirtyFields.password
@@ -255,7 +316,7 @@ export function UsersActionDialog({
               />
               <FormField
                 control={form.control}
-                name='role'
+                name='roleId'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
                     <FormLabel className='col-span-2 text-end'>Role</FormLabel>
@@ -264,10 +325,7 @@ export function UsersActionDialog({
                       onValueChange={field.onChange}
                       placeholder='Select a role'
                       className='col-span-4'
-                      items={roleList.map(({ label, value }) => ({
-                        label,
-                        value,
-                      }))}
+                      items={roleOptions}
                     />
                     <FormMessage className='col-span-4 col-start-3' />
                   </FormItem>
@@ -316,8 +374,8 @@ export function UsersActionDialog({
           </Form>
         </div>
         <DialogFooter>
-          <Button type='submit' form='user-form'>
-            Save changes
+          <Button type='submit' form='user-form' disabled={isAssigning}>
+            {isAssigning ? 'Saving...' : 'Save changes'}
           </Button>
         </DialogFooter>
       </DialogContent>

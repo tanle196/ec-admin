@@ -181,29 +181,50 @@ export const PermissionResponseDtoSchema = {
     properties: {
         id: {
             type: 'string',
-            example: '123e4567-e89b-12d3-a456-426614174000',
-            description: 'Permission unique identifier'
+            example: '123e4567-e89b-12d3-a456-426614174000'
+        },
+        module: {
+            type: 'string',
+            example: 'user'
+        },
+        action: {
+            type: 'string',
+            example: 'read',
+            enum: [
+                'create',
+                'read',
+                'update',
+                'delete',
+                'cancel',
+                'publish',
+                'assign.role'
+            ]
         },
         description: {
             type: 'string',
-            example: 'Read users permission',
-            description: 'Permission description'
+            example: 'Read users permission'
+        },
+        isSystem: {
+            type: 'boolean',
+            example: false
         },
         createdAt: {
             format: 'date-time',
             type: 'string',
-            example: '2024-01-01T00:00:00.000Z',
-            description: 'Permission creation date'
+            example: '2024-01-01T00:00:00.000Z'
         },
         updatedAt: {
             format: 'date-time',
             type: 'string',
-            example: '2024-01-01T00:00:00.000Z',
-            description: 'Permission last update date'
+            example: '2024-01-01T00:00:00.000Z'
         }
     },
     required: [
         'id',
+        'module',
+        'action',
+        'description',
+        'isSystem',
         'createdAt',
         'updatedAt'
     ]
@@ -505,6 +526,36 @@ export const CreateRoleDtoSchema = {
     ]
 } as const;
 
+export const RolePaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RoleResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
 export const UpdateRoleDtoSchema = {
     type: 'object',
     properties: {
@@ -679,6 +730,36 @@ export const PermissionMetaResponseDtoSchema = {
         'modules',
         'systemActions',
         'customActions'
+    ]
+} as const;
+
+export const PermissionPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/PermissionResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
     ]
 } as const;
 

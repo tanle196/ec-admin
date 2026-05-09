@@ -21,6 +21,8 @@ import {
   AudioWaveform,
   Command,
   GalleryVerticalEnd,
+  Shield,
+  KeyRound,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -77,6 +79,16 @@ export const sidebarData: SidebarData = {
           title: 'Users',
           url: '/users',
           icon: Users,
+        },
+        {
+          title: 'Roles',
+          url: '/roles',
+          icon: Shield,
+        },
+        {
+          title: 'Permissions',
+          url: '/permissions',
+          icon: KeyRound,
         },
         {
           title: 'Secured by Clerk',

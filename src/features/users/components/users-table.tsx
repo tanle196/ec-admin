@@ -40,21 +40,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   })
 
   const { data: response, isSuccess } = useUsers(query)
-  const data: User[] = (response?.data ?? []).map((user) => {
-    const parts = user.fullName.trim().split(/\s+/)
-    return {
-      id: user.id,
-      firstName: parts[0] ?? '',
-      lastName: parts.slice(1).join(' '),
-      username: user.email,
-      email: user.email,
-      phoneNumber: '',
-      status: 'active',
-      role: (user.roles ?? [])[0]?.name ?? '',
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    }
-  })
+  const data: User[] = response?.data ?? []
 
   // Local state management for table (uncomment to use local-only state, not synced with URL)
   // const [columnFilters, onColumnFiltersChange] = useState<ColumnFiltersState>([])
@@ -72,8 +58,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: false },
     columnFilters: [
-      // email text filter (URL key 'username' maps to API's email param)
-      { columnId: 'username', searchKey: 'username', type: 'string' },
+      { columnId: 'email', searchKey: 'email', type: 'string' },
       { columnId: 'role', searchKey: 'role', type: 'array' },
     ],
   })
@@ -113,7 +98,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
   }, [table, ensurePageInRange])
 
   useEffect(() => {
-    const emailFilter = columnFilters.find((f) => f.id === 'username')
+    const emailFilter = columnFilters.find((f) => f.id === 'email')
     const roleFilter = columnFilters.find((f) => f.id === 'role')
     setQuery({
       page: pagination.pageIndex + 1,
@@ -141,7 +126,7 @@ export function UsersTable({ search, navigate }: DataTableProps) {
       <DataTableToolbar
         table={table}
         searchPlaceholder='Filter users...'
-        searchKey='username'
+        searchKey='email'
         filters={[
           {
             columnId: 'role',

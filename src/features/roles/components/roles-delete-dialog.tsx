@@ -2,39 +2,48 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
+import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { type User } from '../data/schema'
-import { useDeleteUser } from '../hooks'
+import { useDeleteRole } from '../hooks'
+import { type Role } from '../data/schema'
 
-type UserDeleteDialogProps = {
+type RolesDeleteDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentRow: User
+  currentRow: Role
 }
 
-export function UsersDeleteDialog({
+export function RolesDeleteDialog({
   open,
   onOpenChange,
   currentRow,
-}: UserDeleteDialogProps) {
+}: RolesDeleteDialogProps) {
   const [value, setValue] = useState('')
-  const { mutate: deleteUser, isPending } = useDeleteUser()
+  const { mutate: deleteRole, isPending } = useDeleteRole()
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.fullName) return
-    onOpenChange(false)
-    deleteUser(currentRow.id)
+    if (value.trim() !== currentRow.name) return
+    deleteRole(currentRow.id, {
+      onSuccess: () => {
+        toast.success('Role deleted successfully.')
+        onOpenChange(false)
+      },
+      onError: () => toast.error('Failed to delete role.'),
+    })
   }
 
   return (
     <ConfirmDialog
       open={open}
-      onOpenChange={onOpenChange}
-      form='users-delete-form'
-      disabled={value.trim() !== currentRow.fullName}
+      onOpenChange={(state) => {
+        if (!state) setValue('')
+        onOpenChange(state)
+      }}
+      form='roles-delete-form'
+      disabled={value.trim() !== currentRow.name}
       isLoading={isPending}
       title={
         <span className='text-destructive'>
@@ -42,12 +51,12 @@ export function UsersDeleteDialog({
             className='me-1 inline-block stroke-destructive'
             size={18}
           />{' '}
-          Delete User
+          Delete Role
         </span>
       }
       desc={
         <form
-          id='users-delete-form'
+          id='roles-delete-form'
           onSubmit={(e) => {
             e.preventDefault()
             handleDelete()
@@ -56,21 +65,17 @@ export function UsersDeleteDialog({
         >
           <p className='mb-2'>
             Are you sure you want to delete{' '}
-            <span className='font-bold'>{currentRow.fullName}</span>?
+            <span className='font-bold'>{currentRow.name}</span>?
             <br />
-            This action will permanently remove the user with the role of{' '}
-            <span className='font-bold'>
-              {currentRow.roles[0]?.name.toUpperCase()}
-            </span>{' '}
-            from the system. This cannot be undone.
+            This action cannot be undone.
           </p>
 
           <Label className='my-2'>
-            Username:
+            Role name:
             <Input
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder='Enter username to confirm deletion.'
+              placeholder='Enter role name to confirm deletion.'
               autoFocus
             />
           </Label>
@@ -78,7 +83,7 @@ export function UsersDeleteDialog({
           <Alert variant='destructive'>
             <AlertTitle>Warning!</AlertTitle>
             <AlertDescription>
-              Please be careful, this operation can not be rolled back.
+              Please be careful, this operation cannot be rolled back.
             </AlertDescription>
           </Alert>
         </form>

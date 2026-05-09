@@ -92,21 +92,12 @@ export type UserListQueryDto = {
 };
 
 export type PermissionResponseDto = {
-    /**
-     * Permission unique identifier
-     */
     id: string;
-    /**
-     * Permission description
-     */
-    description?: string;
-    /**
-     * Permission creation date
-     */
+    module: string;
+    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
+    description: string;
+    isSystem: boolean;
     createdAt: Date;
-    /**
-     * Permission last update date
-     */
     updatedAt: Date;
 };
 
@@ -221,6 +212,13 @@ export type CreateRoleDto = {
     permissions?: Array<string>;
 };
 
+export type RolePaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<RoleResponseDto>;
+};
+
 export type UpdateRoleDto = {
     /**
      * Role name
@@ -287,6 +285,13 @@ export type PermissionMetaResponseDto = {
      * Danh sách action custom (non-system)
      */
     customActions: Array<string>;
+};
+
+export type PermissionPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<PermissionResponseDto>;
 };
 
 export type UpdatePermissionDto = {
@@ -542,12 +547,16 @@ export type RolesControllerFindAllData = {
     query?: {
         page?: number;
         limit?: number;
+        /**
+         * Filter by role name
+         */
+        name?: string;
     };
     url: '/roles';
 };
 
 export type RolesControllerFindAllResponses = {
-    200: Array<RoleResponseDto>;
+    200: RolePaginatedResponseDto;
 };
 
 export type RolesControllerFindAllResponse = RolesControllerFindAllResponses[keyof RolesControllerFindAllResponses];
@@ -632,12 +641,20 @@ export type PermissionsControllerFindAllData = {
     query?: {
         page?: number;
         limit?: number;
+        /**
+         * Filter by module name
+         */
+        module?: string;
+        /**
+         * Filter by action
+         */
+        action?: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
     };
     url: '/permissions';
 };
 
 export type PermissionsControllerFindAllResponses = {
-    200: Array<Permission>;
+    200: PermissionPaginatedResponseDto;
 };
 
 export type PermissionsControllerFindAllResponse = PermissionsControllerFindAllResponses[keyof PermissionsControllerFindAllResponses];

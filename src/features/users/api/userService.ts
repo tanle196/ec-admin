@@ -3,6 +3,7 @@ import {
   usersControllerFindOne,
   usersControllerGetProfile,
   usersControllerRemove,
+  usersControllerAssignRoles,
 } from '@/api/main'
 import { mainService } from '@/lib/api/client'
 
@@ -11,4 +12,5 @@ export const userService = {
   getProfile: mainService.request(usersControllerGetProfile),
   findOne: mainService.request(usersControllerFindOne),
   remove: mainService.request(usersControllerRemove),
+  assignRoles: mainService.request(usersControllerAssignRoles),
 }

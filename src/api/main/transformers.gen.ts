@@ -62,8 +62,13 @@ export const usersControllerAssignPermissionsResponseTransformer = async (data: 
     return data;
 };
 
+const rolePaginatedResponseDtoSchemaResponseTransformer = (data: any) => {
+    data.data = data.data.map((item: any) => roleResponseDtoSchemaResponseTransformer(item));
+    return data;
+};
+
 export const rolesControllerFindAllResponseTransformer = async (data: any): Promise<RolesControllerFindAllResponse> => {
-    data = data.map((item: any) => roleResponseDtoSchemaResponseTransformer(item));
+    data = rolePaginatedResponseDtoSchemaResponseTransformer(data);
     return data;
 };
 
@@ -87,14 +92,19 @@ export const rolesControllerAssignPermissionsResponseTransformer = async (data: 
     return data;
 };
 
-const permissionSchemaResponseTransformer = (data: any) => {
-    data.createdAt = new Date(data.createdAt);
-    data.updatedAt = new Date(data.updatedAt);
+const permissionPaginatedResponseDtoSchemaResponseTransformer = (data: any) => {
+    data.data = data.data.map((item: any) => permissionResponseDtoSchemaResponseTransformer(item));
     return data;
 };
 
 export const permissionsControllerFindAllResponseTransformer = async (data: any): Promise<PermissionsControllerFindAllResponse> => {
-    data = data.map((item: any) => permissionSchemaResponseTransformer(item));
+    data = permissionPaginatedResponseDtoSchemaResponseTransformer(data);
+    return data;
+};
+
+const permissionSchemaResponseTransformer = (data: any) => {
+    data.createdAt = new Date(data.createdAt);
+    data.updatedAt = new Date(data.updatedAt);
     return data;
 };
 
