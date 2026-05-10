@@ -59,6 +59,17 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
   return rangeWithDots
 }
 
+export function getErrorMessage(err: unknown, fallback: string): string {
+  if (err && typeof err === 'object') {
+    const msg =
+      (err as Record<string, unknown> & { error?: { message?: unknown } })
+        ?.error?.message ??
+      (err as { message?: unknown })?.message
+    if (typeof msg === 'string' && msg) return msg
+  }
+  return fallback
+}
+
 /**
  * Initials from a display name: first character of the first word + first
  * character of the last word. One word only: first two characters. Empty: `?`.

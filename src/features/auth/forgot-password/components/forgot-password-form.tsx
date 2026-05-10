@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
-import { ArrowRight, Loader2 } from 'lucide-react'
+import { ArrowRight, Loader2, MailCheck } from 'lucide-react'
 import { toast } from 'sonner'
-import { sleep, cn } from '@/lib/utils'
+import { cn, getErrorMessage } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,6 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useForgotPassword } from '../../hooks/useForgotPassword'
 
 const formSchema = z.object({
   email: z.email({
@@ -27,27 +27,48 @@ export function ForgotPasswordForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {
-  const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
+  const { mutateAsync: forgotPassword, isPending } = useForgotPassword()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '' },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    const flow = forgotPassword({ body: { email: data.email } })
 
-    toast.promise(sleep(2000), {
+    toast.promise(flow, {
       loading: 'Sending email...',
-      success: () => {
-        setIsLoading(false)
-        form.reset()
-        navigate({ to: '/otp' })
-        return `Email sent to ${data.email}`
-      },
-      error: 'Error',
+      success: `Reset link sent to ${data.email}`,
+      error: (err) => getErrorMessage(err, 'Failed to send reset email. Please try again.'),
     })
+
+    try {
+      await flow
+      setEmailSent(true)
+    } catch {
+      //noop - toast.promise handles error display
+    }
+  }
+
+  if (emailSent) {
+    return (
+      <div className='flex flex-col items-center gap-4 py-4 text-center'>
+        <MailCheck className='h-12 w-12 text-primary' />
+        <p className='text-sm text-muted-foreground'>
+          We've sent a password reset link to your email. Please check your
+          inbox and follow the instructions.
+        </p>
+        <Button
+          variant='outline'
+          className='mt-2 w-full'
+          onClick={() => setEmailSent(false)}
+        >
+          Send again
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -70,9 +91,9 @@ export function ForgotPasswordForm({
             </FormItem>
           )}
         />
-        <Button className='mt-2' disabled={isLoading}>
+        <Button className='mt-2' disabled={isPending}>
           Continue
-          {isLoading ? <Loader2 className='animate-spin' /> : <ArrowRight />}
+          {isPending ? <Loader2 className='animate-spin' /> : <ArrowRight />}
         </Button>
       </form>
     </Form>

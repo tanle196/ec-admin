@@ -6,6 +6,7 @@ import { setCookie } from '@/lib/cookies'
 import { REFRESH_TOKEN } from '@/constants/cookies'
 import { useProfile } from '@/features/users/hooks/useProfile'
 import { userKeys } from '@/features/users/queryKeys'
+import { getErrorMessage } from '@/lib/utils'
 import { useLogin } from './useLogin'
 import { useRegister } from './useRegister'
 import { useVerifyAccount } from './useVerifyAccount'
@@ -33,7 +34,7 @@ export const useAuthActions = () => {
       id: 'register',
       loading: 'Creating account...',
       success: 'Account created! Please verify your email.',
-      error: 'Registration failed',
+      error: (err) => getErrorMessage(err, 'Registration failed'),
     })
 
     try {
@@ -53,7 +54,7 @@ export const useAuthActions = () => {
       id: 'verify',
       loading: 'Verifying account...',
       success: 'Account verified! Please sign in.',
-      error: 'Verification failed. Invalid or expired code.',
+      error: (err) => getErrorMessage(err, 'Verification failed. Invalid or expired code.'),
     })
 
     try {
@@ -97,7 +98,7 @@ export const useAuthActions = () => {
       id: 'login',
       loading: 'Signing in...',
       success: 'Welcome back!',
-      error: 'Login failed',
+      error: (err) => getErrorMessage(err, 'Login failed'),
     })
 
     try {
