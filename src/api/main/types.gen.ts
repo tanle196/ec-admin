@@ -37,6 +37,20 @@ export type RegisterDto = {
     password: string;
 };
 
+export type MessageResponseDto = {
+    /**
+     * Response message
+     */
+    message: string;
+};
+
+export type ActiveDto = {
+    /**
+     * Email verification token
+     */
+    token: string;
+};
+
 export type UserInformationResponseDto = {
     /**
      * User unique identifier
@@ -52,25 +66,11 @@ export type UserInformationResponseDto = {
     fullName?: string;
 };
 
-export type ActiveDto = {
-    /**
-     * Email verification token
-     */
-    token: string;
-};
-
 export type ForgotPasswordDto = {
     /**
      * Email address to send password reset link
      */
     email: string;
-};
-
-export type MessageResponseDto = {
-    /**
-     * Response message
-     */
-    message: string;
 };
 
 export type ResetPasswordDto = {
@@ -336,7 +336,7 @@ export type AuthControllerRegisterResponses = {
     /**
      * User registered successfully
      */
-    201: UserInformationResponseDto;
+    201: MessageResponseDto;
 };
 
 export type AuthControllerRegisterResponse = AuthControllerRegisterResponses[keyof AuthControllerRegisterResponses];

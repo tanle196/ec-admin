@@ -64,6 +64,34 @@ export const RegisterDtoSchema = {
     ]
 } as const;
 
+export const MessageResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        message: {
+            type: 'string',
+            example: 'Operation completed successfully',
+            description: 'Response message'
+        }
+    },
+    required: [
+        'message'
+    ]
+} as const;
+
+export const ActiveDtoSchema = {
+    type: 'object',
+    properties: {
+        token: {
+            type: 'string',
+            example: 'abc123verificationtoken',
+            description: 'Email verification token'
+        }
+    },
+    required: [
+        'token'
+    ]
+} as const;
+
 export const UserInformationResponseDtoSchema = {
     type: 'object',
     properties: {
@@ -89,20 +117,6 @@ export const UserInformationResponseDtoSchema = {
     ]
 } as const;
 
-export const ActiveDtoSchema = {
-    type: 'object',
-    properties: {
-        token: {
-            type: 'string',
-            example: 'abc123verificationtoken',
-            description: 'Email verification token'
-        }
-    },
-    required: [
-        'token'
-    ]
-} as const;
-
 export const ForgotPasswordDtoSchema = {
     type: 'object',
     properties: {
@@ -114,20 +128,6 @@ export const ForgotPasswordDtoSchema = {
     },
     required: [
         'email'
-    ]
-} as const;
-
-export const MessageResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        message: {
-            type: 'string',
-            example: 'Operation completed successfully',
-            description: 'Response message'
-        }
-    },
-    required: [
-        'message'
     ]
 } as const;
 

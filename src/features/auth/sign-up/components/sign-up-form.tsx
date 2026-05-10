@@ -1,12 +1,11 @@
-import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, UserPlus } from 'lucide-react'
-import { toast } from 'sonner'
 import { IconFacebook, IconGithub } from '@/assets/brand-icons'
-import { sleep, cn } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { useAuthActions } from '@/features/auth/hooks'
 import {
   Form,
   FormControl,
@@ -39,7 +38,7 @@ export function SignUpForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {
-  const [isLoading, setIsLoading] = useState(false)
+  const { handleRegister, isLoading } = useAuthActions()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,17 +49,8 @@ export function SignUpForm({
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-
-    toast.promise(sleep(2000), {
-      loading: 'Creating account...',
-      success: () => {
-        setIsLoading(false)
-        return `Account created for ${data.email}.`
-      },
-      error: 'Error',
-    })
+  async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+    handleRegister({ email, password })
   }
 
   return (

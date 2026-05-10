@@ -1,4 +1,5 @@
 import {
+  authControllerActive,
   authControllerForgotPassword,
   authControllerLogin,
   authControllerResetPassword,
@@ -9,6 +10,7 @@ import { mainService } from '@/lib/api/client'
 export const authService = {
   login: mainService.request(authControllerLogin),
   register: mainService.request(authControllerRegister),
+  verifyAccount: mainService.request(authControllerActive),
   forgetPassword: mainService.request(authControllerForgotPassword),
   resetPassword: mainService.request(authControllerResetPassword),
 }
