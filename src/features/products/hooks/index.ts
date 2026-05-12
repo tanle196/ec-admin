@@ -1,4 +1,7 @@
 export { useProducts } from './useProducts'
+export { useProduct } from './useProduct'
 export { useCreateProduct } from './useCreateProduct'
 export { useUpdateProduct } from './useUpdateProduct'
 export { useDeleteProduct } from './useDeleteProduct'
+export { useAddProductImage } from './useAddProductImage'
+export { useRemoveProductImage } from './useRemoveProductImage'

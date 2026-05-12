@@ -1,5 +1,6 @@
 import { ProductsActionDialog } from './products-action-dialog'
 import { ProductsDeleteDialog } from './products-delete-dialog'
+import { ProductsImageDialog } from './products-image-dialog'
 import { useProductsContext } from './products-provider'
 
 export function ProductsDialogs() {
@@ -32,6 +33,13 @@ export function ProductsDialogs() {
           <ProductsDeleteDialog
             key={`product-delete-${currentRow.id}`}
             open={open === 'delete'}
+            onOpenChange={closeWithRow}
+            currentRow={currentRow}
+          />
+
+          <ProductsImageDialog
+            key={`product-images-${currentRow.id}`}
+            open={open === 'images'}
             onOpenChange={closeWithRow}
             currentRow={currentRow}
           />
