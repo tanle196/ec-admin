@@ -772,3 +772,240 @@ export const UpdatePermissionDtoSchema = {
         }
     }
 } as const;
+
+export const CreateCategoryDtoSchema = {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            example: 'Smartphones',
+            description: 'Category name'
+        },
+        slug: {
+            type: 'string',
+            example: 'smartphones',
+            description: 'SEO slug (auto-generated from name if omitted)'
+        },
+        parent_id: {
+            type: 'string',
+            example: '123e4567-e89b-12d3-a456-426614174000',
+            description: 'Parent category ID'
+        },
+        description: {
+            type: 'string',
+            example: 'All smartphones and mobile phones'
+        },
+        image: {
+            type: 'string',
+            example: 'https://cdn.example.com/cat.jpg'
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0,
+            default: 0
+        },
+        isActive: {
+            type: 'boolean',
+            example: true,
+            default: true
+        }
+    },
+    required: [
+        'name'
+    ]
+} as const;
+
+export const CategoryResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: '123e4567-e89b-12d3-a456-426614174000'
+        },
+        parent_id: {
+            type: 'object',
+            example: null,
+            nullable: true
+        },
+        name: {
+            type: 'string',
+            example: 'Smartphones'
+        },
+        slug: {
+            type: 'string',
+            example: 'smartphones'
+        },
+        description: {
+            type: 'object',
+            example: 'All smartphones and mobile phones',
+            nullable: true
+        },
+        image: {
+            type: 'object',
+            example: 'https://cdn.example.com/cat.jpg',
+            nullable: true
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0
+        },
+        isActive: {
+            type: 'boolean',
+            example: true
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00.000Z'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00.000Z'
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'slug',
+        'sortOrder',
+        'isActive',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const CategoryPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CategoryResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const CategoryTreeNodeDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: '123e4567-e89b-12d3-a456-426614174000'
+        },
+        parent_id: {
+            type: 'object',
+            example: null,
+            nullable: true
+        },
+        name: {
+            type: 'string',
+            example: 'Smartphones'
+        },
+        slug: {
+            type: 'string',
+            example: 'smartphones'
+        },
+        description: {
+            type: 'object',
+            example: 'All smartphones and mobile phones',
+            nullable: true
+        },
+        image: {
+            type: 'object',
+            example: 'https://cdn.example.com/cat.jpg',
+            nullable: true
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0
+        },
+        isActive: {
+            type: 'boolean',
+            example: true
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00.000Z'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00.000Z'
+        },
+        children: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CategoryTreeNodeDto'
+            }
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'slug',
+        'sortOrder',
+        'isActive',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const UpdateCategoryDtoSchema = {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            example: 'Smartphones',
+            description: 'Category name'
+        },
+        slug: {
+            type: 'string',
+            example: 'smartphones',
+            description: 'SEO slug (auto-generated from name if omitted)'
+        },
+        parent_id: {
+            type: 'string',
+            example: '123e4567-e89b-12d3-a456-426614174000',
+            description: 'Parent category ID'
+        },
+        description: {
+            type: 'string',
+            example: 'All smartphones and mobile phones'
+        },
+        image: {
+            type: 'string',
+            example: 'https://cdn.example.com/cat.jpg'
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0,
+            default: 0
+        },
+        isActive: {
+            type: 'boolean',
+            example: true,
+            default: true
+        }
+    }
+} as const;

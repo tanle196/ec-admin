@@ -298,6 +298,90 @@ export type UpdatePermissionDto = {
     description?: string;
 };
 
+export type CreateCategoryDto = {
+    /**
+     * Category name
+     */
+    name: string;
+    /**
+     * SEO slug (auto-generated from name if omitted)
+     */
+    slug?: string;
+    /**
+     * Parent category ID
+     */
+    parent_id?: string;
+    description?: string;
+    image?: string;
+    sortOrder?: number;
+    isActive?: boolean;
+};
+
+export type CategoryResponseDto = {
+    id: string;
+    parent_id?: {
+        [key: string]: unknown;
+    } | null;
+    name: string;
+    slug: string;
+    description?: {
+        [key: string]: unknown;
+    } | null;
+    image?: {
+        [key: string]: unknown;
+    } | null;
+    sortOrder: number;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type CategoryPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<CategoryResponseDto>;
+};
+
+export type CategoryTreeNodeDto = {
+    id: string;
+    parent_id?: {
+        [key: string]: unknown;
+    } | null;
+    name: string;
+    slug: string;
+    description?: {
+        [key: string]: unknown;
+    } | null;
+    image?: {
+        [key: string]: unknown;
+    } | null;
+    sortOrder: number;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    children?: Array<CategoryTreeNodeDto>;
+};
+
+export type UpdateCategoryDto = {
+    /**
+     * Category name
+     */
+    name?: string;
+    /**
+     * SEO slug (auto-generated from name if omitted)
+     */
+    slug?: string;
+    /**
+     * Parent category ID
+     */
+    parent_id?: string;
+    description?: string;
+    image?: string;
+    sortOrder?: number;
+    isActive?: boolean;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -730,3 +814,100 @@ export type PermissionsControllerUpdateResponses = {
 };
 
 export type PermissionsControllerUpdateResponse = PermissionsControllerUpdateResponses[keyof PermissionsControllerUpdateResponses];
+
+export type CategoriesControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        /**
+         * Filter by category name
+         */
+        name?: string;
+        /**
+         * Filter by parent category ID (omit for all, use null for root)
+         */
+        parent_id?: string;
+        /**
+         * Filter by active status
+         */
+        isActive?: boolean;
+    };
+    url: '/categories';
+};
+
+export type CategoriesControllerFindAllResponses = {
+    200: CategoryPaginatedResponseDto;
+};
+
+export type CategoriesControllerFindAllResponse = CategoriesControllerFindAllResponses[keyof CategoriesControllerFindAllResponses];
+
+export type CategoriesControllerCreateData = {
+    body: CreateCategoryDto;
+    path?: never;
+    query?: never;
+    url: '/categories';
+};
+
+export type CategoriesControllerCreateResponses = {
+    201: CategoryResponseDto;
+};
+
+export type CategoriesControllerCreateResponse = CategoriesControllerCreateResponses[keyof CategoriesControllerCreateResponses];
+
+export type CategoriesControllerFindTreeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/categories/tree';
+};
+
+export type CategoriesControllerFindTreeResponses = {
+    200: Array<CategoryTreeNodeDto>;
+};
+
+export type CategoriesControllerFindTreeResponse = CategoriesControllerFindTreeResponses[keyof CategoriesControllerFindTreeResponses];
+
+export type CategoriesControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type CategoriesControllerRemoveResponses = {
+    200: unknown;
+};
+
+export type CategoriesControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type CategoriesControllerFindOneResponses = {
+    200: CategoryResponseDto;
+};
+
+export type CategoriesControllerFindOneResponse = CategoriesControllerFindOneResponses[keyof CategoriesControllerFindOneResponses];
+
+export type CategoriesControllerUpdateData = {
+    body: UpdateCategoryDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type CategoriesControllerUpdateResponses = {
+    200: CategoryResponseDto;
+};
+
+export type CategoriesControllerUpdateResponse = CategoriesControllerUpdateResponses[keyof CategoriesControllerUpdateResponses];

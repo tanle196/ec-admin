@@ -23,6 +23,7 @@ import {
   GalleryVerticalEnd,
   Shield,
   KeyRound,
+  Tag,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -89,6 +90,11 @@ export const sidebarData: SidebarData = {
           title: 'Permissions',
           url: '/permissions',
           icon: KeyRound,
+        },
+        {
+          title: 'Categories',
+          url: '/categories',
+          icon: Tag,
         },
         {
           title: 'Secured by Clerk',
