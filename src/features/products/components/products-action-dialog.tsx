@@ -5,7 +5,9 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
+import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -27,6 +29,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { SelectDropdown } from '@/components/select-dropdown'
 import { useCategories } from '@/features/categories/hooks'
+import { useTags } from '@/features/tags/hooks'
 import { useCreateProduct, useUpdateProduct } from '../hooks'
 import { type Product } from '../data/schema'
 
@@ -45,6 +48,7 @@ const formSchema = z.object({
   sku: z.string().min(1, 'SKU is required.'),
   status: z.enum(['draft', 'published', 'archived']).optional(),
   isFeatured: z.boolean().optional(),
+  tagIds: z.array(z.string()).optional(),
 })
 
 type ProductForm = z.infer<typeof formSchema>
@@ -71,6 +75,9 @@ export function ProductsActionDialog({
     value: c.id,
   }))
 
+  const { data: tagsData } = useTags()
+  const allTags = tagsData ?? []
+
   const form = useForm<ProductForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -82,6 +89,7 @@ export function ProductsActionDialog({
       sku: currentRow?.sku ?? '',
       status: currentRow?.status ?? 'draft',
       isFeatured: currentRow?.isFeatured ?? false,
+      tagIds: currentRow?.tags?.map((t) => t.id) ?? [],
     },
   })
 
@@ -96,6 +104,7 @@ export function ProductsActionDialog({
         sku: currentRow?.sku ?? '',
         status: currentRow?.status ?? 'draft',
         isFeatured: currentRow?.isFeatured ?? false,
+        tagIds: currentRow?.tags?.map((t) => t.id) ?? [],
       })
     }
   }, [open, currentRow, form])
@@ -110,6 +119,7 @@ export function ProductsActionDialog({
       ...(values.description && { description: values.description }),
       status: values.status,
       isFeatured: values.isFeatured,
+      tagIds: values.tagIds ?? [],
     }
 
     if (isEdit) {
@@ -282,6 +292,45 @@ export function ProductsActionDialog({
                     <FormMessage className='col-span-4 col-start-3' />
                   </FormItem>
                 )}
+              />
+              <FormField
+                control={form.control}
+                name='tagIds'
+                render={({ field }) => {
+                  const selectedIds: string[] = field.value ?? []
+                  const toggle = (id: string) => {
+                    field.onChange(
+                      selectedIds.includes(id)
+                        ? selectedIds.filter((x) => x !== id)
+                        : [...selectedIds, id]
+                    )
+                  }
+                  return (
+                    <FormItem className='grid grid-cols-6 items-start space-y-0 gap-x-4 gap-y-1'>
+                      <FormLabel className='col-span-2 pt-1.5 text-end'>Tags</FormLabel>
+                      <div className='col-span-4 flex flex-wrap gap-1.5'>
+                        {allTags.length === 0 && (
+                          <span className='text-xs text-muted-foreground'>No tags available.</span>
+                        )}
+                        {allTags.map((tag) => {
+                          const selected = selectedIds.includes(tag.id)
+                          return (
+                            <Badge
+                              key={tag.id}
+                              variant={selected ? 'default' : 'outline'}
+                              className='cursor-pointer select-none gap-1'
+                              onClick={() => toggle(tag.id)}
+                            >
+                              {tag.name}
+                              {selected && <X size={10} />}
+                            </Badge>
+                          )
+                        })}
+                      </div>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )
+                }}
               />
               <FormField
                 control={form.control}
