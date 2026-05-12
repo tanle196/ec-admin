@@ -1,6 +1,7 @@
 import { ProductsActionDialog } from './products-action-dialog'
 import { ProductsDeleteDialog } from './products-delete-dialog'
 import { ProductsImageDialog } from './products-image-dialog'
+import { ProductsVariantDialog } from './products-variant-dialog'
 import { useProductsContext } from './products-provider'
 
 export function ProductsDialogs() {
@@ -40,6 +41,13 @@ export function ProductsDialogs() {
           <ProductsImageDialog
             key={`product-images-${currentRow.id}`}
             open={open === 'images'}
+            onOpenChange={closeWithRow}
+            currentRow={currentRow}
+          />
+
+          <ProductsVariantDialog
+            key={`product-variants-${currentRow.id}`}
+            open={open === 'variants'}
             onOpenChange={closeWithRow}
             currentRow={currentRow}
           />
