@@ -382,6 +382,146 @@ export type UpdateCategoryDto = {
     isActive?: boolean;
 };
 
+export type CreateProductImageDto = {
+    url: string;
+    alt?: string;
+    isPrimary?: boolean;
+    sortOrder?: number;
+};
+
+export type CreateProductVariantDto = {
+    name: string;
+    sku: string;
+    price: number;
+    stock?: number;
+    attributes?: {
+        [key: string]: unknown;
+    };
+    isActive?: boolean;
+};
+
+export type CreateProductDto = {
+    category_id: string;
+    name: string;
+    /**
+     * Auto-generated from name if omitted
+     */
+    slug?: string;
+    description?: string;
+    basePrice: number;
+    sku: string;
+    status?: 'draft' | 'published' | 'archived';
+    isFeatured?: boolean;
+    images?: Array<CreateProductImageDto>;
+    variants?: Array<CreateProductVariantDto>;
+    tagIds?: Array<string>;
+};
+
+export type ProductImageResponseDto = {
+    id: string;
+    url: string;
+    alt?: {
+        [key: string]: unknown;
+    } | null;
+    isPrimary: boolean;
+    sortOrder: number;
+};
+
+export type ProductVariantResponseDto = {
+    id: string;
+    name: string;
+    sku: string;
+    price: number;
+    stock: number;
+    attributes?: {
+        [key: string]: unknown;
+    } | null;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type TagResponseDto = {
+    id: string;
+    name: string;
+    slug: string;
+};
+
+export type ProductResponseDto = {
+    id: string;
+    category_id: string;
+    name: string;
+    slug: string;
+    description?: {
+        [key: string]: unknown;
+    } | null;
+    basePrice: number;
+    sku: string;
+    status: 'draft' | 'published' | 'archived';
+    isFeatured: boolean;
+    images: Array<ProductImageResponseDto>;
+    variants: Array<ProductVariantResponseDto>;
+    tags: Array<TagResponseDto>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type ProductListItemDto = {
+    id: string;
+    category_id: string;
+    name: string;
+    slug: string;
+    basePrice: number;
+    sku: string;
+    status: 'draft' | 'published' | 'archived';
+    isFeatured: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type ProductPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<ProductListItemDto>;
+};
+
+export type UpdateProductDto = {
+    category_id?: string;
+    name?: string;
+    /**
+     * Auto-generated from name if omitted
+     */
+    slug?: string;
+    description?: string;
+    basePrice?: number;
+    sku?: string;
+    status?: 'draft' | 'published' | 'archived';
+    isFeatured?: boolean;
+    images?: Array<CreateProductImageDto>;
+    variants?: Array<CreateProductVariantDto>;
+    tagIds?: Array<string>;
+};
+
+export type UpdateProductVariantDto = {
+    name?: string;
+    sku?: string;
+    price?: number;
+    stock?: number;
+    attributes?: {
+        [key: string]: unknown;
+    };
+    isActive?: boolean;
+};
+
+export type CreateTagDto = {
+    name: string;
+    /**
+     * Auto-generated from name if omitted
+     */
+    slug?: string;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -911,3 +1051,201 @@ export type CategoriesControllerUpdateResponses = {
 };
 
 export type CategoriesControllerUpdateResponse = CategoriesControllerUpdateResponses[keyof CategoriesControllerUpdateResponses];
+
+export type ProductsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        /**
+         * Filter by product name
+         */
+        name?: string;
+        /**
+         * Filter by category ID
+         */
+        category_id?: string;
+        status?: 'draft' | 'published' | 'archived';
+        /**
+         * Filter featured products
+         */
+        isFeatured?: boolean;
+    };
+    url: '/products';
+};
+
+export type ProductsControllerFindAllResponses = {
+    200: ProductPaginatedResponseDto;
+};
+
+export type ProductsControllerFindAllResponse = ProductsControllerFindAllResponses[keyof ProductsControllerFindAllResponses];
+
+export type ProductsControllerCreateData = {
+    body: CreateProductDto;
+    path?: never;
+    query?: never;
+    url: '/products';
+};
+
+export type ProductsControllerCreateResponses = {
+    201: ProductResponseDto;
+};
+
+export type ProductsControllerCreateResponse = ProductsControllerCreateResponses[keyof ProductsControllerCreateResponses];
+
+export type ProductsControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/products/{id}';
+};
+
+export type ProductsControllerRemoveResponses = {
+    200: unknown;
+};
+
+export type ProductsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/products/{id}';
+};
+
+export type ProductsControllerFindOneResponses = {
+    200: ProductResponseDto;
+};
+
+export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
+
+export type ProductsControllerUpdateData = {
+    body: UpdateProductDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/products/{id}';
+};
+
+export type ProductsControllerUpdateResponses = {
+    200: ProductResponseDto;
+};
+
+export type ProductsControllerUpdateResponse = ProductsControllerUpdateResponses[keyof ProductsControllerUpdateResponses];
+
+export type ProductsControllerAddImageData = {
+    body: CreateProductImageDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/products/{id}/images';
+};
+
+export type ProductsControllerAddImageResponses = {
+    201: ProductImageResponseDto;
+};
+
+export type ProductsControllerAddImageResponse = ProductsControllerAddImageResponses[keyof ProductsControllerAddImageResponses];
+
+export type ProductsControllerRemoveImageData = {
+    body?: never;
+    path: {
+        id: string;
+        imageId: string;
+    };
+    query?: never;
+    url: '/products/{id}/images/{imageId}';
+};
+
+export type ProductsControllerRemoveImageResponses = {
+    200: unknown;
+};
+
+export type ProductsControllerAddVariantData = {
+    body: CreateProductVariantDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/products/{id}/variants';
+};
+
+export type ProductsControllerAddVariantResponses = {
+    201: ProductVariantResponseDto;
+};
+
+export type ProductsControllerAddVariantResponse = ProductsControllerAddVariantResponses[keyof ProductsControllerAddVariantResponses];
+
+export type ProductsControllerRemoveVariantData = {
+    body?: never;
+    path: {
+        id: string;
+        variantId: string;
+    };
+    query?: never;
+    url: '/products/{id}/variants/{variantId}';
+};
+
+export type ProductsControllerRemoveVariantResponses = {
+    200: unknown;
+};
+
+export type ProductsControllerUpdateVariantData = {
+    body: UpdateProductVariantDto;
+    path: {
+        id: string;
+        variantId: string;
+    };
+    query?: never;
+    url: '/products/{id}/variants/{variantId}';
+};
+
+export type ProductsControllerUpdateVariantResponses = {
+    200: ProductVariantResponseDto;
+};
+
+export type ProductsControllerUpdateVariantResponse = ProductsControllerUpdateVariantResponses[keyof ProductsControllerUpdateVariantResponses];
+
+export type TagsControllerFindAllTagsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/tags';
+};
+
+export type TagsControllerFindAllTagsResponses = {
+    200: Array<TagResponseDto>;
+};
+
+export type TagsControllerFindAllTagsResponse = TagsControllerFindAllTagsResponses[keyof TagsControllerFindAllTagsResponses];
+
+export type TagsControllerCreateTagData = {
+    body: CreateTagDto;
+    path?: never;
+    query?: never;
+    url: '/tags';
+};
+
+export type TagsControllerCreateTagResponses = {
+    201: TagResponseDto;
+};
+
+export type TagsControllerCreateTagResponse = TagsControllerCreateTagResponses[keyof TagsControllerCreateTagResponses];
+
+export type TagsControllerRemoveTagData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/tags/{id}';
+};
+
+export type TagsControllerRemoveTagResponses = {
+    200: unknown;
+};

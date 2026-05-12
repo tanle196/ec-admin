@@ -24,6 +24,7 @@ import {
   Shield,
   KeyRound,
   Tag,
+  ShoppingBag,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -95,6 +96,11 @@ export const sidebarData: SidebarData = {
           title: 'Categories',
           url: '/categories',
           icon: Tag,
+        },
+        {
+          title: 'Products',
+          url: '/products',
+          icon: ShoppingBag,
         },
         {
           title: 'Secured by Clerk',

@@ -1009,3 +1009,520 @@ export const UpdateCategoryDtoSchema = {
         }
     }
 } as const;
+
+export const CreateProductImageDtoSchema = {
+    type: 'object',
+    properties: {
+        url: {
+            type: 'string',
+            example: 'https://cdn.example.com/img.jpg'
+        },
+        alt: {
+            type: 'string',
+            example: 'Product front view'
+        },
+        isPrimary: {
+            type: 'boolean',
+            example: false,
+            default: false
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0,
+            default: 0
+        }
+    },
+    required: [
+        'url'
+    ]
+} as const;
+
+export const CreateProductVariantDtoSchema = {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            example: 'Đỏ - L'
+        },
+        sku: {
+            type: 'string',
+            example: 'PROD-001-RED-L'
+        },
+        price: {
+            type: 'number',
+            example: 299000
+        },
+        stock: {
+            type: 'number',
+            example: 100,
+            default: 0
+        },
+        attributes: {
+            type: 'object',
+            example: {
+                color: 'red',
+                size: 'L'
+            }
+        },
+        isActive: {
+            type: 'boolean',
+            example: true,
+            default: true
+        }
+    },
+    required: [
+        'name',
+        'sku',
+        'price'
+    ]
+} as const;
+
+export const CreateProductDtoSchema = {
+    type: 'object',
+    properties: {
+        category_id: {
+            type: 'string',
+            example: 'uuid-v4'
+        },
+        name: {
+            type: 'string',
+            example: 'iPhone 15 Pro'
+        },
+        slug: {
+            type: 'string',
+            example: 'iphone-15-pro',
+            description: 'Auto-generated from name if omitted'
+        },
+        description: {
+            type: 'string'
+        },
+        basePrice: {
+            type: 'number',
+            example: 29990000
+        },
+        sku: {
+            type: 'string',
+            example: 'IPH-15-PRO'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'draft',
+                'published',
+                'archived'
+            ],
+            default: 'draft'
+        },
+        isFeatured: {
+            type: 'boolean',
+            example: false,
+            default: false
+        },
+        images: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CreateProductImageDto'
+            }
+        },
+        variants: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CreateProductVariantDto'
+            }
+        },
+        tagIds: {
+            example: [
+                'uuid-tag-1',
+                'uuid-tag-2'
+            ],
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        }
+    },
+    required: [
+        'category_id',
+        'name',
+        'basePrice',
+        'sku'
+    ]
+} as const;
+
+export const ProductImageResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        url: {
+            type: 'string'
+        },
+        alt: {
+            type: 'object',
+            nullable: true
+        },
+        isPrimary: {
+            type: 'boolean'
+        },
+        sortOrder: {
+            type: 'number'
+        }
+    },
+    required: [
+        'id',
+        'url',
+        'isPrimary',
+        'sortOrder'
+    ]
+} as const;
+
+export const ProductVariantResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        name: {
+            type: 'string'
+        },
+        sku: {
+            type: 'string'
+        },
+        price: {
+            type: 'number'
+        },
+        stock: {
+            type: 'number'
+        },
+        attributes: {
+            type: 'object',
+            nullable: true
+        },
+        isActive: {
+            type: 'boolean'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'sku',
+        'price',
+        'stock',
+        'isActive',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const TagResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        name: {
+            type: 'string'
+        },
+        slug: {
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'slug'
+    ]
+} as const;
+
+export const ProductResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        category_id: {
+            type: 'string'
+        },
+        name: {
+            type: 'string'
+        },
+        slug: {
+            type: 'string'
+        },
+        description: {
+            type: 'object',
+            nullable: true
+        },
+        basePrice: {
+            type: 'number'
+        },
+        sku: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'draft',
+                'published',
+                'archived'
+            ]
+        },
+        isFeatured: {
+            type: 'boolean'
+        },
+        images: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/ProductImageResponseDto'
+            }
+        },
+        variants: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/ProductVariantResponseDto'
+            }
+        },
+        tags: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/TagResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'category_id',
+        'name',
+        'slug',
+        'basePrice',
+        'sku',
+        'status',
+        'isFeatured',
+        'images',
+        'variants',
+        'tags',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const ProductListItemDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        category_id: {
+            type: 'string'
+        },
+        name: {
+            type: 'string'
+        },
+        slug: {
+            type: 'string'
+        },
+        basePrice: {
+            type: 'number'
+        },
+        sku: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'draft',
+                'published',
+                'archived'
+            ]
+        },
+        isFeatured: {
+            type: 'boolean'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'category_id',
+        'name',
+        'slug',
+        'basePrice',
+        'sku',
+        'status',
+        'isFeatured',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const ProductPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/ProductListItemDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const UpdateProductDtoSchema = {
+    type: 'object',
+    properties: {
+        category_id: {
+            type: 'string',
+            example: 'uuid-v4'
+        },
+        name: {
+            type: 'string',
+            example: 'iPhone 15 Pro'
+        },
+        slug: {
+            type: 'string',
+            example: 'iphone-15-pro',
+            description: 'Auto-generated from name if omitted'
+        },
+        description: {
+            type: 'string'
+        },
+        basePrice: {
+            type: 'number',
+            example: 29990000
+        },
+        sku: {
+            type: 'string',
+            example: 'IPH-15-PRO'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'draft',
+                'published',
+                'archived'
+            ],
+            default: 'draft'
+        },
+        isFeatured: {
+            type: 'boolean',
+            example: false,
+            default: false
+        },
+        images: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CreateProductImageDto'
+            }
+        },
+        variants: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CreateProductVariantDto'
+            }
+        },
+        tagIds: {
+            example: [
+                'uuid-tag-1',
+                'uuid-tag-2'
+            ],
+            type: 'array',
+            items: {
+                type: 'string'
+            }
+        }
+    }
+} as const;
+
+export const UpdateProductVariantDtoSchema = {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            example: 'Đỏ - L'
+        },
+        sku: {
+            type: 'string',
+            example: 'PROD-001-RED-L'
+        },
+        price: {
+            type: 'number',
+            example: 299000
+        },
+        stock: {
+            type: 'number',
+            example: 100,
+            default: 0
+        },
+        attributes: {
+            type: 'object',
+            example: {
+                color: 'red',
+                size: 'L'
+            }
+        },
+        isActive: {
+            type: 'boolean',
+            example: true,
+            default: true
+        }
+    }
+} as const;
+
+export const CreateTagDtoSchema = {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            example: 'sale'
+        },
+        slug: {
+            type: 'string',
+            example: 'sale',
+            description: 'Auto-generated from name if omitted'
+        }
+    },
+    required: [
+        'name'
+    ]
+} as const;

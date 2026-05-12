@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import { categoriesControllerCreateResponseTransformer, categoriesControllerFindAllResponseTransformer, categoriesControllerFindOneResponseTransformer, categoriesControllerFindTreeResponseTransformer, categoriesControllerUpdateResponseTransformer, permissionsControllerCreateResponseTransformer, permissionsControllerFindAllResponseTransformer, permissionsControllerFindOneResponseTransformer, permissionsControllerUpdateResponseTransformer, rolesControllerAssignPermissionsResponseTransformer, rolesControllerCreateRoleResponseTransformer, rolesControllerFindAllResponseTransformer, rolesControllerFindOneResponseTransformer, rolesControllerUpdateResponseTransformer, usersControllerAssignPermissionsResponseTransformer, usersControllerAssignRolesResponseTransformer, usersControllerFindAllResponseTransformer, usersControllerFindOneResponseTransformer, usersControllerUpdateResponseTransformer } from './transformers.gen';
-import type { AppControllerHealthData, AppControllerHealthResponses, AuthControllerActiveData, AuthControllerActiveResponses, AuthControllerForgotPasswordData, AuthControllerForgotPasswordResponses, AuthControllerGoogleCallbackData, AuthControllerGoogleCallbackResponses, AuthControllerGoogleLoginData, AuthControllerGoogleLoginResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRefreshData, AuthControllerRefreshResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, AuthControllerResetPasswordData, AuthControllerResetPasswordResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerFindTreeData, CategoriesControllerFindTreeResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, PermissionsControllerCreateData, PermissionsControllerCreateResponses, PermissionsControllerFindAllData, PermissionsControllerFindAllResponses, PermissionsControllerFindOneData, PermissionsControllerFindOneResponses, PermissionsControllerGetMetaData, PermissionsControllerGetMetaResponses, PermissionsControllerRemoveData, PermissionsControllerRemoveResponses, PermissionsControllerUpdateData, PermissionsControllerUpdateResponses, RolesControllerAssignPermissionsData, RolesControllerAssignPermissionsResponses, RolesControllerCreateRoleData, RolesControllerCreateRoleResponses, RolesControllerFindAllData, RolesControllerFindAllResponses, RolesControllerFindOneData, RolesControllerFindOneResponses, RolesControllerRemoveData, RolesControllerRemoveResponses, RolesControllerUpdateData, RolesControllerUpdateResponses, UsersControllerAssignPermissionsData, UsersControllerAssignPermissionsResponses, UsersControllerAssignRolesData, UsersControllerAssignRolesResponses, UsersControllerFindAllData, UsersControllerFindAllResponses, UsersControllerFindOneData, UsersControllerFindOneResponses, UsersControllerGetProfileData, UsersControllerGetProfileResponses, UsersControllerRemoveData, UsersControllerRemoveResponses, UsersControllerUpdateData, UsersControllerUpdateResponses } from './types.gen';
+import { categoriesControllerCreateResponseTransformer, categoriesControllerFindAllResponseTransformer, categoriesControllerFindOneResponseTransformer, categoriesControllerFindTreeResponseTransformer, categoriesControllerUpdateResponseTransformer, permissionsControllerCreateResponseTransformer, permissionsControllerFindAllResponseTransformer, permissionsControllerFindOneResponseTransformer, permissionsControllerUpdateResponseTransformer, productsControllerAddVariantResponseTransformer, productsControllerCreateResponseTransformer, productsControllerFindAllResponseTransformer, productsControllerFindOneResponseTransformer, productsControllerUpdateResponseTransformer, productsControllerUpdateVariantResponseTransformer, rolesControllerAssignPermissionsResponseTransformer, rolesControllerCreateRoleResponseTransformer, rolesControllerFindAllResponseTransformer, rolesControllerFindOneResponseTransformer, rolesControllerUpdateResponseTransformer, usersControllerAssignPermissionsResponseTransformer, usersControllerAssignRolesResponseTransformer, usersControllerFindAllResponseTransformer, usersControllerFindOneResponseTransformer, usersControllerUpdateResponseTransformer } from './transformers.gen';
+import type { AppControllerHealthData, AppControllerHealthResponses, AuthControllerActiveData, AuthControllerActiveResponses, AuthControllerForgotPasswordData, AuthControllerForgotPasswordResponses, AuthControllerGoogleCallbackData, AuthControllerGoogleCallbackResponses, AuthControllerGoogleLoginData, AuthControllerGoogleLoginResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRefreshData, AuthControllerRefreshResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, AuthControllerResetPasswordData, AuthControllerResetPasswordResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerFindTreeData, CategoriesControllerFindTreeResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, PermissionsControllerCreateData, PermissionsControllerCreateResponses, PermissionsControllerFindAllData, PermissionsControllerFindAllResponses, PermissionsControllerFindOneData, PermissionsControllerFindOneResponses, PermissionsControllerGetMetaData, PermissionsControllerGetMetaResponses, PermissionsControllerRemoveData, PermissionsControllerRemoveResponses, PermissionsControllerUpdateData, PermissionsControllerUpdateResponses, ProductsControllerAddImageData, ProductsControllerAddImageResponses, ProductsControllerAddVariantData, ProductsControllerAddVariantResponses, ProductsControllerCreateData, ProductsControllerCreateResponses, ProductsControllerFindAllData, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerRemoveData, ProductsControllerRemoveImageData, ProductsControllerRemoveImageResponses, ProductsControllerRemoveResponses, ProductsControllerRemoveVariantData, ProductsControllerRemoveVariantResponses, ProductsControllerUpdateData, ProductsControllerUpdateResponses, ProductsControllerUpdateVariantData, ProductsControllerUpdateVariantResponses, RolesControllerAssignPermissionsData, RolesControllerAssignPermissionsResponses, RolesControllerCreateRoleData, RolesControllerCreateRoleResponses, RolesControllerFindAllData, RolesControllerFindAllResponses, RolesControllerFindOneData, RolesControllerFindOneResponses, RolesControllerRemoveData, RolesControllerRemoveResponses, RolesControllerUpdateData, RolesControllerUpdateResponses, TagsControllerCreateTagData, TagsControllerCreateTagResponses, TagsControllerFindAllTagsData, TagsControllerFindAllTagsResponses, TagsControllerRemoveTagData, TagsControllerRemoveTagResponses, UsersControllerAssignPermissionsData, UsersControllerAssignPermissionsResponses, UsersControllerAssignRolesData, UsersControllerAssignRolesResponses, UsersControllerFindAllData, UsersControllerFindAllResponses, UsersControllerFindOneData, UsersControllerFindOneResponses, UsersControllerGetProfileData, UsersControllerGetProfileResponses, UsersControllerRemoveData, UsersControllerRemoveResponses, UsersControllerUpdateData, UsersControllerUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -381,4 +381,151 @@ export const categoriesControllerUpdate = <ThrowOnError extends boolean = false>
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+/**
+ * List products (paginated, filterable)
+ */
+export const productsControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<ProductsControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<ProductsControllerFindAllResponses, unknown, ThrowOnError>({
+    responseTransformer: productsControllerFindAllResponseTransformer,
+    responseType: 'json',
+    url: '/products',
+    ...options
+});
+
+/**
+ * Create a new product
+ */
+export const productsControllerCreate = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerCreateData, ThrowOnError>) => (options.client ?? client).post<ProductsControllerCreateResponses, unknown, ThrowOnError>({
+    responseTransformer: productsControllerCreateResponseTransformer,
+    responseType: 'json',
+    url: '/products',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete product
+ */
+export const productsControllerRemove = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerRemoveData, ThrowOnError>) => (options.client ?? client).delete<ProductsControllerRemoveResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/products/{id}',
+    ...options
+});
+
+/**
+ * Get product detail with images, variants, tags
+ */
+export const productsControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<ProductsControllerFindOneResponses, unknown, ThrowOnError>({
+    responseTransformer: productsControllerFindOneResponseTransformer,
+    responseType: 'json',
+    url: '/products/{id}',
+    ...options
+});
+
+/**
+ * Update product
+ */
+export const productsControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerUpdateData, ThrowOnError>) => (options.client ?? client).patch<ProductsControllerUpdateResponses, unknown, ThrowOnError>({
+    responseTransformer: productsControllerUpdateResponseTransformer,
+    responseType: 'json',
+    url: '/products/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Add image to product
+ */
+export const productsControllerAddImage = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerAddImageData, ThrowOnError>) => (options.client ?? client).post<ProductsControllerAddImageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/products/{id}/images',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove image from product
+ */
+export const productsControllerRemoveImage = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerRemoveImageData, ThrowOnError>) => (options.client ?? client).delete<ProductsControllerRemoveImageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/products/{id}/images/{imageId}',
+    ...options
+});
+
+/**
+ * Add variant to product
+ */
+export const productsControllerAddVariant = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerAddVariantData, ThrowOnError>) => (options.client ?? client).post<ProductsControllerAddVariantResponses, unknown, ThrowOnError>({
+    responseTransformer: productsControllerAddVariantResponseTransformer,
+    responseType: 'json',
+    url: '/products/{id}/variants',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove product variant
+ */
+export const productsControllerRemoveVariant = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerRemoveVariantData, ThrowOnError>) => (options.client ?? client).delete<ProductsControllerRemoveVariantResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/products/{id}/variants/{variantId}',
+    ...options
+});
+
+/**
+ * Update product variant
+ */
+export const productsControllerUpdateVariant = <ThrowOnError extends boolean = false>(options: Options<ProductsControllerUpdateVariantData, ThrowOnError>) => (options.client ?? client).patch<ProductsControllerUpdateVariantResponses, unknown, ThrowOnError>({
+    responseTransformer: productsControllerUpdateVariantResponseTransformer,
+    responseType: 'json',
+    url: '/products/{id}/variants/{variantId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List all tags
+ */
+export const tagsControllerFindAllTags = <ThrowOnError extends boolean = false>(options?: Options<TagsControllerFindAllTagsData, ThrowOnError>) => (options?.client ?? client).get<TagsControllerFindAllTagsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/tags',
+    ...options
+});
+
+/**
+ * Create a tag
+ */
+export const tagsControllerCreateTag = <ThrowOnError extends boolean = false>(options: Options<TagsControllerCreateTagData, ThrowOnError>) => (options.client ?? client).post<TagsControllerCreateTagResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/tags',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete a tag
+ */
+export const tagsControllerRemoveTag = <ThrowOnError extends boolean = false>(options: Options<TagsControllerRemoveTagData, ThrowOnError>) => (options.client ?? client).delete<TagsControllerRemoveTagResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/tags/{id}',
+    ...options
 });
