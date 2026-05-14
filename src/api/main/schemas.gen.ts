@@ -1677,3 +1677,250 @@ export const UpdateAddressDtoSchema = {
         }
     }
 } as const;
+
+export const CreateOrderItemDtoSchema = {
+    type: 'object',
+    properties: {
+        variant_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Product variant ID'
+        },
+        quantity: {
+            type: 'number',
+            example: 2
+        }
+    },
+    required: [
+        'variant_id',
+        'quantity'
+    ]
+} as const;
+
+export const CreateOrderDtoSchema = {
+    type: 'object',
+    properties: {
+        address_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Delivery address ID'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CreateOrderItemDto'
+            }
+        },
+        notes: {
+            type: 'string',
+            example: 'Giao giờ hành chính'
+        }
+    },
+    required: [
+        'address_id',
+        'items'
+    ]
+} as const;
+
+export const OrderItemResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        variant_id: {
+            type: 'object'
+        },
+        productName: {
+            type: 'string'
+        },
+        variantName: {
+            type: 'object'
+        },
+        unitPrice: {
+            type: 'number'
+        },
+        quantity: {
+            type: 'number'
+        },
+        total: {
+            type: 'number'
+        }
+    },
+    required: [
+        'id',
+        'order_id',
+        'productName',
+        'unitPrice',
+        'quantity',
+        'total'
+    ]
+} as const;
+
+export const OrderResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        user_id: {
+            type: 'string'
+        },
+        address_id: {
+            type: 'object'
+        },
+        orderNumber: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'confirmed',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+                'refunded'
+            ]
+        },
+        subtotal: {
+            type: 'number'
+        },
+        shippingFee: {
+            type: 'number'
+        },
+        discount: {
+            type: 'number'
+        },
+        total: {
+            type: 'number'
+        },
+        notes: {
+            type: 'object'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/OrderItemResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'user_id',
+        'orderNumber',
+        'status',
+        'subtotal',
+        'shippingFee',
+        'discount',
+        'total',
+        'items',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const OrderListItemDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        user_id: {
+            type: 'string'
+        },
+        orderNumber: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'confirmed',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+                'refunded'
+            ]
+        },
+        total: {
+            type: 'number'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'user_id',
+        'orderNumber',
+        'status',
+        'total',
+        'createdAt'
+    ]
+} as const;
+
+export const OrderPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/OrderListItemDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const UpdateOrderStatusDtoSchema = {
+    type: 'object',
+    properties: {
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'confirmed',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+                'refunded'
+            ]
+        }
+    },
+    required: [
+        'status'
+    ]
+} as const;

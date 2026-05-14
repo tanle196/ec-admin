@@ -565,6 +565,78 @@ export type UpdateAddressDto = {
     isDefault?: boolean;
 };
 
+export type CreateOrderItemDto = {
+    /**
+     * Product variant ID
+     */
+    variant_id: string;
+    quantity: number;
+};
+
+export type CreateOrderDto = {
+    /**
+     * Delivery address ID
+     */
+    address_id: string;
+    items: Array<CreateOrderItemDto>;
+    notes?: string;
+};
+
+export type OrderItemResponseDto = {
+    id: string;
+    order_id: string;
+    variant_id?: {
+        [key: string]: unknown;
+    };
+    productName: string;
+    variantName?: {
+        [key: string]: unknown;
+    };
+    unitPrice: number;
+    quantity: number;
+    total: number;
+};
+
+export type OrderResponseDto = {
+    id: string;
+    user_id: string;
+    address_id?: {
+        [key: string]: unknown;
+    };
+    orderNumber: string;
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    subtotal: number;
+    shippingFee: number;
+    discount: number;
+    total: number;
+    notes?: {
+        [key: string]: unknown;
+    };
+    items: Array<OrderItemResponseDto>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type OrderListItemDto = {
+    id: string;
+    user_id: string;
+    orderNumber: string;
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    total: number;
+    createdAt: Date;
+};
+
+export type OrderPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<OrderListItemDto>;
+};
+
+export type UpdateOrderStatusDto = {
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -1381,3 +1453,118 @@ export type AddressesControllerSetDefaultResponses = {
 };
 
 export type AddressesControllerSetDefaultResponse = AddressesControllerSetDefaultResponses[keyof AddressesControllerSetDefaultResponses];
+
+export type OrdersControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+        /**
+         * Filter by user ID (admin only)
+         */
+        user_id?: string;
+    };
+    url: '/orders';
+};
+
+export type OrdersControllerFindAllResponses = {
+    200: OrderPaginatedResponseDto;
+};
+
+export type OrdersControllerFindAllResponse = OrdersControllerFindAllResponses[keyof OrdersControllerFindAllResponses];
+
+export type OrdersControllerCreateData = {
+    body: CreateOrderDto;
+    path?: never;
+    query?: never;
+    url: '/orders';
+};
+
+export type OrdersControllerCreateResponses = {
+    201: OrderResponseDto;
+};
+
+export type OrdersControllerCreateResponse = OrdersControllerCreateResponses[keyof OrdersControllerCreateResponses];
+
+export type OrdersControllerFindMineData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+        /**
+         * Filter by user ID (admin only)
+         */
+        user_id?: string;
+    };
+    url: '/orders/me';
+};
+
+export type OrdersControllerFindMineResponses = {
+    200: OrderPaginatedResponseDto;
+};
+
+export type OrdersControllerFindMineResponse = OrdersControllerFindMineResponses[keyof OrdersControllerFindMineResponses];
+
+export type OrdersControllerFindMineOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/orders/me/{id}';
+};
+
+export type OrdersControllerFindMineOneResponses = {
+    200: OrderResponseDto;
+};
+
+export type OrdersControllerFindMineOneResponse = OrdersControllerFindMineOneResponses[keyof OrdersControllerFindMineOneResponses];
+
+export type OrdersControllerCancelData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/orders/me/{id}/cancel';
+};
+
+export type OrdersControllerCancelResponses = {
+    200: OrderResponseDto;
+};
+
+export type OrdersControllerCancelResponse = OrdersControllerCancelResponses[keyof OrdersControllerCancelResponses];
+
+export type OrdersControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/orders/{id}';
+};
+
+export type OrdersControllerFindOneResponses = {
+    200: OrderResponseDto;
+};
+
+export type OrdersControllerFindOneResponse = OrdersControllerFindOneResponses[keyof OrdersControllerFindOneResponses];
+
+export type OrdersControllerUpdateStatusData = {
+    body: UpdateOrderStatusDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/orders/{id}/status';
+};
+
+export type OrdersControllerUpdateStatusResponses = {
+    200: OrderResponseDto;
+};
+
+export type OrdersControllerUpdateStatusResponse = OrdersControllerUpdateStatusResponses[keyof OrdersControllerUpdateStatusResponses];

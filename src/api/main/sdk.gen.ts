@@ -2,8 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import { addressesControllerCreateResponseTransformer, addressesControllerFindAllResponseTransformer, addressesControllerFindOneResponseTransformer, addressesControllerSetDefaultResponseTransformer, addressesControllerUpdateResponseTransformer, categoriesControllerCreateResponseTransformer, categoriesControllerFindAllResponseTransformer, categoriesControllerFindOneResponseTransformer, categoriesControllerFindTreeResponseTransformer, categoriesControllerUpdateResponseTransformer, permissionsControllerCreateResponseTransformer, permissionsControllerFindAllResponseTransformer, permissionsControllerFindOneResponseTransformer, permissionsControllerUpdateResponseTransformer, productsControllerAddVariantResponseTransformer, productsControllerCreateResponseTransformer, productsControllerFindAllResponseTransformer, productsControllerFindOneResponseTransformer, productsControllerUpdateResponseTransformer, productsControllerUpdateVariantResponseTransformer, rolesControllerAssignPermissionsResponseTransformer, rolesControllerCreateRoleResponseTransformer, rolesControllerFindAllResponseTransformer, rolesControllerFindOneResponseTransformer, rolesControllerUpdateResponseTransformer, usersControllerAssignPermissionsResponseTransformer, usersControllerAssignRolesResponseTransformer, usersControllerFindAllResponseTransformer, usersControllerFindOneResponseTransformer, usersControllerUpdateResponseTransformer } from './transformers.gen';
-import type { AddressesControllerCreateData, AddressesControllerCreateResponses, AddressesControllerFindAllData, AddressesControllerFindAllResponses, AddressesControllerFindOneData, AddressesControllerFindOneResponses, AddressesControllerRemoveData, AddressesControllerRemoveResponses, AddressesControllerSetDefaultData, AddressesControllerSetDefaultResponses, AddressesControllerUpdateData, AddressesControllerUpdateResponses, AppControllerHealthData, AppControllerHealthResponses, AuthControllerActiveData, AuthControllerActiveResponses, AuthControllerForgotPasswordData, AuthControllerForgotPasswordResponses, AuthControllerGoogleCallbackData, AuthControllerGoogleCallbackResponses, AuthControllerGoogleLoginData, AuthControllerGoogleLoginResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRefreshData, AuthControllerRefreshResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, AuthControllerResetPasswordData, AuthControllerResetPasswordResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerFindTreeData, CategoriesControllerFindTreeResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, PermissionsControllerCreateData, PermissionsControllerCreateResponses, PermissionsControllerFindAllData, PermissionsControllerFindAllResponses, PermissionsControllerFindOneData, PermissionsControllerFindOneResponses, PermissionsControllerGetMetaData, PermissionsControllerGetMetaResponses, PermissionsControllerRemoveData, PermissionsControllerRemoveResponses, PermissionsControllerUpdateData, PermissionsControllerUpdateResponses, ProductsControllerAddImageData, ProductsControllerAddImageResponses, ProductsControllerAddVariantData, ProductsControllerAddVariantResponses, ProductsControllerCreateData, ProductsControllerCreateResponses, ProductsControllerFindAllData, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerRemoveData, ProductsControllerRemoveImageData, ProductsControllerRemoveImageResponses, ProductsControllerRemoveResponses, ProductsControllerRemoveVariantData, ProductsControllerRemoveVariantResponses, ProductsControllerUpdateData, ProductsControllerUpdateResponses, ProductsControllerUpdateVariantData, ProductsControllerUpdateVariantResponses, RolesControllerAssignPermissionsData, RolesControllerAssignPermissionsResponses, RolesControllerCreateRoleData, RolesControllerCreateRoleResponses, RolesControllerFindAllData, RolesControllerFindAllResponses, RolesControllerFindOneData, RolesControllerFindOneResponses, RolesControllerRemoveData, RolesControllerRemoveResponses, RolesControllerUpdateData, RolesControllerUpdateResponses, TagsControllerCreateTagData, TagsControllerCreateTagResponses, TagsControllerFindAllTagsData, TagsControllerFindAllTagsResponses, TagsControllerRemoveTagData, TagsControllerRemoveTagResponses, UsersControllerAssignPermissionsData, UsersControllerAssignPermissionsResponses, UsersControllerAssignRolesData, UsersControllerAssignRolesResponses, UsersControllerFindAllData, UsersControllerFindAllResponses, UsersControllerFindOneData, UsersControllerFindOneResponses, UsersControllerGetProfileData, UsersControllerGetProfileResponses, UsersControllerRemoveData, UsersControllerRemoveResponses, UsersControllerUpdateData, UsersControllerUpdateResponses } from './types.gen';
+import { addressesControllerCreateResponseTransformer, addressesControllerFindAllResponseTransformer, addressesControllerFindOneResponseTransformer, addressesControllerSetDefaultResponseTransformer, addressesControllerUpdateResponseTransformer, categoriesControllerCreateResponseTransformer, categoriesControllerFindAllResponseTransformer, categoriesControllerFindOneResponseTransformer, categoriesControllerFindTreeResponseTransformer, categoriesControllerUpdateResponseTransformer, ordersControllerCancelResponseTransformer, ordersControllerCreateResponseTransformer, ordersControllerFindAllResponseTransformer, ordersControllerFindMineOneResponseTransformer, ordersControllerFindMineResponseTransformer, ordersControllerFindOneResponseTransformer, ordersControllerUpdateStatusResponseTransformer, permissionsControllerCreateResponseTransformer, permissionsControllerFindAllResponseTransformer, permissionsControllerFindOneResponseTransformer, permissionsControllerUpdateResponseTransformer, productsControllerAddVariantResponseTransformer, productsControllerCreateResponseTransformer, productsControllerFindAllResponseTransformer, productsControllerFindOneResponseTransformer, productsControllerUpdateResponseTransformer, productsControllerUpdateVariantResponseTransformer, rolesControllerAssignPermissionsResponseTransformer, rolesControllerCreateRoleResponseTransformer, rolesControllerFindAllResponseTransformer, rolesControllerFindOneResponseTransformer, rolesControllerUpdateResponseTransformer, usersControllerAssignPermissionsResponseTransformer, usersControllerAssignRolesResponseTransformer, usersControllerFindAllResponseTransformer, usersControllerFindOneResponseTransformer, usersControllerUpdateResponseTransformer } from './transformers.gen';
+import type { AddressesControllerCreateData, AddressesControllerCreateResponses, AddressesControllerFindAllData, AddressesControllerFindAllResponses, AddressesControllerFindOneData, AddressesControllerFindOneResponses, AddressesControllerRemoveData, AddressesControllerRemoveResponses, AddressesControllerSetDefaultData, AddressesControllerSetDefaultResponses, AddressesControllerUpdateData, AddressesControllerUpdateResponses, AppControllerHealthData, AppControllerHealthResponses, AuthControllerActiveData, AuthControllerActiveResponses, AuthControllerForgotPasswordData, AuthControllerForgotPasswordResponses, AuthControllerGoogleCallbackData, AuthControllerGoogleCallbackResponses, AuthControllerGoogleLoginData, AuthControllerGoogleLoginResponses, AuthControllerLoginData, AuthControllerLoginResponses, AuthControllerRefreshData, AuthControllerRefreshResponses, AuthControllerRegisterData, AuthControllerRegisterResponses, AuthControllerResetPasswordData, AuthControllerResetPasswordResponses, CategoriesControllerCreateData, CategoriesControllerCreateResponses, CategoriesControllerFindAllData, CategoriesControllerFindAllResponses, CategoriesControllerFindOneData, CategoriesControllerFindOneResponses, CategoriesControllerFindTreeData, CategoriesControllerFindTreeResponses, CategoriesControllerRemoveData, CategoriesControllerRemoveResponses, CategoriesControllerUpdateData, CategoriesControllerUpdateResponses, OrdersControllerCancelData, OrdersControllerCancelResponses, OrdersControllerCreateData, OrdersControllerCreateResponses, OrdersControllerFindAllData, OrdersControllerFindAllResponses, OrdersControllerFindMineData, OrdersControllerFindMineOneData, OrdersControllerFindMineOneResponses, OrdersControllerFindMineResponses, OrdersControllerFindOneData, OrdersControllerFindOneResponses, OrdersControllerUpdateStatusData, OrdersControllerUpdateStatusResponses, PermissionsControllerCreateData, PermissionsControllerCreateResponses, PermissionsControllerFindAllData, PermissionsControllerFindAllResponses, PermissionsControllerFindOneData, PermissionsControllerFindOneResponses, PermissionsControllerGetMetaData, PermissionsControllerGetMetaResponses, PermissionsControllerRemoveData, PermissionsControllerRemoveResponses, PermissionsControllerUpdateData, PermissionsControllerUpdateResponses, ProductsControllerAddImageData, ProductsControllerAddImageResponses, ProductsControllerAddVariantData, ProductsControllerAddVariantResponses, ProductsControllerCreateData, ProductsControllerCreateResponses, ProductsControllerFindAllData, ProductsControllerFindAllResponses, ProductsControllerFindOneData, ProductsControllerFindOneResponses, ProductsControllerRemoveData, ProductsControllerRemoveImageData, ProductsControllerRemoveImageResponses, ProductsControllerRemoveResponses, ProductsControllerRemoveVariantData, ProductsControllerRemoveVariantResponses, ProductsControllerUpdateData, ProductsControllerUpdateResponses, ProductsControllerUpdateVariantData, ProductsControllerUpdateVariantResponses, RolesControllerAssignPermissionsData, RolesControllerAssignPermissionsResponses, RolesControllerCreateRoleData, RolesControllerCreateRoleResponses, RolesControllerFindAllData, RolesControllerFindAllResponses, RolesControllerFindOneData, RolesControllerFindOneResponses, RolesControllerRemoveData, RolesControllerRemoveResponses, RolesControllerUpdateData, RolesControllerUpdateResponses, TagsControllerCreateTagData, TagsControllerCreateTagResponses, TagsControllerFindAllTagsData, TagsControllerFindAllTagsResponses, TagsControllerRemoveTagData, TagsControllerRemoveTagResponses, UsersControllerAssignPermissionsData, UsersControllerAssignPermissionsResponses, UsersControllerAssignRolesData, UsersControllerAssignRolesResponses, UsersControllerFindAllData, UsersControllerFindAllResponses, UsersControllerFindOneData, UsersControllerFindOneResponses, UsersControllerGetProfileData, UsersControllerGetProfileResponses, UsersControllerRemoveData, UsersControllerRemoveResponses, UsersControllerUpdateData, UsersControllerUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -591,4 +591,82 @@ export const addressesControllerSetDefault = <ThrowOnError extends boolean = fal
     responseType: 'json',
     url: '/users/me/addresses/{id}/default',
     ...options
+});
+
+/**
+ * Admin: list all orders
+ */
+export const ordersControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<OrdersControllerFindAllData, ThrowOnError>) => (options?.client ?? client).get<OrdersControllerFindAllResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerFindAllResponseTransformer,
+    responseType: 'json',
+    url: '/orders',
+    ...options
+});
+
+/**
+ * Create a new order
+ */
+export const ordersControllerCreate = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerCreateData, ThrowOnError>) => (options.client ?? client).post<OrdersControllerCreateResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerCreateResponseTransformer,
+    responseType: 'json',
+    url: '/orders',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List my orders
+ */
+export const ordersControllerFindMine = <ThrowOnError extends boolean = false>(options?: Options<OrdersControllerFindMineData, ThrowOnError>) => (options?.client ?? client).get<OrdersControllerFindMineResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerFindMineResponseTransformer,
+    responseType: 'json',
+    url: '/orders/me',
+    ...options
+});
+
+/**
+ * Get my order detail
+ */
+export const ordersControllerFindMineOne = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerFindMineOneData, ThrowOnError>) => (options.client ?? client).get<OrdersControllerFindMineOneResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerFindMineOneResponseTransformer,
+    responseType: 'json',
+    url: '/orders/me/{id}',
+    ...options
+});
+
+/**
+ * Cancel my order (only pending/confirmed)
+ */
+export const ordersControllerCancel = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerCancelData, ThrowOnError>) => (options.client ?? client).patch<OrdersControllerCancelResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerCancelResponseTransformer,
+    responseType: 'json',
+    url: '/orders/me/{id}/cancel',
+    ...options
+});
+
+/**
+ * Admin: get order detail
+ */
+export const ordersControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerFindOneData, ThrowOnError>) => (options.client ?? client).get<OrdersControllerFindOneResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerFindOneResponseTransformer,
+    responseType: 'json',
+    url: '/orders/{id}',
+    ...options
+});
+
+/**
+ * Admin: update order status
+ */
+export const ordersControllerUpdateStatus = <ThrowOnError extends boolean = false>(options: Options<OrdersControllerUpdateStatusData, ThrowOnError>) => (options.client ?? client).patch<OrdersControllerUpdateStatusResponses, unknown, ThrowOnError>({
+    responseTransformer: ordersControllerUpdateStatusResponseTransformer,
+    responseType: 'json',
+    url: '/orders/{id}/status',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
