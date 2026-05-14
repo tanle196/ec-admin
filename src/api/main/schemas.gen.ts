@@ -1924,3 +1924,147 @@ export const UpdateOrderStatusDtoSchema = {
         'status'
     ]
 } as const;
+
+export const CreatePaymentDtoSchema = {
+    type: 'object',
+    properties: {
+        order_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Order ID to pay for'
+        },
+        method: {
+            type: 'string',
+            enum: [
+                'cod',
+                'vnpay',
+                'momo',
+                'zalopay',
+                'stripe',
+                'bank_transfer'
+            ],
+            example: 'cod'
+        }
+    },
+    required: [
+        'order_id',
+        'method'
+    ]
+} as const;
+
+export const PaymentResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        method: {
+            type: 'string',
+            enum: [
+                'cod',
+                'vnpay',
+                'momo',
+                'zalopay',
+                'stripe',
+                'bank_transfer'
+            ]
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'completed',
+                'failed',
+                'refunded'
+            ]
+        },
+        amount: {
+            type: 'number'
+        },
+        transactionId: {
+            type: 'object'
+        },
+        metadata: {
+            type: 'object'
+        },
+        paidAt: {
+            type: 'object'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'order_id',
+        'method',
+        'status',
+        'amount',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const PaymentPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/PaymentResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const UpdatePaymentStatusDtoSchema = {
+    type: 'object',
+    properties: {
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'completed',
+                'failed',
+                'refunded'
+            ]
+        },
+        transactionId: {
+            type: 'string',
+            example: 'TXN-ABC123'
+        },
+        metadata: {
+            type: 'object',
+            description: 'Raw response from payment gateway'
+        }
+    },
+    required: [
+        'status'
+    ]
+} as const;

@@ -637,6 +637,51 @@ export type UpdateOrderStatusDto = {
     status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
 };
 
+export type CreatePaymentDto = {
+    /**
+     * Order ID to pay for
+     */
+    order_id: string;
+    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
+};
+
+export type PaymentResponseDto = {
+    id: string;
+    order_id: string;
+    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
+    status: 'pending' | 'completed' | 'failed' | 'refunded';
+    amount: number;
+    transactionId?: {
+        [key: string]: unknown;
+    };
+    metadata?: {
+        [key: string]: unknown;
+    };
+    paidAt?: {
+        [key: string]: unknown;
+    };
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type PaymentPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<PaymentResponseDto>;
+};
+
+export type UpdatePaymentStatusDto = {
+    status: 'pending' | 'completed' | 'failed' | 'refunded';
+    transactionId?: string;
+    /**
+     * Raw response from payment gateway
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -1568,3 +1613,111 @@ export type OrdersControllerUpdateStatusResponses = {
 };
 
 export type OrdersControllerUpdateStatusResponse = OrdersControllerUpdateStatusResponses[keyof OrdersControllerUpdateStatusResponses];
+
+export type PaymentsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        status?: 'pending' | 'completed' | 'failed' | 'refunded';
+        /**
+         * Filter by order (admin)
+         */
+        order_id?: string;
+        /**
+         * Filter by user (admin)
+         */
+        user_id?: string;
+    };
+    url: '/payments';
+};
+
+export type PaymentsControllerFindAllResponses = {
+    200: PaymentPaginatedResponseDto;
+};
+
+export type PaymentsControllerFindAllResponse = PaymentsControllerFindAllResponses[keyof PaymentsControllerFindAllResponses];
+
+export type PaymentsControllerCreateData = {
+    body: CreatePaymentDto;
+    path?: never;
+    query?: never;
+    url: '/payments';
+};
+
+export type PaymentsControllerCreateResponses = {
+    201: PaymentResponseDto;
+};
+
+export type PaymentsControllerCreateResponse = PaymentsControllerCreateResponses[keyof PaymentsControllerCreateResponses];
+
+export type PaymentsControllerFindMineData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        status?: 'pending' | 'completed' | 'failed' | 'refunded';
+        /**
+         * Filter by order (admin)
+         */
+        order_id?: string;
+        /**
+         * Filter by user (admin)
+         */
+        user_id?: string;
+    };
+    url: '/payments/me';
+};
+
+export type PaymentsControllerFindMineResponses = {
+    200: PaymentPaginatedResponseDto;
+};
+
+export type PaymentsControllerFindMineResponse = PaymentsControllerFindMineResponses[keyof PaymentsControllerFindMineResponses];
+
+export type PaymentsControllerFindMineOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/payments/me/{id}';
+};
+
+export type PaymentsControllerFindMineOneResponses = {
+    200: PaymentResponseDto;
+};
+
+export type PaymentsControllerFindMineOneResponse = PaymentsControllerFindMineOneResponses[keyof PaymentsControllerFindMineOneResponses];
+
+export type PaymentsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/payments/{id}';
+};
+
+export type PaymentsControllerFindOneResponses = {
+    200: PaymentResponseDto;
+};
+
+export type PaymentsControllerFindOneResponse = PaymentsControllerFindOneResponses[keyof PaymentsControllerFindOneResponses];
+
+export type PaymentsControllerUpdateStatusData = {
+    body: UpdatePaymentStatusDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/payments/{id}/status';
+};
+
+export type PaymentsControllerUpdateStatusResponses = {
+    200: PaymentResponseDto;
+};
+
+export type PaymentsControllerUpdateStatusResponse = PaymentsControllerUpdateStatusResponses[keyof PaymentsControllerUpdateStatusResponses];
