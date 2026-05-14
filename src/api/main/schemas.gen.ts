@@ -1526,3 +1526,154 @@ export const CreateTagDtoSchema = {
         'name'
     ]
 } as const;
+
+export const AddressResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        fullName: {
+            type: 'string'
+        },
+        phone: {
+            type: 'string'
+        },
+        addressLine1: {
+            type: 'string'
+        },
+        addressLine2: {
+            type: 'object'
+        },
+        city: {
+            type: 'string'
+        },
+        province: {
+            type: 'string'
+        },
+        country: {
+            type: 'string'
+        },
+        postalCode: {
+            type: 'object'
+        },
+        isDefault: {
+            type: 'boolean'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'fullName',
+        'phone',
+        'addressLine1',
+        'city',
+        'province',
+        'country',
+        'isDefault',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const CreateAddressDtoSchema = {
+    type: 'object',
+    properties: {
+        fullName: {
+            type: 'string',
+            example: 'Nguyễn Văn A'
+        },
+        phone: {
+            type: 'string',
+            example: '0901234567'
+        },
+        addressLine1: {
+            type: 'string',
+            example: '123 Đường Lê Lợi'
+        },
+        addressLine2: {
+            type: 'string',
+            example: 'Phường Bến Nghé'
+        },
+        city: {
+            type: 'string',
+            example: 'Thành phố Hồ Chí Minh'
+        },
+        province: {
+            type: 'string',
+            example: 'Hồ Chí Minh'
+        },
+        country: {
+            type: 'string',
+            example: 'VN',
+            default: 'VN'
+        },
+        postalCode: {
+            type: 'string',
+            example: '700000'
+        },
+        isDefault: {
+            type: 'boolean',
+            example: false,
+            default: false
+        }
+    },
+    required: [
+        'fullName',
+        'phone',
+        'addressLine1',
+        'city',
+        'province'
+    ]
+} as const;
+
+export const UpdateAddressDtoSchema = {
+    type: 'object',
+    properties: {
+        fullName: {
+            type: 'string',
+            example: 'Nguyễn Văn A'
+        },
+        phone: {
+            type: 'string',
+            example: '0901234567'
+        },
+        addressLine1: {
+            type: 'string',
+            example: '123 Đường Lê Lợi'
+        },
+        addressLine2: {
+            type: 'string',
+            example: 'Phường Bến Nghé'
+        },
+        city: {
+            type: 'string',
+            example: 'Thành phố Hồ Chí Minh'
+        },
+        province: {
+            type: 'string',
+            example: 'Hồ Chí Minh'
+        },
+        country: {
+            type: 'string',
+            example: 'VN',
+            default: 'VN'
+        },
+        postalCode: {
+            type: 'string',
+            example: '700000'
+        },
+        isDefault: {
+            type: 'boolean',
+            example: false,
+            default: false
+        }
+    }
+} as const;

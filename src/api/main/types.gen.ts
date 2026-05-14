@@ -522,6 +522,49 @@ export type CreateTagDto = {
     slug?: string;
 };
 
+export type AddressResponseDto = {
+    id: string;
+    fullName: string;
+    phone: string;
+    addressLine1: string;
+    addressLine2?: {
+        [key: string]: unknown;
+    };
+    city: string;
+    province: string;
+    country: string;
+    postalCode?: {
+        [key: string]: unknown;
+    };
+    isDefault: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type CreateAddressDto = {
+    fullName: string;
+    phone: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    province: string;
+    country?: string;
+    postalCode?: string;
+    isDefault?: boolean;
+};
+
+export type UpdateAddressDto = {
+    fullName?: string;
+    phone?: string;
+    addressLine1?: string;
+    addressLine2?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+    postalCode?: string;
+    isDefault?: boolean;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -1249,3 +1292,92 @@ export type TagsControllerRemoveTagData = {
 export type TagsControllerRemoveTagResponses = {
     200: unknown;
 };
+
+export type AddressesControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/me/addresses';
+};
+
+export type AddressesControllerFindAllResponses = {
+    200: Array<AddressResponseDto>;
+};
+
+export type AddressesControllerFindAllResponse = AddressesControllerFindAllResponses[keyof AddressesControllerFindAllResponses];
+
+export type AddressesControllerCreateData = {
+    body: CreateAddressDto;
+    path?: never;
+    query?: never;
+    url: '/users/me/addresses';
+};
+
+export type AddressesControllerCreateResponses = {
+    200: AddressResponseDto;
+};
+
+export type AddressesControllerCreateResponse = AddressesControllerCreateResponses[keyof AddressesControllerCreateResponses];
+
+export type AddressesControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/me/addresses/{id}';
+};
+
+export type AddressesControllerRemoveResponses = {
+    /**
+     * Address deleted
+     */
+    204: void;
+};
+
+export type AddressesControllerRemoveResponse = AddressesControllerRemoveResponses[keyof AddressesControllerRemoveResponses];
+
+export type AddressesControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/me/addresses/{id}';
+};
+
+export type AddressesControllerFindOneResponses = {
+    200: AddressResponseDto;
+};
+
+export type AddressesControllerFindOneResponse = AddressesControllerFindOneResponses[keyof AddressesControllerFindOneResponses];
+
+export type AddressesControllerUpdateData = {
+    body: UpdateAddressDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/me/addresses/{id}';
+};
+
+export type AddressesControllerUpdateResponses = {
+    200: AddressResponseDto;
+};
+
+export type AddressesControllerUpdateResponse = AddressesControllerUpdateResponses[keyof AddressesControllerUpdateResponses];
+
+export type AddressesControllerSetDefaultData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/users/me/addresses/{id}/default';
+};
+
+export type AddressesControllerSetDefaultResponses = {
+    200: AddressResponseDto;
+};
+
+export type AddressesControllerSetDefaultResponse = AddressesControllerSetDefaultResponses[keyof AddressesControllerSetDefaultResponses];
