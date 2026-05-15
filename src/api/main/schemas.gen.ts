@@ -2350,3 +2350,106 @@ export const UpdateReviewDtoSchema = {
         }
     }
 } as const;
+
+export const WishlistProductDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        name: {
+            type: 'string'
+        },
+        slug: {
+            type: 'string'
+        },
+        basePrice: {
+            type: 'number'
+        },
+        sku: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'draft',
+                'published',
+                'archived'
+            ]
+        },
+        isFeatured: {
+            type: 'boolean'
+        },
+        description: {
+            type: 'object',
+            nullable: true
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'slug',
+        'basePrice',
+        'sku',
+        'status',
+        'isFeatured'
+    ]
+} as const;
+
+export const WishlistItemResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        product_id: {
+            type: 'string'
+        },
+        product: {
+            $ref: '#/components/schemas/WishlistProductDto'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'product_id',
+        'product',
+        'createdAt'
+    ]
+} as const;
+
+export const WishlistResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/WishlistItemResponseDto'
+            }
+        },
+        total: {
+            type: 'number'
+        }
+    },
+    required: [
+        'items',
+        'total'
+    ]
+} as const;
+
+export const AddToWishlistDtoSchema = {
+    type: 'object',
+    properties: {
+        product_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Product ID to add'
+        }
+    },
+    required: [
+        'product_id'
+    ]
+} as const;

@@ -31,6 +31,7 @@ import {
   ShoppingBasket,
   CreditCard,
   Star,
+  Heart,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -137,6 +138,11 @@ export const sidebarData: SidebarData = {
           title: 'Reviews',
           url: '/reviews',
           icon: Star,
+        },
+        {
+          title: 'Wishlists',
+          url: '/wishlists',
+          icon: Heart,
         },
         {
           title: 'Secured by Clerk',

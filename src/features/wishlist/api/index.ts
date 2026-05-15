@@ -1,0 +1,1 @@
+export { wishlistService } from './wishlistService'

@@ -774,6 +774,38 @@ export type UpdateReviewDto = {
     content?: string;
 };
 
+export type WishlistProductDto = {
+    id: string;
+    name: string;
+    slug: string;
+    basePrice: number;
+    sku: string;
+    status: 'draft' | 'published' | 'archived';
+    isFeatured: boolean;
+    description?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type WishlistItemResponseDto = {
+    id: string;
+    product_id: string;
+    product: WishlistProductDto;
+    createdAt: Date;
+};
+
+export type WishlistResponseDto = {
+    items: Array<WishlistItemResponseDto>;
+    total: number;
+};
+
+export type AddToWishlistDto = {
+    /**
+     * Product ID to add
+     */
+    product_id: string;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -2003,3 +2035,57 @@ export type ProductReviewsControllerFindApprovedResponses = {
 };
 
 export type ProductReviewsControllerFindApprovedResponse = ProductReviewsControllerFindApprovedResponses[keyof ProductReviewsControllerFindApprovedResponses];
+
+export type WishlistsControllerClearWishlistData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/wishlists/me';
+};
+
+export type WishlistsControllerClearWishlistResponses = {
+    204: void;
+};
+
+export type WishlistsControllerClearWishlistResponse = WishlistsControllerClearWishlistResponses[keyof WishlistsControllerClearWishlistResponses];
+
+export type WishlistsControllerGetWishlistData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/wishlists/me';
+};
+
+export type WishlistsControllerGetWishlistResponses = {
+    200: WishlistResponseDto;
+};
+
+export type WishlistsControllerGetWishlistResponse = WishlistsControllerGetWishlistResponses[keyof WishlistsControllerGetWishlistResponses];
+
+export type WishlistsControllerAddProductData = {
+    body: AddToWishlistDto;
+    path?: never;
+    query?: never;
+    url: '/wishlists/me';
+};
+
+export type WishlistsControllerAddProductResponses = {
+    200: WishlistResponseDto;
+};
+
+export type WishlistsControllerAddProductResponse = WishlistsControllerAddProductResponses[keyof WishlistsControllerAddProductResponses];
+
+export type WishlistsControllerRemoveProductData = {
+    body?: never;
+    path: {
+        productId: string;
+    };
+    query?: never;
+    url: '/wishlists/me/{productId}';
+};
+
+export type WishlistsControllerRemoveProductResponses = {
+    200: WishlistResponseDto;
+};
+
+export type WishlistsControllerRemoveProductResponse = WishlistsControllerRemoveProductResponses[keyof WishlistsControllerRemoveProductResponses];
