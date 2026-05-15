@@ -2068,3 +2068,137 @@ export const UpdatePaymentStatusDtoSchema = {
         'status'
     ]
 } as const;
+
+export const CartItemVariantDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        name: {
+            type: 'string'
+        },
+        sku: {
+            type: 'string'
+        },
+        price: {
+            type: 'number'
+        },
+        stock: {
+            type: 'number'
+        },
+        attributes: {
+            type: 'object'
+        }
+    },
+    required: [
+        'id',
+        'name',
+        'sku',
+        'price',
+        'stock'
+    ]
+} as const;
+
+export const CartItemResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        cart_id: {
+            type: 'string'
+        },
+        variant_id: {
+            type: 'string'
+        },
+        variant: {
+            $ref: '#/components/schemas/CartItemVariantDto'
+        },
+        quantity: {
+            type: 'number'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'cart_id',
+        'variant_id',
+        'variant',
+        'quantity',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const CartResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        user_id: {
+            type: 'string'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CartItemResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'user_id',
+        'items',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const AddCartItemDtoSchema = {
+    type: 'object',
+    properties: {
+        variant_id: {
+            type: 'string',
+            example: 'uuid-v4'
+        },
+        quantity: {
+            type: 'number',
+            example: 1,
+            default: 1
+        }
+    },
+    required: [
+        'variant_id'
+    ]
+} as const;
+
+export const UpdateCartItemDtoSchema = {
+    type: 'object',
+    properties: {
+        quantity: {
+            type: 'number',
+            example: 2,
+            description: 'New quantity (min 1)'
+        }
+    },
+    required: [
+        'quantity'
+    ]
+} as const;

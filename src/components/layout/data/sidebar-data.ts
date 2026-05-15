@@ -28,6 +28,7 @@ import {
   ShoppingBag,
   MapPin,
   ShoppingCart,
+  ShoppingBasket,
   CreditCard,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
@@ -125,6 +126,11 @@ export const sidebarData: SidebarData = {
           title: 'Payments',
           url: '/payments',
           icon: CreditCard,
+        },
+        {
+          title: 'Carts',
+          url: '/carts',
+          icon: ShoppingBasket,
         },
         {
           title: 'Secured by Clerk',

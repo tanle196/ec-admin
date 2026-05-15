@@ -682,6 +682,47 @@ export type UpdatePaymentStatusDto = {
     };
 };
 
+export type CartItemVariantDto = {
+    id: string;
+    name: string;
+    sku: string;
+    price: number;
+    stock: number;
+    attributes?: {
+        [key: string]: unknown;
+    };
+};
+
+export type CartItemResponseDto = {
+    id: string;
+    cart_id: string;
+    variant_id: string;
+    variant: CartItemVariantDto;
+    quantity: number;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type CartResponseDto = {
+    id: string;
+    user_id: string;
+    items: Array<CartItemResponseDto>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type AddCartItemDto = {
+    variant_id: string;
+    quantity?: number;
+};
+
+export type UpdateCartItemDto = {
+    /**
+     * New quantity (min 1)
+     */
+    quantity: number;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -1721,3 +1762,72 @@ export type PaymentsControllerUpdateStatusResponses = {
 };
 
 export type PaymentsControllerUpdateStatusResponse = PaymentsControllerUpdateStatusResponses[keyof PaymentsControllerUpdateStatusResponses];
+
+export type CartsControllerClearCartData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/carts/me';
+};
+
+export type CartsControllerClearCartResponses = {
+    204: void;
+};
+
+export type CartsControllerClearCartResponse = CartsControllerClearCartResponses[keyof CartsControllerClearCartResponses];
+
+export type CartsControllerGetCartData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/carts/me';
+};
+
+export type CartsControllerGetCartResponses = {
+    200: CartResponseDto;
+};
+
+export type CartsControllerGetCartResponse = CartsControllerGetCartResponses[keyof CartsControllerGetCartResponses];
+
+export type CartsControllerAddItemData = {
+    body: AddCartItemDto;
+    path?: never;
+    query?: never;
+    url: '/carts/me/items';
+};
+
+export type CartsControllerAddItemResponses = {
+    200: CartResponseDto;
+};
+
+export type CartsControllerAddItemResponse = CartsControllerAddItemResponses[keyof CartsControllerAddItemResponses];
+
+export type CartsControllerRemoveItemData = {
+    body?: never;
+    path: {
+        itemId: string;
+    };
+    query?: never;
+    url: '/carts/me/items/{itemId}';
+};
+
+export type CartsControllerRemoveItemResponses = {
+    200: CartResponseDto;
+};
+
+export type CartsControllerRemoveItemResponse = CartsControllerRemoveItemResponses[keyof CartsControllerRemoveItemResponses];
+
+export type CartsControllerUpdateItemData = {
+    body: UpdateCartItemDto;
+    path: {
+        itemId: string;
+    };
+    query?: never;
+    url: '/carts/me/items/{itemId}';
+};
+
+export type CartsControllerUpdateItemResponses = {
+    200: CartResponseDto;
+};
+
+export type CartsControllerUpdateItemResponse = CartsControllerUpdateItemResponses[keyof CartsControllerUpdateItemResponses];
