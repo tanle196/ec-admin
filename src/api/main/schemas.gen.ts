@@ -2202,3 +2202,151 @@ export const UpdateCartItemDtoSchema = {
         'quantity'
     ]
 } as const;
+
+export const CreateReviewDtoSchema = {
+    type: 'object',
+    properties: {
+        product_id: {
+            type: 'string',
+            description: 'Product to review'
+        },
+        rating: {
+            type: 'number',
+            minimum: 1,
+            maximum: 5
+        },
+        title: {
+            type: 'string',
+            maxLength: 255
+        },
+        content: {
+            type: 'string'
+        }
+    },
+    required: [
+        'product_id',
+        'rating'
+    ]
+} as const;
+
+export const ReviewAuthorDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        fullName: {
+            type: 'object',
+            nullable: true
+        },
+        avatar: {
+            type: 'object',
+            nullable: true
+        }
+    },
+    required: [
+        'id'
+    ]
+} as const;
+
+export const ReviewResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        user_id: {
+            type: 'string'
+        },
+        user: {
+            $ref: '#/components/schemas/ReviewAuthorDto'
+        },
+        product_id: {
+            type: 'string'
+        },
+        rating: {
+            type: 'number'
+        },
+        title: {
+            type: 'object',
+            nullable: true
+        },
+        content: {
+            type: 'object',
+            nullable: true
+        },
+        isVerified: {
+            type: 'boolean'
+        },
+        isApproved: {
+            type: 'boolean'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'user_id',
+        'user',
+        'product_id',
+        'rating',
+        'isVerified',
+        'isApproved',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const ReviewPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/ReviewResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const UpdateReviewDtoSchema = {
+    type: 'object',
+    properties: {
+        rating: {
+            type: 'number',
+            minimum: 1,
+            maximum: 5
+        },
+        title: {
+            type: 'string',
+            maxLength: 255
+        },
+        content: {
+            type: 'string'
+        }
+    }
+} as const;

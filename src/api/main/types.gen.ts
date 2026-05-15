@@ -723,6 +723,57 @@ export type UpdateCartItemDto = {
     quantity: number;
 };
 
+export type CreateReviewDto = {
+    /**
+     * Product to review
+     */
+    product_id: string;
+    rating: number;
+    title?: string;
+    content?: string;
+};
+
+export type ReviewAuthorDto = {
+    id: string;
+    fullName?: {
+        [key: string]: unknown;
+    } | null;
+    avatar?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type ReviewResponseDto = {
+    id: string;
+    user_id: string;
+    user: ReviewAuthorDto;
+    product_id: string;
+    rating: number;
+    title?: {
+        [key: string]: unknown;
+    } | null;
+    content?: {
+        [key: string]: unknown;
+    } | null;
+    isVerified: boolean;
+    isApproved: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type ReviewPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<ReviewResponseDto>;
+};
+
+export type UpdateReviewDto = {
+    rating?: number;
+    title?: string;
+    content?: string;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -1831,3 +1882,124 @@ export type CartsControllerUpdateItemResponses = {
 };
 
 export type CartsControllerUpdateItemResponse = CartsControllerUpdateItemResponses[keyof CartsControllerUpdateItemResponses];
+
+export type ReviewsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        product_id?: string;
+        user_id?: string;
+        rating?: number;
+        isApproved?: boolean;
+        isVerified?: boolean;
+    };
+    url: '/reviews';
+};
+
+export type ReviewsControllerFindAllResponses = {
+    200: ReviewPaginatedResponseDto;
+};
+
+export type ReviewsControllerFindAllResponse = ReviewsControllerFindAllResponses[keyof ReviewsControllerFindAllResponses];
+
+export type ReviewsControllerCreateData = {
+    body: CreateReviewDto;
+    path?: never;
+    query?: never;
+    url: '/reviews';
+};
+
+export type ReviewsControllerCreateResponses = {
+    201: ReviewResponseDto;
+};
+
+export type ReviewsControllerCreateResponse = ReviewsControllerCreateResponses[keyof ReviewsControllerCreateResponses];
+
+export type ReviewsControllerFindMyReviewsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        product_id?: string;
+        user_id?: string;
+        rating?: number;
+        isApproved?: boolean;
+        isVerified?: boolean;
+    };
+    url: '/reviews/me';
+};
+
+export type ReviewsControllerFindMyReviewsResponses = {
+    200: ReviewPaginatedResponseDto;
+};
+
+export type ReviewsControllerFindMyReviewsResponse = ReviewsControllerFindMyReviewsResponses[keyof ReviewsControllerFindMyReviewsResponses];
+
+export type ReviewsControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/reviews/{id}';
+};
+
+export type ReviewsControllerRemoveResponses = {
+    200: unknown;
+};
+
+export type ReviewsControllerUpdateData = {
+    body: UpdateReviewDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/reviews/{id}';
+};
+
+export type ReviewsControllerUpdateResponses = {
+    200: ReviewResponseDto;
+};
+
+export type ReviewsControllerUpdateResponse = ReviewsControllerUpdateResponses[keyof ReviewsControllerUpdateResponses];
+
+export type ReviewsControllerApproveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/reviews/{id}/approve';
+};
+
+export type ReviewsControllerApproveResponses = {
+    200: ReviewResponseDto;
+};
+
+export type ReviewsControllerApproveResponse = ReviewsControllerApproveResponses[keyof ReviewsControllerApproveResponses];
+
+export type ProductReviewsControllerFindApprovedData = {
+    body?: never;
+    path: {
+        productId: string;
+    };
+    query?: {
+        page?: number;
+        limit?: number;
+        product_id?: string;
+        user_id?: string;
+        rating?: number;
+        isApproved?: boolean;
+        isVerified?: boolean;
+    };
+    url: '/products/{productId}/reviews';
+};
+
+export type ProductReviewsControllerFindApprovedResponses = {
+    200: ReviewPaginatedResponseDto;
+};
+
+export type ProductReviewsControllerFindApprovedResponse = ProductReviewsControllerFindApprovedResponses[keyof ProductReviewsControllerFindApprovedResponses];
