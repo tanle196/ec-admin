@@ -1711,6 +1711,11 @@ export const CreateOrderDtoSchema = {
                 $ref: '#/components/schemas/CreateOrderItemDto'
             }
         },
+        discountCode: {
+            type: 'string',
+            example: 'SALE20',
+            description: 'Discount coupon code'
+        },
         notes: {
             type: 'string',
             example: 'Giao giờ hành chính'
@@ -1923,6 +1928,245 @@ export const UpdateOrderStatusDtoSchema = {
     required: [
         'status'
     ]
+} as const;
+
+export const ValidateDiscountDtoSchema = {
+    type: 'object',
+    properties: {
+        code: {
+            type: 'string',
+            example: 'SALE20'
+        },
+        subtotal: {
+            type: 'number',
+            example: 500000,
+            description: 'Order subtotal to calculate discount against'
+        }
+    },
+    required: [
+        'code',
+        'subtotal'
+    ]
+} as const;
+
+export const ValidateDiscountResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        discountId: {
+            type: 'string'
+        },
+        code: {
+            type: 'string'
+        },
+        type: {
+            type: 'string',
+            enum: [
+                'percent',
+                'fixed'
+            ]
+        },
+        value: {
+            type: 'number'
+        },
+        discountAmount: {
+            type: 'number',
+            description: 'Computed discount amount in VND'
+        }
+    },
+    required: [
+        'discountId',
+        'code',
+        'type',
+        'value',
+        'discountAmount'
+    ]
+} as const;
+
+export const CreateDiscountDtoSchema = {
+    type: 'object',
+    properties: {
+        code: {
+            type: 'string',
+            example: 'SALE20'
+        },
+        type: {
+            type: 'string',
+            enum: [
+                'percent',
+                'fixed'
+            ],
+            example: 'percent'
+        },
+        value: {
+            type: 'number',
+            example: 20,
+            description: 'Percent (0–100) or fixed amount in VND'
+        },
+        minOrderValue: {
+            type: 'number',
+            example: 100000,
+            description: 'Minimum subtotal to apply'
+        },
+        usageLimit: {
+            type: 'number',
+            example: 100,
+            description: 'Max total usages (null = unlimited)'
+        },
+        isActive: {
+            type: 'boolean',
+            example: true
+        },
+        startsAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00Z'
+        },
+        expiresAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-12-31T23:59:59Z'
+        }
+    },
+    required: [
+        'code',
+        'type',
+        'value'
+    ]
+} as const;
+
+export const DiscountResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        code: {
+            type: 'string'
+        },
+        type: {
+            type: 'string',
+            enum: [
+                'percent',
+                'fixed'
+            ]
+        },
+        value: {
+            type: 'number'
+        },
+        minOrderValue: {
+            type: 'object'
+        },
+        usageLimit: {
+            type: 'object'
+        },
+        usedCount: {
+            type: 'number'
+        },
+        isActive: {
+            type: 'boolean'
+        },
+        startsAt: {
+            type: 'object'
+        },
+        expiresAt: {
+            type: 'object'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'code',
+        'type',
+        'value',
+        'usedCount',
+        'isActive',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const DiscountPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/DiscountResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const UpdateDiscountDtoSchema = {
+    type: 'object',
+    properties: {
+        code: {
+            type: 'string',
+            example: 'SALE20'
+        },
+        type: {
+            type: 'string',
+            enum: [
+                'percent',
+                'fixed'
+            ],
+            example: 'percent'
+        },
+        value: {
+            type: 'number',
+            example: 20,
+            description: 'Percent (0–100) or fixed amount in VND'
+        },
+        minOrderValue: {
+            type: 'number',
+            example: 100000,
+            description: 'Minimum subtotal to apply'
+        },
+        usageLimit: {
+            type: 'number',
+            example: 100,
+            description: 'Max total usages (null = unlimited)'
+        },
+        isActive: {
+            type: 'boolean',
+            example: true
+        },
+        startsAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-01-01T00:00:00Z'
+        },
+        expiresAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-12-31T23:59:59Z'
+        }
+    }
 } as const;
 
 export const CreatePaymentDtoSchema = {

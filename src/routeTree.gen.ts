@@ -39,6 +39,7 @@ import { Route as AuthenticatedPermissionsIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedPaymentsIndexRouteImport } from './routes/_authenticated/payments/index'
 import { Route as AuthenticatedOrdersIndexRouteImport } from './routes/_authenticated/orders/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
+import { Route as AuthenticatedDiscountsIndexRouteImport } from './routes/_authenticated/discounts/index'
 import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
 import { Route as AuthenticatedCategoriesIndexRouteImport } from './routes/_authenticated/categories/index'
 import { Route as AuthenticatedCartsIndexRouteImport } from './routes/_authenticated/carts/index'
@@ -209,6 +210,12 @@ const AuthenticatedHelpCenterIndexRoute =
     path: '/help-center/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDiscountsIndexRoute =
+  AuthenticatedDiscountsIndexRouteImport.update({
+    id: '/discounts/',
+    path: '/discounts/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedChatsIndexRoute = AuthenticatedChatsIndexRouteImport.update({
   id: '/chats/',
   path: '/chats/',
@@ -312,6 +319,7 @@ export interface FileRoutesByFullPath {
   '/carts/': typeof AuthenticatedCartsIndexRoute
   '/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/chats/': typeof AuthenticatedChatsIndexRoute
+  '/discounts/': typeof AuthenticatedDiscountsIndexRoute
   '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/orders/': typeof AuthenticatedOrdersIndexRoute
   '/payments/': typeof AuthenticatedPaymentsIndexRoute
@@ -353,6 +361,7 @@ export interface FileRoutesByTo {
   '/carts': typeof AuthenticatedCartsIndexRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/chats': typeof AuthenticatedChatsIndexRoute
+  '/discounts': typeof AuthenticatedDiscountsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/orders': typeof AuthenticatedOrdersIndexRoute
   '/payments': typeof AuthenticatedPaymentsIndexRoute
@@ -399,6 +408,7 @@ export interface FileRoutesById {
   '/_authenticated/carts/': typeof AuthenticatedCartsIndexRoute
   '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
+  '/_authenticated/discounts/': typeof AuthenticatedDiscountsIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/orders/': typeof AuthenticatedOrdersIndexRoute
   '/_authenticated/payments/': typeof AuthenticatedPaymentsIndexRoute
@@ -443,6 +453,7 @@ export interface FileRouteTypes {
     | '/carts/'
     | '/categories/'
     | '/chats/'
+    | '/discounts/'
     | '/help-center/'
     | '/orders/'
     | '/payments/'
@@ -484,6 +495,7 @@ export interface FileRouteTypes {
     | '/carts'
     | '/categories'
     | '/chats'
+    | '/discounts'
     | '/help-center'
     | '/orders'
     | '/payments'
@@ -529,6 +541,7 @@ export interface FileRouteTypes {
     | '/_authenticated/carts/'
     | '/_authenticated/categories/'
     | '/_authenticated/chats/'
+    | '/_authenticated/discounts/'
     | '/_authenticated/help-center/'
     | '/_authenticated/orders/'
     | '/_authenticated/payments/'
@@ -772,6 +785,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/discounts/': {
+      id: '/_authenticated/discounts/'
+      path: '/discounts'
+      fullPath: '/discounts/'
+      preLoaderRoute: typeof AuthenticatedDiscountsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/chats/': {
       id: '/_authenticated/chats/'
       path: '/chats'
@@ -898,6 +918,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCartsIndexRoute: typeof AuthenticatedCartsIndexRoute
   AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
+  AuthenticatedDiscountsIndexRoute: typeof AuthenticatedDiscountsIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedOrdersIndexRoute: typeof AuthenticatedOrdersIndexRoute
   AuthenticatedPaymentsIndexRoute: typeof AuthenticatedPaymentsIndexRoute
@@ -920,6 +941,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCartsIndexRoute: AuthenticatedCartsIndexRoute,
   AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
+  AuthenticatedDiscountsIndexRoute: AuthenticatedDiscountsIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedOrdersIndexRoute: AuthenticatedOrdersIndexRoute,
   AuthenticatedPaymentsIndexRoute: AuthenticatedPaymentsIndexRoute,

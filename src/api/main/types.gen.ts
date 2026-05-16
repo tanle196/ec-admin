@@ -579,6 +579,10 @@ export type CreateOrderDto = {
      */
     address_id: string;
     items: Array<CreateOrderItemDto>;
+    /**
+     * Discount coupon code
+     */
+    discountCode?: string;
     notes?: string;
 };
 
@@ -635,6 +639,95 @@ export type OrderPaginatedResponseDto = {
 
 export type UpdateOrderStatusDto = {
     status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+};
+
+export type ValidateDiscountDto = {
+    code: string;
+    /**
+     * Order subtotal to calculate discount against
+     */
+    subtotal: number;
+};
+
+export type ValidateDiscountResponseDto = {
+    discountId: string;
+    code: string;
+    type: 'percent' | 'fixed';
+    value: number;
+    /**
+     * Computed discount amount in VND
+     */
+    discountAmount: number;
+};
+
+export type CreateDiscountDto = {
+    code: string;
+    type: 'percent' | 'fixed';
+    /**
+     * Percent (0–100) or fixed amount in VND
+     */
+    value: number;
+    /**
+     * Minimum subtotal to apply
+     */
+    minOrderValue?: number;
+    /**
+     * Max total usages (null = unlimited)
+     */
+    usageLimit?: number;
+    isActive?: boolean;
+    startsAt?: Date;
+    expiresAt?: Date;
+};
+
+export type DiscountResponseDto = {
+    id: string;
+    code: string;
+    type: 'percent' | 'fixed';
+    value: number;
+    minOrderValue?: {
+        [key: string]: unknown;
+    };
+    usageLimit?: {
+        [key: string]: unknown;
+    };
+    usedCount: number;
+    isActive: boolean;
+    startsAt?: {
+        [key: string]: unknown;
+    };
+    expiresAt?: {
+        [key: string]: unknown;
+    };
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type DiscountPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<DiscountResponseDto>;
+};
+
+export type UpdateDiscountDto = {
+    code?: string;
+    type?: 'percent' | 'fixed';
+    /**
+     * Percent (0–100) or fixed amount in VND
+     */
+    value?: number;
+    /**
+     * Minimum subtotal to apply
+     */
+    minOrderValue?: number;
+    /**
+     * Max total usages (null = unlimited)
+     */
+    usageLimit?: number;
+    isActive?: boolean;
+    startsAt?: Date;
+    expiresAt?: Date;
 };
 
 export type CreatePaymentDto = {
@@ -1737,6 +1830,95 @@ export type OrdersControllerUpdateStatusResponses = {
 };
 
 export type OrdersControllerUpdateStatusResponse = OrdersControllerUpdateStatusResponses[keyof OrdersControllerUpdateStatusResponses];
+
+export type DiscountsControllerValidateData = {
+    body: ValidateDiscountDto;
+    path?: never;
+    query?: never;
+    url: '/discounts/validate';
+};
+
+export type DiscountsControllerValidateResponses = {
+    200: ValidateDiscountResponseDto;
+};
+
+export type DiscountsControllerValidateResponse = DiscountsControllerValidateResponses[keyof DiscountsControllerValidateResponses];
+
+export type DiscountsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        search?: string;
+        isActive?: boolean;
+    };
+    url: '/discounts';
+};
+
+export type DiscountsControllerFindAllResponses = {
+    200: DiscountPaginatedResponseDto;
+};
+
+export type DiscountsControllerFindAllResponse = DiscountsControllerFindAllResponses[keyof DiscountsControllerFindAllResponses];
+
+export type DiscountsControllerCreateData = {
+    body: CreateDiscountDto;
+    path?: never;
+    query?: never;
+    url: '/discounts';
+};
+
+export type DiscountsControllerCreateResponses = {
+    201: DiscountResponseDto;
+};
+
+export type DiscountsControllerCreateResponse = DiscountsControllerCreateResponses[keyof DiscountsControllerCreateResponses];
+
+export type DiscountsControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/discounts/{id}';
+};
+
+export type DiscountsControllerRemoveResponses = {
+    204: void;
+};
+
+export type DiscountsControllerRemoveResponse = DiscountsControllerRemoveResponses[keyof DiscountsControllerRemoveResponses];
+
+export type DiscountsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/discounts/{id}';
+};
+
+export type DiscountsControllerFindOneResponses = {
+    200: DiscountResponseDto;
+};
+
+export type DiscountsControllerFindOneResponse = DiscountsControllerFindOneResponses[keyof DiscountsControllerFindOneResponses];
+
+export type DiscountsControllerUpdateData = {
+    body: UpdateDiscountDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/discounts/{id}';
+};
+
+export type DiscountsControllerUpdateResponses = {
+    200: DiscountResponseDto;
+};
+
+export type DiscountsControllerUpdateResponse = DiscountsControllerUpdateResponses[keyof DiscountsControllerUpdateResponses];
 
 export type PaymentsControllerFindAllData = {
     body?: never;
