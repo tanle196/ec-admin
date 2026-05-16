@@ -1,4 +1,5 @@
 import {
+  ordersControllerCancel,
   ordersControllerFindAll,
   ordersControllerFindOne,
   ordersControllerUpdateStatus,
@@ -9,4 +10,5 @@ export const orderService = {
   getList: mainService.request(ordersControllerFindAll),
   findOne: mainService.request(ordersControllerFindOne),
   updateStatus: mainService.request(ordersControllerUpdateStatus),
+  cancel: mainService.request(ordersControllerCancel),
 }

@@ -108,6 +108,22 @@ export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDet
               </div>
             </div>
 
+            {order.discounts.length > 0 && (
+              <div>
+                <h4 className='mb-2 text-sm font-semibold'>Applied Discounts</h4>
+                <div className='space-y-1'>
+                  {order.discounts.map((d) => (
+                    <div key={d.id} className='flex items-center justify-between rounded-md bg-green-50 dark:bg-green-950 px-3 py-1.5 text-sm text-green-700 dark:text-green-300'>
+                      <span className='font-mono font-medium'>{d.code}</span>
+                      <span>
+                        {d.type === 'percent' ? `${d.value}% off` : `-${formatVND(d.value)}`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className='space-y-1 text-sm border-t pt-3'>
               <div className='flex justify-between'>
                 <span className='text-muted-foreground'>Subtotal</span>

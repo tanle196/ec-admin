@@ -13,6 +13,13 @@ export const orderItemSchema = z.object({
   total: z.number(),
 })
 
+export const appliedDiscountSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  type: z.enum(['percent', 'fixed']),
+  value: z.number(),
+})
+
 export const orderSchema = z.object({
   id: z.string(),
   user_id: z.string(),
@@ -24,6 +31,7 @@ export const orderSchema = z.object({
   total: z.number(),
   notes: z.unknown().optional().nullable(),
   items: z.array(orderItemSchema),
+  discounts: z.array(appliedDiscountSchema),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
@@ -39,4 +47,5 @@ export const orderListItemSchema = z.object({
 
 export type Order = z.infer<typeof orderSchema>
 export type OrderItem = z.infer<typeof orderItemSchema>
+export type AppliedDiscount = z.infer<typeof appliedDiscountSchema>
 export type OrderListItem = z.infer<typeof orderListItemSchema>

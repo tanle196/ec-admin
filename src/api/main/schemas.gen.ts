@@ -1765,6 +1765,34 @@ export const OrderItemResponseDtoSchema = {
     ]
 } as const;
 
+export const AppliedDiscountDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        code: {
+            type: 'string'
+        },
+        type: {
+            type: 'string',
+            enum: [
+                'percent',
+                'fixed'
+            ]
+        },
+        value: {
+            type: 'number'
+        }
+    },
+    required: [
+        'id',
+        'code',
+        'type',
+        'value'
+    ]
+} as const;
+
 export const OrderResponseDtoSchema = {
     type: 'object',
     properties: {
@@ -1813,6 +1841,12 @@ export const OrderResponseDtoSchema = {
                 $ref: '#/components/schemas/OrderItemResponseDto'
             }
         },
+        discounts: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/AppliedDiscountDto'
+            }
+        },
         createdAt: {
             format: 'date-time',
             type: 'string'
@@ -1832,6 +1866,7 @@ export const OrderResponseDtoSchema = {
         'discount',
         'total',
         'items',
+        'discounts',
         'createdAt',
         'updatedAt'
     ]

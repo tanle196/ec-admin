@@ -1,15 +1,18 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Eye, RefreshCw } from 'lucide-react'
+import { Eye, RefreshCw, XCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { type OrderListItem } from '../data/schema'
+import { useCancelOrder } from '../hooks'
 import { useOrdersContext } from './orders-provider'
 
 type DataTableRowActionsProps = {
@@ -18,6 +21,10 @@ type DataTableRowActionsProps = {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { setOpen, setCurrentRow } = useOrdersContext()
+  const { mutate: cancelOrder, isPending } = useCancelOrder()
+
+  const order = row.original
+  const canCancel = !['cancelled', 'refunded', 'delivered'].includes(order.status)
 
   return (
     <DropdownMenu modal={false}>
@@ -33,7 +40,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       <DropdownMenuContent align='end' className='w-44'>
         <DropdownMenuItem
           onClick={() => {
-            setCurrentRow(row.original)
+            setCurrentRow(order)
             setOpen('view')
           }}
         >
@@ -44,7 +51,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            setCurrentRow(row.original)
+            setCurrentRow(order)
             setOpen('update-status')
           }}
         >
@@ -53,6 +60,26 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             <RefreshCw size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
+        {canCancel && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className='text-destructive focus:text-destructive'
+              disabled={isPending}
+              onClick={() =>
+                cancelOrder(order.id, {
+                  onSuccess: () => toast.success(`Order #${order.orderNumber} cancelled.`),
+                  onError: () => toast.error('Failed to cancel order.'),
+                })
+              }
+            >
+              Cancel Order
+              <DropdownMenuShortcut>
+                <XCircle size={16} />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )

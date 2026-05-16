@@ -601,6 +601,13 @@ export type OrderItemResponseDto = {
     total: number;
 };
 
+export type AppliedDiscountDto = {
+    id: string;
+    code: string;
+    type: 'percent' | 'fixed';
+    value: number;
+};
+
 export type OrderResponseDto = {
     id: string;
     user_id: string;
@@ -617,6 +624,7 @@ export type OrderResponseDto = {
         [key: string]: unknown;
     };
     items: Array<OrderItemResponseDto>;
+    discounts: Array<AppliedDiscountDto>;
     createdAt: Date;
     updatedAt: Date;
 };
