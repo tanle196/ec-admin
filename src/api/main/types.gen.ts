@@ -382,6 +382,20 @@ export type UpdateCategoryDto = {
     isActive?: boolean;
 };
 
+export type UploadResultDto = {
+    url: string;
+    publicId: string;
+    width?: number;
+    height?: number;
+    format?: string;
+    bytes?: number;
+    originalName: string;
+};
+
+export type MultiUploadResultDto = {
+    files: Array<UploadResultDto>;
+};
+
 export type CreateProductImageDto = {
     url: string;
     alt?: string;
@@ -1437,6 +1451,84 @@ export type CategoriesControllerUpdateResponses = {
 
 export type CategoriesControllerUpdateResponse = CategoriesControllerUpdateResponses[keyof CategoriesControllerUpdateResponses];
 
+export type CategoriesControllerUploadImageData = {
+    body: {
+        file: Blob | File;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/categories/{id}/image/upload';
+};
+
+export type CategoriesControllerUploadImageResponses = {
+    200: CategoryResponseDto;
+};
+
+export type CategoriesControllerUploadImageResponse = CategoriesControllerUploadImageResponses[keyof CategoriesControllerUploadImageResponses];
+
+export type CategoriesControllerRemoveImageData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/categories/{id}/image';
+};
+
+export type CategoriesControllerRemoveImageResponses = {
+    200: CategoryResponseDto;
+};
+
+export type CategoriesControllerRemoveImageResponse = CategoriesControllerRemoveImageResponses[keyof CategoriesControllerRemoveImageResponses];
+
+export type MediaControllerUploadOneData = {
+    body: {
+        file: Blob | File;
+    };
+    path?: never;
+    query?: never;
+    url: '/media/upload';
+};
+
+export type MediaControllerUploadOneResponses = {
+    201: UploadResultDto;
+};
+
+export type MediaControllerUploadOneResponse = MediaControllerUploadOneResponses[keyof MediaControllerUploadOneResponses];
+
+export type MediaControllerUploadManyData = {
+    body: {
+        files: Array<Blob | File>;
+    };
+    path?: never;
+    query?: never;
+    url: '/media/upload/multiple';
+};
+
+export type MediaControllerUploadManyResponses = {
+    200: MultiUploadResultDto;
+};
+
+export type MediaControllerUploadManyResponse = MediaControllerUploadManyResponses[keyof MediaControllerUploadManyResponses];
+
+export type MediaControllerRemoveData = {
+    body?: never;
+    path: {
+        /**
+         * Provider public ID (may contain slashes)
+         */
+        publicId: string;
+    };
+    query?: never;
+    url: '/media/{publicId}';
+};
+
+export type MediaControllerRemoveResponses = {
+    200: unknown;
+};
+
 export type ProductsControllerFindAllData = {
     body?: never;
     path?: never;
@@ -1536,6 +1628,26 @@ export type ProductsControllerAddImageResponses = {
 };
 
 export type ProductsControllerAddImageResponse = ProductsControllerAddImageResponses[keyof ProductsControllerAddImageResponses];
+
+export type ProductsControllerUploadImageData = {
+    body: {
+        file: Blob | File;
+        alt?: string;
+        isPrimary?: boolean;
+        sortOrder?: number;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/products/{id}/images/upload';
+};
+
+export type ProductsControllerUploadImageResponses = {
+    201: ProductImageResponseDto;
+};
+
+export type ProductsControllerUploadImageResponse = ProductsControllerUploadImageResponses[keyof ProductsControllerUploadImageResponses];
 
 export type ProductsControllerRemoveImageData = {
     body?: never;

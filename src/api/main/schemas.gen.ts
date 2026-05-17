@@ -1010,6 +1010,60 @@ export const UpdateCategoryDtoSchema = {
     }
 } as const;
 
+export const UploadResultDtoSchema = {
+    type: 'object',
+    properties: {
+        url: {
+            type: 'string',
+            example: 'https://res.cloudinary.com/demo/image/upload/sample.jpg'
+        },
+        publicId: {
+            type: 'string',
+            example: 'ec-api/a1b2c3d4'
+        },
+        width: {
+            type: 'number',
+            example: 1920
+        },
+        height: {
+            type: 'number',
+            example: 1080
+        },
+        format: {
+            type: 'string',
+            example: 'jpg'
+        },
+        bytes: {
+            type: 'number',
+            example: 204800
+        },
+        originalName: {
+            type: 'string',
+            example: 'photo.jpg'
+        }
+    },
+    required: [
+        'url',
+        'publicId',
+        'originalName'
+    ]
+} as const;
+
+export const MultiUploadResultDtoSchema = {
+    type: 'object',
+    properties: {
+        files: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/UploadResultDto'
+            }
+        }
+    },
+    required: [
+        'files'
+    ]
+} as const;
+
 export const CreateProductImageDtoSchema = {
     type: 'object',
     properties: {

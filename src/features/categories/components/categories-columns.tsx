@@ -1,5 +1,6 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
@@ -7,6 +8,31 @@ import { type Category } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
 export const categoriesColumns: ColumnDef<Category>[] = [
+  {
+    accessorKey: 'image',
+    header: () => null,
+    cell: ({ row }) => {
+      const image = row.getValue('image')
+      const src = typeof image === 'string' ? image : null
+      return src ? (
+        <img
+          src={src}
+          alt={row.getValue('name')}
+          className='h-9 w-9 rounded-md object-cover bg-muted shrink-0'
+          onError={(e) => {
+            e.currentTarget.style.display = 'none'
+          }}
+        />
+      ) : (
+        <div className='flex h-9 w-9 items-center justify-center rounded-md border bg-muted text-muted-foreground shrink-0'>
+          <ImageIcon size={14} />
+        </div>
+      )
+    },
+    enableHiding: false,
+    enableSorting: false,
+    meta: { className: 'w-14' },
+  },
   {
     accessorKey: 'name',
     header: ({ column }) => (

@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
+import { ImageIcon, Trash2, UploadCloud } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -26,8 +27,13 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { SelectDropdown } from '@/components/select-dropdown'
-import { useCategories } from '../hooks'
-import { useCreateCategory, useUpdateCategory } from '../hooks'
+import {
+  useCategories,
+  useCreateCategory,
+  useUpdateCategory,
+  useUploadCategoryImage,
+  useRemoveCategoryImage,
+} from '../hooks'
 import { type Category } from '../data/schema'
 
 const formSchema = z.object({
@@ -35,7 +41,6 @@ const formSchema = z.object({
   slug: z.string().optional(),
   parent_id: z.string().optional(),
   description: z.string().optional(),
-  image: z.string().optional(),
   sortOrder: z.coerce.number().int().min(0).optional(),
   isActive: z.boolean().optional(),
 })
@@ -54,9 +59,11 @@ export function CategoriesActionDialog({
   onOpenChange,
 }: CategoriesActionDialogProps) {
   const isEdit = !!currentRow
-  const { mutate: createCategory, isPending: isCreating } = useCreateCategory()
-  const { mutate: updateCategory, isPending: isUpdating } = useUpdateCategory()
-  const isPending = isCreating || isUpdating
+  const { mutateAsync: createCategory, isPending: isCreating } = useCreateCategory()
+  const { mutateAsync: updateCategory, isPending: isUpdating } = useUpdateCategory()
+  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadCategoryImage()
+  const { mutateAsync: removeImage, isPending: isRemoving } = useRemoveCategoryImage()
+  const isPending = isCreating || isUpdating || isUploading || isRemoving
 
   const { data: categoriesData } = useCategories()
 
@@ -70,6 +77,14 @@ export function CategoriesActionDialog({
     return pid
   }
 
+  const currentImageUrl =
+    typeof currentRow?.image === 'string' ? currentRow.image : null
+
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   const form = useForm<CategoryForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -77,7 +92,6 @@ export function CategoriesActionDialog({
       slug: currentRow?.slug ?? '',
       parent_id: getParentId(currentRow),
       description: typeof currentRow?.description === 'string' ? currentRow.description : '',
-      image: typeof currentRow?.image === 'string' ? currentRow.image : '',
       sortOrder: currentRow?.sortOrder ?? 0,
       isActive: currentRow?.isActive ?? true,
     },
@@ -90,43 +104,63 @@ export function CategoriesActionDialog({
         slug: currentRow?.slug ?? '',
         parent_id: getParentId(currentRow),
         description: typeof currentRow?.description === 'string' ? currentRow.description : '',
-        image: typeof currentRow?.image === 'string' ? currentRow.image : '',
         sortOrder: currentRow?.sortOrder ?? 0,
         isActive: currentRow?.isActive ?? true,
       })
+      setImageFile(null)
+      setImagePreview(null)
+      setShouldRemoveImage(false)
     }
   }, [open, currentRow, form])
 
-  const onSubmit = (values: CategoryForm) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (imagePreview) URL.revokeObjectURL(imagePreview)
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file))
+    setShouldRemoveImage(false)
+  }
+
+  const handleClearImage = () => {
+    if (imagePreview) URL.revokeObjectURL(imagePreview)
+    setImageFile(null)
+    setImagePreview(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+    if (isEdit && currentImageUrl) setShouldRemoveImage(true)
+  }
+
+  const displayedImage = imagePreview ?? (shouldRemoveImage ? null : currentImageUrl)
+
+  const onSubmit = async (values: CategoryForm) => {
     const body = {
       name: values.name,
       ...(values.slug && { slug: values.slug }),
       ...(values.parent_id && { parent_id: values.parent_id }),
       ...(values.description && { description: values.description }),
-      ...(values.image && { image: values.image }),
       sortOrder: values.sortOrder,
       isActive: values.isActive,
     }
 
-    if (isEdit) {
-      updateCategory(
-        { id: currentRow.id, body },
-        {
-          onSuccess: () => {
-            toast.success('Category updated successfully.')
-            onOpenChange(false)
-          },
-          onError: () => toast.error('Failed to update category.'),
+    try {
+      if (isEdit) {
+        await updateCategory({ id: currentRow.id, body })
+        if (imageFile) {
+          await uploadImage({ id: currentRow.id, file: imageFile })
+        } else if (shouldRemoveImage) {
+          await removeImage({ id: currentRow.id })
         }
-      )
-    } else {
-      createCategory(body, {
-        onSuccess: () => {
-          toast.success('Category created successfully.')
-          onOpenChange(false)
-        },
-        onError: () => toast.error('Failed to create category.'),
-      })
+        toast.success('Category updated successfully.')
+      } else {
+        const created = await createCategory(body)
+        if (imageFile && created?.id) {
+          await uploadImage({ id: created.id, file: imageFile })
+        }
+        toast.success('Category created successfully.')
+      }
+      onOpenChange(false)
+    } catch {
+      toast.error(isEdit ? 'Failed to update category.' : 'Failed to create category.')
     }
   }
 
@@ -224,23 +258,59 @@ export function CategoriesActionDialog({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='image'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Image URL</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='https://...'
-                        className='col-span-4'
-                        {...field}
+
+              {/* Image upload section */}
+              <div className='grid grid-cols-6 items-start space-y-0 gap-x-4 gap-y-1'>
+                <span className='col-span-2 pt-2 text-end text-sm font-medium'>
+                  Image
+                </span>
+                <div className='col-span-4 space-y-2'>
+                  {displayedImage ? (
+                    <div className='relative w-fit'>
+                      <img
+                        src={displayedImage}
+                        alt='Category image'
+                        className='h-24 w-24 rounded-md object-cover border bg-muted'
+                        onError={(e) => {
+                          ;(e.currentTarget as HTMLImageElement).style.display = 'none'
+                        }}
                       />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
+                      <Button
+                        type='button'
+                        variant='destructive'
+                        size='icon'
+                        className='absolute -top-2 -right-2 h-6 w-6 rounded-full'
+                        onClick={handleClearImage}
+                      >
+                        <Trash2 size={12} />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className='flex h-24 w-24 items-center justify-center rounded-md border border-dashed bg-muted text-muted-foreground'>
+                      <ImageIcon size={28} />
+                    </div>
+                  )}
+                  <div>
+                    <input
+                      ref={fileInputRef}
+                      type='file'
+                      accept='image/*'
+                      className='hidden'
+                      onChange={handleFileChange}
+                    />
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='sm'
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <UploadCloud size={14} className='mr-1.5' />
+                      {displayedImage ? 'Change image' : 'Upload image'}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
               <FormField
                 control={form.control}
                 name='sortOrder'
