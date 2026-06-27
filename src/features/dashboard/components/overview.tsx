@@ -1,57 +1,20 @@
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-const data = [
-  {
-    name: 'Jan',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Feb',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Mar',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Apr',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'May',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Jun',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Jul',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Aug',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Sep',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Oct',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Nov',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Dec',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-]
+type MonthlyRevenue = { name: string; total: number }
 
-export function Overview() {
+const EMPTY_DATA: MonthlyRevenue[] = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+].map((name) => ({ name, total: 0 }))
+
+const formatVND = (value: number) =>
+  new Intl.NumberFormat('vi-VN', { notation: 'compact', style: 'currency', currency: 'VND' }).format(value)
+
+interface OverviewProps {
+  data?: MonthlyRevenue[]
+}
+
+export function Overview({ data = EMPTY_DATA }: OverviewProps) {
   return (
     <ResponsiveContainer width='100%' height={350}>
       <BarChart data={data}>
@@ -68,10 +31,24 @@ export function Overview() {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `$${value}`}
+          tickFormatter={formatVND}
+          width={70}
+        />
+        <Tooltip
+          formatter={(value: number) =>
+            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)
+          }
+          cursor={{ fill: 'hsl(var(--muted))' }}
+          contentStyle={{
+            background: 'hsl(var(--popover))',
+            border: '1px solid hsl(var(--border))',
+            borderRadius: '6px',
+            fontSize: '12px',
+          }}
         />
         <Bar
           dataKey='total'
+          name='Revenue'
           fill='currentColor'
           radius={[4, 4, 0, 0]}
           className='fill-primary'
