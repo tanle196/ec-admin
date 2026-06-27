@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TableError, TableLoading } from '@/components/data-table'
 import { usePermissions } from '../hooks'
 import { permissionsColumns as columns } from './permissions-columns'
 
@@ -29,27 +30,8 @@ export function PermissionsTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) {
-    return (
-      <div className='flex h-24 items-center justify-center text-muted-foreground'>
-        Loading permissions...
-      </div>
-    )
-  }
-
-  if (isError) {
-    const msg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : 'Unknown error'
-    return (
-      <div className='flex h-24 items-center justify-center text-sm text-destructive'>
-        Failed to load permissions: {msg}
-      </div>
-    )
-  }
+  if (isLoading) return <TableLoading label='permissions' />
+  if (isError) return <TableError label='permissions' error={error} />
 
   return (
     <div className='overflow-hidden rounded-md border'>

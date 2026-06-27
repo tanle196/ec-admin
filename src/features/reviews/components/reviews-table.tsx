@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TableError, TableLoading } from '@/components/data-table'
 import { useReviews } from '../hooks'
 import { reviewsColumns as columns } from './reviews-columns'
 
@@ -29,27 +30,8 @@ export function ReviewsTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) {
-    return (
-      <div className='flex h-24 items-center justify-center text-muted-foreground'>
-        Loading reviews...
-      </div>
-    )
-  }
-
-  if (isError) {
-    const msg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : 'Unknown error'
-    return (
-      <div className='flex h-24 items-center justify-center text-sm text-destructive'>
-        Failed to load reviews: {msg}
-      </div>
-    )
-  }
+  if (isLoading) return <TableLoading label='reviews' />
+  if (isError) return <TableError label='reviews' error={error} />
 
   return (
     <div className='space-y-2'>

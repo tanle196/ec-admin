@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TableError, TableLoading } from '@/components/data-table'
 import { usePayments } from '../hooks'
 import { paymentsColumns as columns } from './payments-columns'
 
@@ -29,27 +30,8 @@ export function PaymentsTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) {
-    return (
-      <div className='flex h-24 items-center justify-center text-muted-foreground'>
-        Loading payments...
-      </div>
-    )
-  }
-
-  if (isError) {
-    const msg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : 'Unknown error'
-    return (
-      <div className='flex h-24 items-center justify-center text-sm text-destructive'>
-        Failed to load payments: {msg}
-      </div>
-    )
-  }
+  if (isLoading) return <TableLoading label='payments' />
+  if (isError) return <TableError label='payments' error={error} />
 
   return (
     <div className='space-y-2'>

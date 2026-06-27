@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TableError, TableLoading } from '@/components/data-table'
 import { useCart, useClearCart } from '../hooks'
 import { cartColumns as columns } from './cart-columns'
 import { useCartContext } from './cart-provider'
@@ -51,27 +52,8 @@ export function CartTable() {
     })
   }
 
-  if (isLoading) {
-    return (
-      <div className='flex h-24 items-center justify-center text-muted-foreground'>
-        Loading cart...
-      </div>
-    )
-  }
-
-  if (isError) {
-    const msg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : 'Unknown error'
-    return (
-      <div className='flex h-24 items-center justify-center text-sm text-destructive'>
-        Failed to load cart: {msg}
-      </div>
-    )
-  }
+  if (isLoading) return <TableLoading label='cart' />
+  if (isError) return <TableError label='cart' error={error} />
 
   return (
     <div className='space-y-4'>

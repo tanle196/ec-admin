@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TableError, TableLoading } from '@/components/data-table'
 import { useOrders } from '../hooks'
 import { ordersColumns as columns } from './orders-columns'
 
@@ -29,27 +30,8 @@ export function OrdersTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) {
-    return (
-      <div className='flex h-24 items-center justify-center text-muted-foreground'>
-        Loading orders...
-      </div>
-    )
-  }
-
-  if (isError) {
-    const msg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : 'Unknown error'
-    return (
-      <div className='flex h-24 items-center justify-center text-sm text-destructive'>
-        Failed to load orders: {msg}
-      </div>
-    )
-  }
+  if (isLoading) return <TableLoading label='orders' />
+  if (isError) return <TableError label='orders' error={error} />
 
   return (
     <div className='space-y-2'>

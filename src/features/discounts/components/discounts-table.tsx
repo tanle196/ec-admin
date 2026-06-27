@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { TableError, TableLoading } from '@/components/data-table'
 import { useDiscounts } from '../hooks'
 import { discountsColumns as columns } from './discounts-columns'
 
@@ -29,27 +30,8 @@ export function DiscountsTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) {
-    return (
-      <div className='flex h-24 items-center justify-center text-muted-foreground'>
-        Loading discounts...
-      </div>
-    )
-  }
-
-  if (isError) {
-    const msg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : 'Unknown error'
-    return (
-      <div className='flex h-24 items-center justify-center text-sm text-destructive'>
-        Failed to load discounts: {msg}
-      </div>
-    )
-  }
+  if (isLoading) return <TableLoading label='discounts' />
+  if (isError) return <TableError label='discounts' error={error} />
 
   return (
     <div className='overflow-hidden rounded-md border'>
