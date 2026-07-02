@@ -22,6 +22,7 @@ import {
   Command,
   GalleryVerticalEnd,
   Shield,
+  ShieldCog,
   KeyRound,
   Tag,
   Tags,
@@ -33,6 +34,9 @@ import {
   Star,
   Heart,
   Ticket,
+  Boxes,
+  Receipt,
+  Contact,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -86,85 +90,91 @@ export const sidebarData: SidebarData = {
           icon: MessagesSquare,
         },
         {
-          title: 'Users',
-          url: '/users',
-          icon: Users,
-        },
-        {
-          title: 'Roles',
-          url: '/roles',
-          icon: Shield,
-        },
-        {
-          title: 'Permissions',
-          url: '/permissions',
-          icon: KeyRound,
-        },
-        {
-          title: 'Categories',
-          url: '/categories',
-          icon: Tag,
-        },
-        {
-          title: 'Tags',
-          url: '/tags',
-          icon: Tags,
-        },
-        {
-          title: 'Products',
-          url: '/products',
-          icon: ShoppingBag,
-        },
-        {
-          title: 'Addresses',
-          url: '/addresses',
-          icon: MapPin,
-        },
-        {
-          title: 'Orders',
-          url: '/orders',
-          icon: ShoppingCart,
-        },
-        {
-          title: 'Payments',
-          url: '/payments',
-          icon: CreditCard,
-        },
-        {
-          title: 'Carts',
-          url: '/carts',
-          icon: ShoppingBasket,
-        },
-        {
-          title: 'Reviews',
-          url: '/reviews',
-          icon: Star,
-        },
-        {
-          title: 'Wishlists',
-          url: '/wishlists',
-          icon: Heart,
-        },
-        {
-          title: 'Discounts',
-          url: '/discounts',
-          icon: Ticket,
-        },
-        {
-          title: 'Secured by Clerk',
-          icon: ClerkLogo,
+          title: 'Catalog',
+          icon: Boxes,
           items: [
             {
-              title: 'Sign In',
-              url: '/clerk/sign-in',
+              title: 'Products',
+              url: '/products',
+              icon: ShoppingBag,
             },
             {
-              title: 'Sign Up',
-              url: '/clerk/sign-up',
+              title: 'Categories',
+              url: '/categories',
+              icon: Tag,
             },
             {
-              title: 'User Management',
-              url: '/clerk/user-management',
+              title: 'Tags',
+              url: '/tags',
+              icon: Tags,
+            },
+            {
+              title: 'Discounts',
+              url: '/discounts',
+              icon: Ticket,
+            },
+          ],
+        },
+        {
+          title: 'Sales',
+          icon: Receipt,
+          items: [
+            {
+              title: 'Orders',
+              url: '/orders',
+              icon: ShoppingCart,
+            },
+            {
+              title: 'Payments',
+              url: '/payments',
+              icon: CreditCard,
+            },
+            {
+              title: 'Carts',
+              url: '/carts',
+              icon: ShoppingBasket,
+            },
+          ],
+        },
+        {
+          title: 'Customers',
+          icon: Contact,
+          items: [
+            {
+              title: 'Users',
+              url: '/users',
+              icon: Users,
+            },
+            {
+              title: 'Addresses',
+              url: '/addresses',
+              icon: MapPin,
+            },
+            {
+              title: 'Wishlists',
+              url: '/wishlists',
+              icon: Heart,
+            },
+            {
+              title: 'Reviews',
+              url: '/reviews',
+              icon: Star,
+            },
+          ],
+        },
+        {
+          title: 'Access Control',
+          icon: ShieldCog,
+          items: [
+            {
+              title: 'Roles',
+              url: '/roles',
+              icon: Shield,
+            },
+            {
+              title: 'Permissions',
+              url: '/permissions',
+              icon: KeyRound,
             },
           ],
         },
@@ -196,6 +206,24 @@ export const sidebarData: SidebarData = {
             {
               title: 'OTP',
               url: '/otp',
+            },
+          ],
+        },
+        {
+          title: 'Secured by Clerk',
+          icon: ClerkLogo,
+          items: [
+            {
+              title: 'Sign In',
+              url: '/clerk/sign-in',
+            },
+            {
+              title: 'Sign Up',
+              url: '/clerk/sign-up',
+            },
+            {
+              title: 'User Management',
+              url: '/clerk/user-management',
             },
           ],
         },
