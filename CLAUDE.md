@@ -1,16 +1,13 @@
 # Development Rules
 
-## Git Workflow
+# Git Workflow
 
-- Always commit changes when a task is completed.
-- Commit only to the current branch.
-- Never merge into develop without my approval.
-- Never push directly to develop.
-- After creating a commit, show:
-  - Commit hash
-  - Commit message
-  - Changed files
-- Stop and wait for my review after each commit.
+- After completing a task, stage all relevant changes using git add.
+- Do not create a commit.
+- Do not push any changes.
+- Show the list of staged files.
+- Wait for my review and approval before creating a commit.
+- Never merge into develop, main, or master without my approval.
 
 ## Code Quality
 

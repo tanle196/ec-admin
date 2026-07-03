@@ -1,8 +1,11 @@
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 import { getCookie, removeCookie, setCookie } from '@/lib/cookies'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/cookies'
 
 interface AuthUser {
+  id?: string
+  userCode?: string
   name: string
   email: string
   role: string[]
@@ -19,34 +22,39 @@ export interface AuthState {
   }
 }
 
-export const useAuthStore = create<AuthState>()((set) => {
-  const cookieState = getCookie(ACCESS_TOKEN)
-  const initToken = cookieState ? JSON.parse(cookieState) : ''
-  return {
-    auth: {
-      user: null,
-      setUser: (user) =>
-        set((state) => ({ ...state, auth: { ...state.auth, user } })),
-      accessToken: initToken,
-      setAccessToken: (accessToken) =>
-        set((state) => {
-          setCookie(ACCESS_TOKEN, JSON.stringify(accessToken))
-          return { ...state, auth: { ...state.auth, accessToken } }
-        }),
-      resetAccessToken: () =>
-        set((state) => {
-          removeCookie(ACCESS_TOKEN)
-          return { ...state, auth: { ...state.auth, accessToken: '' } }
-        }),
-      reset: () =>
-        set((state) => {
-          removeCookie(ACCESS_TOKEN)
-          removeCookie(REFRESH_TOKEN)
-          return {
-            ...state,
-            auth: { ...state.auth, user: null, accessToken: '' },
-          }
-        }),
+export const useAuthStore = create<AuthState>()(
+  devtools(
+    (set) => {
+      const cookieState = getCookie(ACCESS_TOKEN)
+      const initToken = cookieState ? JSON.parse(cookieState) : ''
+      return {
+        auth: {
+          user: null,
+          setUser: (user) =>
+            set((state) => ({ ...state, auth: { ...state.auth, user } })),
+          accessToken: initToken,
+          setAccessToken: (accessToken) =>
+            set((state) => {
+              setCookie(ACCESS_TOKEN, JSON.stringify(accessToken))
+              return { ...state, auth: { ...state.auth, accessToken } }
+            }),
+          resetAccessToken: () =>
+            set((state) => {
+              removeCookie(ACCESS_TOKEN)
+              return { ...state, auth: { ...state.auth, accessToken: '' } }
+            }),
+          reset: () =>
+            set((state) => {
+              removeCookie(ACCESS_TOKEN)
+              removeCookie(REFRESH_TOKEN)
+              return {
+                ...state,
+                auth: { ...state.auth, user: null, accessToken: '' },
+              }
+            }),
+        },
+      }
     },
-  }
-})
+    { name: 'auth-store' }
+  )
+)

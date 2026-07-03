@@ -172,6 +172,10 @@ export const UserListQueryDtoSchema = {
         },
         role: {
             type: 'string'
+        },
+        userCode: {
+            type: 'string',
+            example: 'USR-20260627-AB12CD'
         }
     }
 } as const;
@@ -284,6 +288,10 @@ export const UserResponseDtoSchema = {
             example: 'c1a2b3',
             description: 'User ID'
         },
+        userCode: {
+            type: 'string',
+            example: 'USR-20260627-AB12CD'
+        },
         email: {
             type: 'string',
             example: 'user@gmail.com'
@@ -318,6 +326,7 @@ export const UserResponseDtoSchema = {
     },
     required: [
         'id',
+        'userCode',
         'email',
         'fullName',
         'roles',
@@ -408,6 +417,10 @@ export const UserDetailDtoSchema = {
             type: 'string',
             example: 'uuid-v4'
         },
+        userCode: {
+            type: 'string',
+            example: 'USR-20260627-AB12CD'
+        },
         email: {
             type: 'string',
             example: 'user@example.com'
@@ -448,6 +461,7 @@ export const UserDetailDtoSchema = {
     },
     required: [
         'id',
+        'userCode',
         'email',
         'fullName',
         'avatar',
@@ -2785,4 +2799,264 @@ export const AddToWishlistDtoSchema = {
     required: [
         'product_id'
     ]
+} as const;
+
+export const BannerResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        title: {
+            type: 'string'
+        },
+        subtitle: {
+            type: 'object'
+        },
+        position: {
+            type: 'string',
+            enum: [
+                'hero',
+                'promo_strip',
+                'mid_page',
+                'popup'
+            ]
+        },
+        imageUrl: {
+            type: 'string'
+        },
+        imageMobileUrl: {
+            type: 'object'
+        },
+        linkType: {
+            type: 'string',
+            enum: [
+                'url',
+                'product',
+                'category',
+                'discount'
+            ]
+        },
+        linkValue: {
+            type: 'object'
+        },
+        sortOrder: {
+            type: 'number'
+        },
+        isActive: {
+            type: 'boolean'
+        },
+        startsAt: {
+            type: 'object'
+        },
+        endsAt: {
+            type: 'object'
+        },
+        clickCount: {
+            type: 'number'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'title',
+        'position',
+        'imageUrl',
+        'linkType',
+        'sortOrder',
+        'isActive',
+        'clickCount',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const CreateBannerDtoSchema = {
+    type: 'object',
+    properties: {
+        title: {
+            type: 'string',
+            example: 'Flash Sale 6.6'
+        },
+        subtitle: {
+            type: 'string',
+            example: 'Giảm đến 50% toàn bộ sản phẩm'
+        },
+        position: {
+            type: 'string',
+            enum: [
+                'hero',
+                'promo_strip',
+                'mid_page',
+                'popup'
+            ],
+            example: 'hero'
+        },
+        imageUrl: {
+            type: 'string',
+            example: 'https://cdn.example.com/banner.jpg'
+        },
+        imageMobileUrl: {
+            type: 'string',
+            example: 'https://cdn.example.com/banner-mobile.jpg'
+        },
+        imagePublicId: {
+            type: 'string',
+            example: 'banners/flash-sale-6-6'
+        },
+        imageMobilePublicId: {
+            type: 'string',
+            example: 'banners/flash-sale-6-6-mobile'
+        },
+        linkType: {
+            type: 'string',
+            enum: [
+                'url',
+                'product',
+                'category',
+                'discount'
+            ],
+            example: 'url'
+        },
+        linkValue: {
+            type: 'string',
+            example: '/products?tag=sale'
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0
+        },
+        isActive: {
+            type: 'boolean',
+            example: true
+        },
+        startsAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-06-06T00:00:00Z'
+        },
+        endsAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-06-07T23:59:59Z'
+        }
+    },
+    required: [
+        'title',
+        'position',
+        'imageUrl',
+        'linkType'
+    ]
+} as const;
+
+export const BannerOrderItemDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string',
+            example: 'uuid-v4'
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0
+        }
+    },
+    required: [
+        'id',
+        'sortOrder'
+    ]
+} as const;
+
+export const ReorderBannersDtoSchema = {
+    type: 'object',
+    properties: {
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/BannerOrderItemDto'
+            }
+        }
+    },
+    required: [
+        'items'
+    ]
+} as const;
+
+export const UpdateBannerDtoSchema = {
+    type: 'object',
+    properties: {
+        title: {
+            type: 'string',
+            example: 'Flash Sale 6.6'
+        },
+        subtitle: {
+            type: 'string',
+            example: 'Giảm đến 50% toàn bộ sản phẩm'
+        },
+        position: {
+            type: 'string',
+            enum: [
+                'hero',
+                'promo_strip',
+                'mid_page',
+                'popup'
+            ],
+            example: 'hero'
+        },
+        imageUrl: {
+            type: 'string',
+            example: 'https://cdn.example.com/banner.jpg'
+        },
+        imageMobileUrl: {
+            type: 'string',
+            example: 'https://cdn.example.com/banner-mobile.jpg'
+        },
+        imagePublicId: {
+            type: 'string',
+            example: 'banners/flash-sale-6-6'
+        },
+        imageMobilePublicId: {
+            type: 'string',
+            example: 'banners/flash-sale-6-6-mobile'
+        },
+        linkType: {
+            type: 'string',
+            enum: [
+                'url',
+                'product',
+                'category',
+                'discount'
+            ],
+            example: 'url'
+        },
+        linkValue: {
+            type: 'string',
+            example: '/products?tag=sale'
+        },
+        sortOrder: {
+            type: 'number',
+            example: 0
+        },
+        isActive: {
+            type: 'boolean',
+            example: true
+        },
+        startsAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-06-06T00:00:00Z'
+        },
+        endsAt: {
+            format: 'date-time',
+            type: 'string',
+            example: '2026-06-07T23:59:59Z'
+        }
+    }
 } as const;

@@ -89,6 +89,7 @@ export type UserListQueryDto = {
     limit?: number;
     email?: string;
     role?: string;
+    userCode?: string;
 };
 
 export type PermissionResponseDto = {
@@ -133,6 +134,7 @@ export type UserResponseDto = {
      * User ID
      */
     id: string;
+    userCode: string;
     email: string;
     fullName: string;
     /**
@@ -160,6 +162,10 @@ export type UserProfileDto = {
      */
     email: string;
     /**
+     * Mã người dùng
+     */
+    userCode: string;
+    /**
      * Danh sách role của người dùng
      */
     roles: Array<string>;
@@ -171,6 +177,7 @@ export type UserProfileDto = {
 
 export type UserDetailDto = {
     id: string;
+    userCode: string;
     email: string;
     fullName: string | null;
     avatar: string | null;
@@ -921,6 +928,75 @@ export type AddToWishlistDto = {
     product_id: string;
 };
 
+export type BannerResponseDto = {
+    id: string;
+    title: string;
+    subtitle?: {
+        [key: string]: unknown;
+    };
+    position: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
+    imageUrl: string;
+    imageMobileUrl?: {
+        [key: string]: unknown;
+    };
+    linkType: 'url' | 'product' | 'category' | 'discount';
+    linkValue?: {
+        [key: string]: unknown;
+    };
+    sortOrder: number;
+    isActive: boolean;
+    startsAt?: {
+        [key: string]: unknown;
+    };
+    endsAt?: {
+        [key: string]: unknown;
+    };
+    clickCount: number;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type CreateBannerDto = {
+    title: string;
+    subtitle?: string;
+    position: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
+    imageUrl: string;
+    imageMobileUrl?: string;
+    imagePublicId?: string;
+    imageMobilePublicId?: string;
+    linkType: 'url' | 'product' | 'category' | 'discount';
+    linkValue?: string;
+    sortOrder?: number;
+    isActive?: boolean;
+    startsAt?: Date;
+    endsAt?: Date;
+};
+
+export type BannerOrderItemDto = {
+    id: string;
+    sortOrder: number;
+};
+
+export type ReorderBannersDto = {
+    items: Array<BannerOrderItemDto>;
+};
+
+export type UpdateBannerDto = {
+    title?: string;
+    subtitle?: string;
+    position?: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
+    imageUrl?: string;
+    imageMobileUrl?: string;
+    imagePublicId?: string;
+    imageMobilePublicId?: string;
+    linkType?: 'url' | 'product' | 'category' | 'discount';
+    linkValue?: string;
+    sortOrder?: number;
+    isActive?: boolean;
+    startsAt?: Date;
+    endsAt?: Date;
+};
+
 export type AppControllerHealthData = {
     body?: never;
     path?: never;
@@ -1063,6 +1139,7 @@ export type UsersControllerFindAllData = {
         limit?: number;
         email?: string;
         role?: string;
+        userCode?: string;
     };
     url: '/users';
 };
@@ -1085,6 +1162,21 @@ export type UsersControllerGetProfileResponses = {
 };
 
 export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];
+
+export type UsersControllerFindByUserCodeData = {
+    body?: never;
+    path: {
+        userCode: string;
+    };
+    query?: never;
+    url: '/users/by-code/{userCode}';
+};
+
+export type UsersControllerFindByUserCodeResponses = {
+    200: UserDetailDto;
+};
+
+export type UsersControllerFindByUserCodeResponse = UsersControllerFindByUserCodeResponses[keyof UsersControllerFindByUserCodeResponses];
 
 export type UsersControllerRemoveData = {
     body?: never;
@@ -2391,3 +2483,125 @@ export type WishlistsControllerRemoveProductResponses = {
 };
 
 export type WishlistsControllerRemoveProductResponse = WishlistsControllerRemoveProductResponses[keyof WishlistsControllerRemoveProductResponses];
+
+export type BannersControllerFindActiveData = {
+    body?: never;
+    path?: never;
+    query?: {
+        position?: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
+    };
+    url: '/banners';
+};
+
+export type BannersControllerFindActiveResponses = {
+    200: Array<BannerResponseDto>;
+};
+
+export type BannersControllerFindActiveResponse = BannersControllerFindActiveResponses[keyof BannersControllerFindActiveResponses];
+
+export type BannersControllerCreateData = {
+    body: CreateBannerDto;
+    path?: never;
+    query?: never;
+    url: '/banners';
+};
+
+export type BannersControllerCreateResponses = {
+    201: BannerResponseDto;
+};
+
+export type BannersControllerCreateResponse = BannersControllerCreateResponses[keyof BannersControllerCreateResponses];
+
+export type BannersControllerTrackClickData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/banners/{id}/click';
+};
+
+export type BannersControllerTrackClickResponses = {
+    204: void;
+};
+
+export type BannersControllerTrackClickResponse = BannersControllerTrackClickResponses[keyof BannersControllerTrackClickResponses];
+
+export type BannersControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        position?: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
+    };
+    url: '/banners/admin';
+};
+
+export type BannersControllerFindAllResponses = {
+    200: Array<BannerResponseDto>;
+};
+
+export type BannersControllerFindAllResponse = BannersControllerFindAllResponses[keyof BannersControllerFindAllResponses];
+
+export type BannersControllerUploadImageData = {
+    body: {
+        file: Blob | File;
+        /**
+         * true = ảnh mobile, false = ảnh desktop
+         */
+        isMobile?: boolean;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/banners/{id}/upload-image';
+};
+
+export type BannersControllerUploadImageResponses = {
+    200: BannerResponseDto;
+};
+
+export type BannersControllerUploadImageResponse = BannersControllerUploadImageResponses[keyof BannersControllerUploadImageResponses];
+
+export type BannersControllerReorderData = {
+    body: ReorderBannersDto;
+    path?: never;
+    query?: never;
+    url: '/banners/reorder';
+};
+
+export type BannersControllerReorderResponses = {
+    204: void;
+};
+
+export type BannersControllerReorderResponse = BannersControllerReorderResponses[keyof BannersControllerReorderResponses];
+
+export type BannersControllerRemoveData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/banners/{id}';
+};
+
+export type BannersControllerRemoveResponses = {
+    204: void;
+};
+
+export type BannersControllerRemoveResponse = BannersControllerRemoveResponses[keyof BannersControllerRemoveResponses];
+
+export type BannersControllerUpdateData = {
+    body: UpdateBannerDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/banners/{id}';
+};
+
+export type BannersControllerUpdateResponses = {
+    200: BannerResponseDto;
+};
+
+export type BannersControllerUpdateResponse = BannersControllerUpdateResponses[keyof BannersControllerUpdateResponses];

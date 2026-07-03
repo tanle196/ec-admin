@@ -83,6 +83,9 @@ export const useAuthActions = () => {
         const { data: profile } = await getUserProfile()
         if (profile) {
           setUser({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            id: (profile as any).id as string | undefined,
+            userCode: profile.userCode,
             name: profile.name,
             email: profile.email,
             role: profile.roles,

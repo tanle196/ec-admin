@@ -2,9 +2,7 @@ import { useEffect } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
-import { useProfile } from '@/features/users/hooks/useProfile'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +16,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useProfile } from '@/features/users/hooks/useProfile'
+import { useUpdateProfile } from '@/features/users/hooks/useUpdateProfile'
 
 const profileFormSchema = z.object({
   fullName: z
@@ -30,8 +30,8 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm() {
   const { auth } = useAuthStore()
-  const setUser = useAuthStore((s) => s.auth.setUser)
   const { data: profile, isLoading } = useProfile({ enabled: true })
+  const { mutate: updateProfile, isPending } = useUpdateProfile()
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -44,12 +44,12 @@ export function ProfileForm() {
   }, [profile, auth.user, form])
 
   function onSubmit(data: ProfileFormValues) {
-    if (!auth.user) return
-    setUser({ ...auth.user, name: data.fullName })
-    toast.success('Profile updated.')
+    updateProfile({ fullName: data.fullName })
   }
 
   const roles = profile?.roles ?? auth.user?.role ?? []
+  const canUpdate = !!auth.user?.id
+  console.log('🚀 ~ ProfileForm ~ auth:', auth)
 
   return (
     <Form {...form}>
@@ -86,7 +86,9 @@ export function ProfileForm() {
               className='bg-muted'
             />
           )}
-          <FormDescription>Email cannot be changed from this page.</FormDescription>
+          <FormDescription>
+            Email cannot be changed from this page.
+          </FormDescription>
         </FormItem>
 
         {roles.length > 0 && (
@@ -99,12 +101,19 @@ export function ProfileForm() {
                 </Badge>
               ))}
             </div>
-            <FormDescription>Roles are managed by administrators.</FormDescription>
+            <FormDescription>
+              Roles are managed by administrators.
+            </FormDescription>
           </FormItem>
         )}
 
-        <Button type='submit' disabled={isLoading || !form.formState.isDirty}>
-          Update profile
+        <Button
+          type='submit'
+          disabled={
+            isLoading || isPending || !form.formState.isDirty || !canUpdate
+          }
+        >
+          {isPending ? 'Saving…' : 'Update profile'}
         </Button>
       </form>
     </Form>
