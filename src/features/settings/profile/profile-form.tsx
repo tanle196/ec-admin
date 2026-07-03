@@ -49,7 +49,6 @@ export function ProfileForm() {
 
   const roles = profile?.roles ?? auth.user?.role ?? []
   const canUpdate = !!auth.user?.id
-  console.log('🚀 ~ ProfileForm ~ auth:', auth)
 
   return (
     <Form {...form}>
@@ -86,9 +85,21 @@ export function ProfileForm() {
               className='bg-muted'
             />
           )}
-          <FormDescription>
-            Email cannot be changed from this page.
-          </FormDescription>
+          <FormDescription>Email cannot be changed from this page.</FormDescription>
+        </FormItem>
+
+        <FormItem>
+          <FormLabel>User Code</FormLabel>
+          {isLoading ? (
+            <Skeleton className='h-9 w-full' />
+          ) : (
+            <Input
+              value={auth.user?.userCode ?? ''}
+              readOnly
+              className='bg-muted font-mono'
+            />
+          )}
+          <FormDescription>Your unique identifier in the system.</FormDescription>
         </FormItem>
 
         {roles.length > 0 && (
@@ -101,9 +112,7 @@ export function ProfileForm() {
                 </Badge>
               ))}
             </div>
-            <FormDescription>
-              Roles are managed by administrators.
-            </FormDescription>
+            <FormDescription>Roles are managed by administrators.</FormDescription>
           </FormItem>
         )}
 

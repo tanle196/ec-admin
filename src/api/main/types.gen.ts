@@ -154,6 +154,10 @@ export type UserPaginatedResponseDto = {
 
 export type UserProfileDto = {
     /**
+     * ID người dùng
+     */
+    id: string;
+    /**
      * Tên người dùng
      */
     name: string;
@@ -161,10 +165,6 @@ export type UserProfileDto = {
      * Email người dùng
      */
     email: string;
-    /**
-     * Mã người dùng
-     */
-    userCode: string;
     /**
      * Danh sách role của người dùng
      */

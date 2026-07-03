@@ -368,6 +368,11 @@ export const UserPaginatedResponseDtoSchema = {
 export const UserProfileDtoSchema = {
     type: 'object',
     properties: {
+        id: {
+            type: 'string',
+            example: 'e4b5f7a0-1c2d-4e3f-8a9b-0c1d2e3f4a5b',
+            description: 'ID người dùng'
+        },
         name: {
             type: 'string',
             example: 'Name',
@@ -403,6 +408,7 @@ export const UserProfileDtoSchema = {
         }
     },
     required: [
+        'id',
         'name',
         'email',
         'roles',

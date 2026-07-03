@@ -19,9 +19,7 @@ export const useSyncUser = () => {
     if (isSynced) return
 
     setUser({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      id: (profile as any).id as string | undefined,
-      userCode: profile.userCode,
+      id: profile.id,
       name: profile.name,
       email: profile.email,
       role: profile.roles,
