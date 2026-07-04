@@ -1,22 +1,22 @@
 import {
-  categoriesControllerFindAll,
-  categoriesControllerFindTree,
-  categoriesControllerCreate,
-  categoriesControllerFindOne,
-  categoriesControllerUpdate,
-  categoriesControllerRemove,
-  categoriesControllerUploadImage,
-  categoriesControllerRemoveImage,
+  adminCategoriesControllerFindAll,
+  adminCategoriesControllerFindTree,
+  adminCategoriesControllerFindOne,
+  adminCategoriesControllerCreate,
+  adminCategoriesControllerUpdate,
+  adminCategoriesControllerRemove,
+  adminCategoriesControllerUploadImage,
+  adminCategoriesControllerRemoveImage,
 } from '@/api/main'
 import { mainService } from '@/lib/api/client'
 
 export const categoryService = {
-  getList: mainService.request(categoriesControllerFindAll),
-  getTree: mainService.request(categoriesControllerFindTree),
-  findOne: mainService.request(categoriesControllerFindOne),
-  create: mainService.request(categoriesControllerCreate),
-  update: mainService.request(categoriesControllerUpdate),
-  remove: mainService.request(categoriesControllerRemove),
-  uploadImage: mainService.request(categoriesControllerUploadImage),
-  removeImage: mainService.request(categoriesControllerRemoveImage),
+  getList: mainService.request(adminCategoriesControllerFindAll),
+  getTree: mainService.request(adminCategoriesControllerFindTree),
+  findOne: mainService.request(adminCategoriesControllerFindOne),
+  create: mainService.request(adminCategoriesControllerCreate),
+  update: mainService.request(adminCategoriesControllerUpdate),
+  remove: mainService.request(adminCategoriesControllerRemove),
+  uploadImage: mainService.request(adminCategoriesControllerUploadImage),
+  removeImage: mainService.request(adminCategoriesControllerRemoveImage),
 }

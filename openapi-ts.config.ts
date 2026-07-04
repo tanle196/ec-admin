@@ -2,7 +2,7 @@ import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
   input:
-    'http://localhost:8000/docs-json',
+    'http://localhost:8000/docs/admin-json',
   output: {
     path: './src/api/main',
   },

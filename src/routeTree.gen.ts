@@ -27,7 +27,6 @@ import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-p
 import { Route as ClerkAuthenticatedRouteRouteImport } from './routes/clerk/_authenticated/route'
 import { Route as ClerkauthRouteRouteImport } from './routes/clerk/(auth)/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
-import { Route as AuthenticatedWishlistsIndexRouteImport } from './routes/_authenticated/wishlists/index'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedTagsIndexRouteImport } from './routes/_authenticated/tags/index'
@@ -42,9 +41,7 @@ import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedDiscountsIndexRouteImport } from './routes/_authenticated/discounts/index'
 import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
 import { Route as AuthenticatedCategoriesIndexRouteImport } from './routes/_authenticated/categories/index'
-import { Route as AuthenticatedCartsIndexRouteImport } from './routes/_authenticated/carts/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
-import { Route as AuthenticatedAddressesIndexRouteImport } from './routes/_authenticated/addresses/index'
 import { Route as ClerkAuthenticatedUserManagementRouteImport } from './routes/clerk/_authenticated/user-management'
 import { Route as ClerkauthSignUpRouteImport } from './routes/clerk/(auth)/sign-up'
 import { Route as ClerkauthSignInRouteImport } from './routes/clerk/(auth)/sign-in'
@@ -142,12 +139,6 @@ const AuthenticatedSettingsRouteRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedWishlistsIndexRoute =
-  AuthenticatedWishlistsIndexRouteImport.update({
-    id: '/wishlists/',
-    path: '/wishlists/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -227,22 +218,11 @@ const AuthenticatedCategoriesIndexRoute =
     path: '/categories/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedCartsIndexRoute = AuthenticatedCartsIndexRouteImport.update({
-  id: '/carts/',
-  path: '/carts/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   id: '/apps/',
   path: '/apps/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAddressesIndexRoute =
-  AuthenticatedAddressesIndexRouteImport.update({
-    id: '/addresses/',
-    path: '/addresses/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const ClerkAuthenticatedUserManagementRoute =
   ClerkAuthenticatedUserManagementRouteImport.update({
     id: '/user-management',
@@ -314,9 +294,7 @@ export interface FileRoutesByFullPath {
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
-  '/addresses/': typeof AuthenticatedAddressesIndexRoute
   '/apps/': typeof AuthenticatedAppsIndexRoute
-  '/carts/': typeof AuthenticatedCartsIndexRoute
   '/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/chats/': typeof AuthenticatedChatsIndexRoute
   '/discounts/': typeof AuthenticatedDiscountsIndexRoute
@@ -331,7 +309,6 @@ export interface FileRoutesByFullPath {
   '/tags/': typeof AuthenticatedTagsIndexRoute
   '/tasks/': typeof AuthenticatedTasksIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
-  '/wishlists/': typeof AuthenticatedWishlistsIndexRoute
 }
 export interface FileRoutesByTo {
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
@@ -356,9 +333,7 @@ export interface FileRoutesByTo {
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
-  '/addresses': typeof AuthenticatedAddressesIndexRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
-  '/carts': typeof AuthenticatedCartsIndexRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/chats': typeof AuthenticatedChatsIndexRoute
   '/discounts': typeof AuthenticatedDiscountsIndexRoute
@@ -373,7 +348,6 @@ export interface FileRoutesByTo {
   '/tags': typeof AuthenticatedTagsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
-  '/wishlists': typeof AuthenticatedWishlistsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -403,9 +377,7 @@ export interface FileRoutesById {
   '/clerk/(auth)/sign-in': typeof ClerkauthSignInRoute
   '/clerk/(auth)/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/_authenticated/user-management': typeof ClerkAuthenticatedUserManagementRoute
-  '/_authenticated/addresses/': typeof AuthenticatedAddressesIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
-  '/_authenticated/carts/': typeof AuthenticatedCartsIndexRoute
   '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
   '/_authenticated/discounts/': typeof AuthenticatedDiscountsIndexRoute
@@ -420,7 +392,6 @@ export interface FileRoutesById {
   '/_authenticated/tags/': typeof AuthenticatedTagsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
-  '/_authenticated/wishlists/': typeof AuthenticatedWishlistsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -448,9 +419,7 @@ export interface FileRouteTypes {
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
-    | '/addresses/'
     | '/apps/'
-    | '/carts/'
     | '/categories/'
     | '/chats/'
     | '/discounts/'
@@ -465,7 +434,6 @@ export interface FileRouteTypes {
     | '/tags/'
     | '/tasks/'
     | '/users/'
-    | '/wishlists/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/clerk'
@@ -490,9 +458,7 @@ export interface FileRouteTypes {
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
-    | '/addresses'
     | '/apps'
-    | '/carts'
     | '/categories'
     | '/chats'
     | '/discounts'
@@ -507,7 +473,6 @@ export interface FileRouteTypes {
     | '/tags'
     | '/tasks'
     | '/users'
-    | '/wishlists'
   id:
     | '__root__'
     | '/_authenticated'
@@ -536,9 +501,7 @@ export interface FileRouteTypes {
     | '/clerk/(auth)/sign-in'
     | '/clerk/(auth)/sign-up'
     | '/clerk/_authenticated/user-management'
-    | '/_authenticated/addresses/'
     | '/_authenticated/apps/'
-    | '/_authenticated/carts/'
     | '/_authenticated/categories/'
     | '/_authenticated/chats/'
     | '/_authenticated/discounts/'
@@ -553,7 +516,6 @@ export interface FileRouteTypes {
     | '/_authenticated/tags/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
-    | '/_authenticated/wishlists/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -701,13 +663,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/wishlists/': {
-      id: '/_authenticated/wishlists/'
-      path: '/wishlists'
-      fullPath: '/wishlists/'
-      preLoaderRoute: typeof AuthenticatedWishlistsIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -806,25 +761,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/carts/': {
-      id: '/_authenticated/carts/'
-      path: '/carts'
-      fullPath: '/carts/'
-      preLoaderRoute: typeof AuthenticatedCartsIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/apps/': {
       id: '/_authenticated/apps/'
       path: '/apps'
       fullPath: '/apps/'
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/addresses/': {
-      id: '/_authenticated/addresses/'
-      path: '/addresses'
-      fullPath: '/addresses/'
-      preLoaderRoute: typeof AuthenticatedAddressesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/clerk/_authenticated/user-management': {
@@ -913,9 +854,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
-  AuthenticatedAddressesIndexRoute: typeof AuthenticatedAddressesIndexRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
-  AuthenticatedCartsIndexRoute: typeof AuthenticatedCartsIndexRoute
   AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
   AuthenticatedDiscountsIndexRoute: typeof AuthenticatedDiscountsIndexRoute
@@ -929,16 +868,13 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTagsIndexRoute: typeof AuthenticatedTagsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
-  AuthenticatedWishlistsIndexRoute: typeof AuthenticatedWishlistsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
-  AuthenticatedAddressesIndexRoute: AuthenticatedAddressesIndexRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
-  AuthenticatedCartsIndexRoute: AuthenticatedCartsIndexRoute,
   AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
   AuthenticatedDiscountsIndexRoute: AuthenticatedDiscountsIndexRoute,
@@ -952,7 +888,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTagsIndexRoute: AuthenticatedTagsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
-  AuthenticatedWishlistsIndexRoute: AuthenticatedWishlistsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

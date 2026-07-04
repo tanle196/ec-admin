@@ -3,10 +3,10 @@ import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { setCookie } from '@/lib/cookies'
+import { getErrorMessage } from '@/lib/utils'
 import { REFRESH_TOKEN } from '@/constants/cookies'
 import { useProfile } from '@/features/users/hooks/useProfile'
 import { userKeys } from '@/features/users/queryKeys'
-import { getErrorMessage } from '@/lib/utils'
 import { useLogin } from './useLogin'
 import { useRegister } from './useRegister'
 import { useVerifyAccount } from './useVerifyAccount'
@@ -54,7 +54,8 @@ export const useAuthActions = () => {
       id: 'verify',
       loading: 'Verifying account...',
       success: 'Account verified! Please sign in.',
-      error: (err) => getErrorMessage(err, 'Verification failed. Invalid or expired code.'),
+      error: (err) =>
+        getErrorMessage(err, 'Verification failed. Invalid or expired code.'),
     })
 
     try {
@@ -81,16 +82,16 @@ export const useAuthActions = () => {
 
       try {
         const { data: profile } = await getUserProfile()
-        if (profile) {
-          setUser({
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            id: (profile as any).id as string | undefined,
-            userCode: profile.userCode,
-            name: profile.name,
-            email: profile.email,
-            role: profile.roles,
-          })
+        if (!profile) {
+          throw new Error('Failed to load user profile')
         }
+        setUser({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          id: (profile as any).id as string | undefined,
+          name: profile.name,
+          email: profile.email,
+          role: profile.roles,
+        })
       } catch {
         auth.reset()
         throw new Error('Failed to load user profile')

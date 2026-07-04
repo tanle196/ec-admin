@@ -1,12 +1,25 @@
 import { useQuery } from '@tanstack/react-query'
 import { type UserListQueryDto } from '@/api/main'
 import { orderService } from '@/features/orders/api/orderService'
-import { orderKeys } from '@/features/orders/queryKeys'
 import { type OrderListItem } from '@/features/orders/data/schema'
+import { orderKeys } from '@/features/orders/queryKeys'
 import { userService } from '@/features/users/api/userService'
 import { userKeys } from '@/features/users/queryKeys'
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+]
 
 export function buildMonthlyRevenue(orders: OrderListItem[]) {
   const currentYear = new Date().getFullYear()
@@ -51,12 +64,14 @@ export function useDashboard() {
 
   const pendingQuery = useQuery({
     queryKey: orderKeys.list({ status: 'pending', limit: 1 }),
-    queryFn: () => orderService.getList({ query: { status: 'pending', limit: 1 } }),
+    queryFn: () =>
+      orderService.getList({ query: { status: 'pending', limit: 1 } }),
   })
 
   const deliveredQuery = useQuery({
-    queryKey: orderKeys.list({ status: 'delivered', limit: 200 }),
-    queryFn: () => orderService.getList({ query: { status: 'delivered', limit: 200 } }),
+    queryKey: orderKeys.list({ status: 'delivered', limit: 100 }),
+    queryFn: () =>
+      orderService.getList({ query: { status: 'delivered', limit: 100 } }),
   })
 
   const usersQuery = useQuery({
@@ -71,8 +86,12 @@ export function useDashboard() {
     totalOrders: recentOrdersQuery.data?.total ?? 0,
     pendingCount: pendingQuery.data?.total ?? 0,
     totalRevenue: delivered.reduce((s, o) => s + o.total, 0),
-    revenueChange: deliveredQuery.isSuccess ? getRevenueChange(delivered) : null,
-    monthlyRevenue: deliveredQuery.isSuccess ? buildMonthlyRevenue(delivered) : [],
+    revenueChange: deliveredQuery.isSuccess
+      ? getRevenueChange(delivered)
+      : null,
+    monthlyRevenue: deliveredQuery.isSuccess
+      ? buildMonthlyRevenue(delivered)
+      : [],
     totalUsers: usersQuery.data?.total ?? 0,
     isLoading:
       recentOrdersQuery.isLoading ||

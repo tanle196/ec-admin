@@ -25,14 +25,10 @@ import {
   ShieldCog,
   KeyRound,
   Tag,
-  Tags,
   ShoppingBag,
-  MapPin,
   ShoppingCart,
-  ShoppingBasket,
   CreditCard,
   Star,
-  Heart,
   Ticket,
   Boxes,
   Receipt,
@@ -104,11 +100,6 @@ export const sidebarData: SidebarData = {
               icon: Tag,
             },
             {
-              title: 'Tags',
-              url: '/tags',
-              icon: Tags,
-            },
-            {
               title: 'Discounts',
               url: '/discounts',
               icon: Ticket,
@@ -129,11 +120,6 @@ export const sidebarData: SidebarData = {
               url: '/payments',
               icon: CreditCard,
             },
-            {
-              title: 'Carts',
-              url: '/carts',
-              icon: ShoppingBasket,
-            },
           ],
         },
         {
@@ -144,16 +130,6 @@ export const sidebarData: SidebarData = {
               title: 'Users',
               url: '/users',
               icon: Users,
-            },
-            {
-              title: 'Addresses',
-              url: '/addresses',
-              icon: MapPin,
-            },
-            {
-              title: 'Wishlists',
-              url: '/wishlists',
-              icon: Heart,
             },
             {
               title: 'Reviews',

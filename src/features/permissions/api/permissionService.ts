@@ -1,18 +1,18 @@
 import {
-  permissionsControllerFindAll,
-  permissionsControllerCreate,
-  permissionsControllerFindOne,
-  permissionsControllerUpdate,
-  permissionsControllerRemove,
-  permissionsControllerGetMeta,
+  adminPermissionsControllerFindAll,
+  adminPermissionsControllerCreate,
+  adminPermissionsControllerFindOne,
+  adminPermissionsControllerUpdate,
+  adminPermissionsControllerRemove,
+  adminPermissionsControllerGetMeta,
 } from '@/api/main'
 import { mainService } from '@/lib/api/client'
 
 export const permissionService = {
-  getList: mainService.request(permissionsControllerFindAll),
-  getMeta: mainService.request(permissionsControllerGetMeta),
-  findOne: mainService.request(permissionsControllerFindOne),
-  create: mainService.request(permissionsControllerCreate),
-  update: mainService.request(permissionsControllerUpdate),
-  remove: mainService.request(permissionsControllerRemove),
+  getList: mainService.request(adminPermissionsControllerFindAll),
+  getMeta: mainService.request(adminPermissionsControllerGetMeta),
+  findOne: mainService.request(adminPermissionsControllerFindOne),
+  create: mainService.request(adminPermissionsControllerCreate),
+  update: mainService.request(adminPermissionsControllerUpdate),
+  remove: mainService.request(adminPermissionsControllerRemove),
 }

@@ -1,12 +1,11 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { CheckCircle, Trash2 } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -21,6 +20,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { setOpen, setCurrentRow } = useReviewsContext()
   const review = row.original
 
+  if (review.isApproved) return null
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -33,30 +34,15 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-44'>
-        {!review.isApproved && (
-          <DropdownMenuItem
-            onClick={() => {
-              setCurrentRow(review)
-              setOpen('approve')
-            }}
-          >
-            Approve
-            <DropdownMenuShortcut>
-              <CheckCircle size={16} />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-        )}
-        {!review.isApproved && <DropdownMenuSeparator />}
         <DropdownMenuItem
-          className='text-destructive focus:text-destructive'
           onClick={() => {
             setCurrentRow(review)
-            setOpen('delete')
+            setOpen('approve')
           }}
         >
-          Delete
+          Approve
           <DropdownMenuShortcut>
-            <Trash2 size={16} />
+            <CheckCircle size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

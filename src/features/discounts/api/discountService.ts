@@ -1,18 +1,16 @@
 import {
-  discountsControllerFindAll,
-  discountsControllerCreate,
-  discountsControllerFindOne,
-  discountsControllerUpdate,
-  discountsControllerRemove,
-  discountsControllerValidate,
+  adminDiscountsControllerFindAll,
+  adminDiscountsControllerCreate,
+  adminDiscountsControllerFindOne,
+  adminDiscountsControllerUpdate,
+  adminDiscountsControllerRemove,
 } from '@/api/main'
 import { mainService } from '@/lib/api/client'
 
 export const discountService = {
-  getList: mainService.request(discountsControllerFindAll),
-  findOne: mainService.request(discountsControllerFindOne),
-  create: mainService.request(discountsControllerCreate),
-  update: mainService.request(discountsControllerUpdate),
-  remove: mainService.request(discountsControllerRemove),
-  validate: mainService.request(discountsControllerValidate),
+  getList: mainService.request(adminDiscountsControllerFindAll),
+  findOne: mainService.request(adminDiscountsControllerFindOne),
+  create: mainService.request(adminDiscountsControllerCreate),
+  update: mainService.request(adminDiscountsControllerUpdate),
+  remove: mainService.request(adminDiscountsControllerRemove),
 }

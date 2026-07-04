@@ -1,14 +1,12 @@
 import {
-  ordersControllerCancel,
-  ordersControllerFindAll,
-  ordersControllerFindOne,
-  ordersControllerUpdateStatus,
+  adminOrdersControllerFindAll,
+  adminOrdersControllerFindOne,
+  adminOrdersControllerUpdateStatus,
 } from '@/api/main'
 import { mainService } from '@/lib/api/client'
 
 export const orderService = {
-  getList: mainService.request(ordersControllerFindAll),
-  findOne: mainService.request(ordersControllerFindOne),
-  updateStatus: mainService.request(ordersControllerUpdateStatus),
-  cancel: mainService.request(ordersControllerCancel),
+  getList: mainService.request(adminOrdersControllerFindAll),
+  findOne: mainService.request(adminOrdersControllerFindOne),
+  updateStatus: mainService.request(adminOrdersControllerUpdateStatus),
 }

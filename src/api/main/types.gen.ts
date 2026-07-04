@@ -84,6 +84,29 @@ export type ResetPasswordDto = {
     newPassword: string;
 };
 
+export type UserProfileDto = {
+    /**
+     * ID người dùng
+     */
+    id: string;
+    /**
+     * Tên người dùng
+     */
+    name: string;
+    /**
+     * Email người dùng
+     */
+    email: string;
+    /**
+     * Danh sách role của người dùng
+     */
+    roles: Array<string>;
+    /**
+     * Danh sách permission của người dùng
+     */
+    permissions: Array<string>;
+};
+
 export type UserListQueryDto = {
     page?: number;
     limit?: number;
@@ -150,29 +173,6 @@ export type UserPaginatedResponseDto = {
     page: number;
     limit: number;
     data: Array<UserResponseDto>;
-};
-
-export type UserProfileDto = {
-    /**
-     * ID người dùng
-     */
-    id: string;
-    /**
-     * Tên người dùng
-     */
-    name: string;
-    /**
-     * Email người dùng
-     */
-    email: string;
-    /**
-     * Danh sách role của người dùng
-     */
-    roles: Array<string>;
-    /**
-     * Danh sách permission của người dùng
-     */
-    permissions: Array<string>;
 };
 
 export type UserDetailDto = {
@@ -259,9 +259,17 @@ export type CreatePermissionDto = {
 
 export type Permission = {
     /**
-     * ID permission
+     * ID
      */
     id: string;
+    /**
+     * Thời gian tạo
+     */
+    createdAt: Date;
+    /**
+     * Thời gian cập nhật
+     */
+    updatedAt: Date;
     /**
      * Module
      */
@@ -275,8 +283,6 @@ export type Permission = {
      * Permission hệ thống (readonly)
      */
     isSystem: boolean;
-    createdAt: Date;
-    updatedAt: Date;
 };
 
 export type PermissionMetaResponseDto = {
@@ -303,25 +309,6 @@ export type PermissionPaginatedResponseDto = {
 
 export type UpdatePermissionDto = {
     description?: string;
-};
-
-export type CreateCategoryDto = {
-    /**
-     * Category name
-     */
-    name: string;
-    /**
-     * SEO slug (auto-generated from name if omitted)
-     */
-    slug?: string;
-    /**
-     * Parent category ID
-     */
-    parent_id?: string;
-    description?: string;
-    image?: string;
-    sortOrder?: number;
-    isActive?: boolean;
 };
 
 export type CategoryResponseDto = {
@@ -370,6 +357,44 @@ export type CategoryTreeNodeDto = {
     children?: Array<CategoryTreeNodeDto>;
 };
 
+export type AdminCategoryResponseDto = {
+    id: string;
+    parent_id?: {
+        [key: string]: unknown;
+    } | null;
+    name: string;
+    slug: string;
+    description?: {
+        [key: string]: unknown;
+    } | null;
+    image?: {
+        [key: string]: unknown;
+    } | null;
+    sortOrder: number;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type CreateCategoryDto = {
+    /**
+     * Category name
+     */
+    name: string;
+    /**
+     * SEO slug (auto-generated from name if omitted)
+     */
+    slug?: string;
+    /**
+     * Parent category ID
+     */
+    parent_id?: string;
+    description?: string;
+    image?: string;
+    sortOrder?: number;
+    isActive?: boolean;
+};
+
 export type UpdateCategoryDto = {
     /**
      * Category name
@@ -403,43 +428,31 @@ export type MultiUploadResultDto = {
     files: Array<UploadResultDto>;
 };
 
-export type CreateProductImageDto = {
-    url: string;
-    alt?: string;
-    isPrimary?: boolean;
-    sortOrder?: number;
-};
-
-export type CreateProductVariantDto = {
-    name: string;
-    sku: string;
-    price: number;
-    stock?: number;
-    attributes?: {
-        [key: string]: unknown;
-    };
-    isActive?: boolean;
-};
-
-export type CreateProductDto = {
+export type ProductListItemDto = {
+    id: string;
     category_id: string;
     name: string;
-    /**
-     * Auto-generated from name if omitted
-     */
-    slug?: string;
-    description?: string;
+    slug: string;
     basePrice: number;
     sku: string;
-    status?: 'draft' | 'published' | 'archived';
-    isFeatured?: boolean;
-    images?: Array<CreateProductImageDto>;
-    variants?: Array<CreateProductVariantDto>;
-    tagIds?: Array<string>;
+    status: 'draft' | 'published' | 'archived';
+    isFeatured: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type ProductPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<ProductListItemDto>;
 };
 
 export type ProductImageResponseDto = {
     id: string;
+    variant_id?: {
+        [key: string]: unknown;
+    } | null;
     url: string;
     alt?: {
         [key: string]: unknown;
@@ -487,24 +500,59 @@ export type ProductResponseDto = {
     updatedAt: Date;
 };
 
-export type ProductListItemDto = {
+export type AdminProductResponseDto = {
     id: string;
     category_id: string;
     name: string;
     slug: string;
+    description?: {
+        [key: string]: unknown;
+    } | null;
     basePrice: number;
     sku: string;
     status: 'draft' | 'published' | 'archived';
     isFeatured: boolean;
+    images: Array<ProductImageResponseDto>;
+    variants: Array<ProductVariantResponseDto>;
+    tags: Array<TagResponseDto>;
     createdAt: Date;
     updatedAt: Date;
 };
 
-export type ProductPaginatedResponseDto = {
-    total: number;
-    page: number;
-    limit: number;
-    data: Array<ProductListItemDto>;
+export type CreateProductImageDto = {
+    url: string;
+    variant_id?: string;
+    alt?: string;
+    isPrimary?: boolean;
+    sortOrder?: number;
+};
+
+export type CreateProductVariantDto = {
+    name: string;
+    sku: string;
+    price: number;
+    stock?: number;
+    attributes?: {
+        [key: string]: unknown;
+    };
+    isActive?: boolean;
+};
+
+export type CreateProductDto = {
+    category_id: string;
+    name: string;
+    /**
+     * Auto-generated from name if omitted
+     */
+    slug?: string;
+    description?: string;
+    basePrice: number;
+    sku: string;
+    status?: 'draft' | 'published' | 'archived';
+    isFeatured?: boolean;
+    images?: Array<CreateProductImageDto>;
+    variants?: Array<CreateProductVariantDto>;
+    tagIds?: Array<string>;
 };
 
 export type UpdateProductDto = {
@@ -541,6 +589,12 @@ export type CreateTagDto = {
      * Auto-generated from name if omitted
      */
     slug?: string;
+};
+
+export type AdminTagResponseDto = {
+    id: string;
+    name: string;
+    slug: string;
 };
 
 export type AddressResponseDto = {
@@ -666,6 +720,43 @@ export type OrderPaginatedResponseDto = {
     data: Array<OrderListItemDto>;
 };
 
+export type AdminOrderListItemDto = {
+    id: string;
+    user_id: string;
+    orderNumber: string;
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    total: number;
+    createdAt: Date;
+};
+
+export type AdminOrderPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<AdminOrderListItemDto>;
+};
+
+export type AdminOrderResponseDto = {
+    id: string;
+    user_id: string;
+    address_id?: {
+        [key: string]: unknown;
+    };
+    orderNumber: string;
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    subtotal: number;
+    shippingFee: number;
+    discount: number;
+    total: number;
+    notes?: {
+        [key: string]: unknown;
+    };
+    items: Array<OrderItemResponseDto>;
+    discounts: Array<AppliedDiscountDto>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
 export type UpdateOrderStatusDto = {
     status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
 };
@@ -709,7 +800,7 @@ export type CreateDiscountDto = {
     expiresAt?: Date;
 };
 
-export type DiscountResponseDto = {
+export type AdminDiscountResponseDto = {
     id: string;
     code: string;
     type: 'percent' | 'fixed';
@@ -732,11 +823,11 @@ export type DiscountResponseDto = {
     updatedAt: Date;
 };
 
-export type DiscountPaginatedResponseDto = {
+export type AdminDiscountPaginatedResponseDto = {
     total: number;
     page: number;
     limit: number;
-    data: Array<DiscountResponseDto>;
+    data: Array<AdminDiscountResponseDto>;
 };
 
 export type UpdateDiscountDto = {
@@ -791,6 +882,32 @@ export type PaymentPaginatedResponseDto = {
     page: number;
     limit: number;
     data: Array<PaymentResponseDto>;
+};
+
+export type AdminPaymentResponseDto = {
+    id: string;
+    order_id: string;
+    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
+    status: 'pending' | 'completed' | 'failed' | 'refunded';
+    amount: number;
+    transactionId?: {
+        [key: string]: unknown;
+    };
+    metadata?: {
+        [key: string]: unknown;
+    };
+    paidAt?: {
+        [key: string]: unknown;
+    };
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type AdminPaymentPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<AdminPaymentResponseDto>;
 };
 
 export type UpdatePaymentStatusDto = {
@@ -896,6 +1013,31 @@ export type UpdateReviewDto = {
     content?: string;
 };
 
+export type AdminReviewResponseDto = {
+    id: string;
+    user_id: string;
+    user: ReviewAuthorDto;
+    product_id: string;
+    rating: number;
+    title?: {
+        [key: string]: unknown;
+    } | null;
+    content?: {
+        [key: string]: unknown;
+    } | null;
+    isVerified: boolean;
+    isApproved: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type AdminReviewPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<AdminReviewResponseDto>;
+};
+
 export type WishlistProductDto = {
     id: string;
     name: string;
@@ -929,6 +1071,34 @@ export type AddToWishlistDto = {
 };
 
 export type BannerResponseDto = {
+    id: string;
+    title: string;
+    subtitle?: {
+        [key: string]: unknown;
+    };
+    position: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
+    imageUrl: string;
+    imageMobileUrl?: {
+        [key: string]: unknown;
+    };
+    linkType: 'url' | 'product' | 'category' | 'discount';
+    linkValue?: {
+        [key: string]: unknown;
+    };
+    sortOrder: number;
+    isActive: boolean;
+    startsAt?: {
+        [key: string]: unknown;
+    };
+    endsAt?: {
+        [key: string]: unknown;
+    };
+    clickCount: number;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type AdminBannerResponseDto = {
     id: string;
     title: string;
     subtitle?: {
@@ -997,141 +1167,103 @@ export type UpdateBannerDto = {
     endsAt?: Date;
 };
 
-export type AppControllerHealthData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/health';
-};
-
-export type AppControllerHealthResponses = {
-    200: unknown;
-};
-
-export type AuthControllerLoginData = {
+export type AdminAuthControllerLoginData = {
     body: LoginDto;
     path?: never;
     query?: never;
-    url: '/auth/login';
+    url: '/admin/auth/login';
 };
 
-export type AuthControllerLoginResponses = {
+export type AdminAuthControllerLoginResponses = {
     /**
-     * Login successful
+     * Đăng nhập thành công
      */
     200: TokenResponseDto;
 };
 
-export type AuthControllerLoginResponse = AuthControllerLoginResponses[keyof AuthControllerLoginResponses];
+export type AdminAuthControllerLoginResponse = AdminAuthControllerLoginResponses[keyof AdminAuthControllerLoginResponses];
 
-export type AuthControllerRegisterData = {
-    body: RegisterDto;
+export type AdminAuthControllerMeData = {
+    body?: never;
     path?: never;
     query?: never;
-    url: '/auth/register';
+    url: '/admin/auth/me';
 };
 
-export type AuthControllerRegisterResponses = {
+export type AdminAuthControllerMeResponses = {
     /**
-     * User registered successfully
+     * Current admin profile
      */
-    201: MessageResponseDto;
+    200: UserProfileDto;
 };
 
-export type AuthControllerRegisterResponse = AuthControllerRegisterResponses[keyof AuthControllerRegisterResponses];
+export type AdminAuthControllerMeResponse = AdminAuthControllerMeResponses[keyof AdminAuthControllerMeResponses];
 
-export type AuthControllerActiveData = {
+export type AdminAuthControllerActiveData = {
     body: ActiveDto;
     path?: never;
     query?: never;
-    url: '/auth/active';
+    url: '/admin/auth/active';
 };
 
-export type AuthControllerActiveResponses = {
+export type AdminAuthControllerActiveResponses = {
     /**
      * Account activated successfully
      */
     200: UserInformationResponseDto;
 };
 
-export type AuthControllerActiveResponse = AuthControllerActiveResponses[keyof AuthControllerActiveResponses];
+export type AdminAuthControllerActiveResponse = AdminAuthControllerActiveResponses[keyof AdminAuthControllerActiveResponses];
 
-export type AuthControllerRefreshData = {
+export type AdminAuthControllerRefreshData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/auth/refresh';
+    url: '/admin/auth/refresh';
 };
 
-export type AuthControllerRefreshResponses = {
+export type AdminAuthControllerRefreshResponses = {
     /**
      * Token refreshed successfully
      */
     200: TokenResponseDto;
 };
 
-export type AuthControllerRefreshResponse = AuthControllerRefreshResponses[keyof AuthControllerRefreshResponses];
+export type AdminAuthControllerRefreshResponse = AdminAuthControllerRefreshResponses[keyof AdminAuthControllerRefreshResponses];
 
-export type AuthControllerForgotPasswordData = {
+export type AdminAuthControllerForgotPasswordData = {
     body: ForgotPasswordDto;
     path?: never;
     query?: never;
-    url: '/auth/forgot-password';
+    url: '/admin/auth/forgot-password';
 };
 
-export type AuthControllerForgotPasswordResponses = {
+export type AdminAuthControllerForgotPasswordResponses = {
     /**
      * Password reset email sent if email exists
      */
     200: MessageResponseDto;
 };
 
-export type AuthControllerForgotPasswordResponse = AuthControllerForgotPasswordResponses[keyof AuthControllerForgotPasswordResponses];
+export type AdminAuthControllerForgotPasswordResponse = AdminAuthControllerForgotPasswordResponses[keyof AdminAuthControllerForgotPasswordResponses];
 
-export type AuthControllerResetPasswordData = {
+export type AdminAuthControllerResetPasswordData = {
     body: ResetPasswordDto;
     path?: never;
     query?: never;
-    url: '/auth/reset-password';
+    url: '/admin/auth/reset-password';
 };
 
-export type AuthControllerResetPasswordResponses = {
+export type AdminAuthControllerResetPasswordResponses = {
     /**
      * Password reset successfully
      */
     200: MessageResponseDto;
 };
 
-export type AuthControllerResetPasswordResponse = AuthControllerResetPasswordResponses[keyof AuthControllerResetPasswordResponses];
+export type AdminAuthControllerResetPasswordResponse = AdminAuthControllerResetPasswordResponses[keyof AdminAuthControllerResetPasswordResponses];
 
-export type AuthControllerGoogleLoginData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/auth/google';
-};
-
-export type AuthControllerGoogleLoginResponses = {
-    200: unknown;
-};
-
-export type AuthControllerGoogleCallbackData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/auth/google/callback';
-};
-
-export type AuthControllerGoogleCallbackResponses = {
-    /**
-     * Google login successful
-     */
-    200: TokenResponseDto;
-};
-
-export type AuthControllerGoogleCallbackResponse = AuthControllerGoogleCallbackResponses[keyof AuthControllerGoogleCallbackResponses];
-
-export type UsersControllerFindAllData = {
+export type AdminUsersControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -1141,122 +1273,109 @@ export type UsersControllerFindAllData = {
         role?: string;
         userCode?: string;
     };
-    url: '/users';
+    url: '/admin/users';
 };
 
-export type UsersControllerFindAllResponses = {
+export type AdminUsersControllerFindAllResponses = {
     200: UserPaginatedResponseDto;
 };
 
-export type UsersControllerFindAllResponse = UsersControllerFindAllResponses[keyof UsersControllerFindAllResponses];
+export type AdminUsersControllerFindAllResponse = AdminUsersControllerFindAllResponses[keyof AdminUsersControllerFindAllResponses];
 
-export type UsersControllerGetProfileData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/users/profile';
-};
-
-export type UsersControllerGetProfileResponses = {
-    200: UserProfileDto;
-};
-
-export type UsersControllerGetProfileResponse = UsersControllerGetProfileResponses[keyof UsersControllerGetProfileResponses];
-
-export type UsersControllerFindByUserCodeData = {
+export type AdminUsersControllerFindByUserCodeData = {
     body?: never;
     path: {
         userCode: string;
     };
     query?: never;
-    url: '/users/by-code/{userCode}';
+    url: '/admin/users/by-code/{userCode}';
 };
 
-export type UsersControllerFindByUserCodeResponses = {
+export type AdminUsersControllerFindByUserCodeResponses = {
     200: UserDetailDto;
 };
 
-export type UsersControllerFindByUserCodeResponse = UsersControllerFindByUserCodeResponses[keyof UsersControllerFindByUserCodeResponses];
+export type AdminUsersControllerFindByUserCodeResponse = AdminUsersControllerFindByUserCodeResponses[keyof AdminUsersControllerFindByUserCodeResponses];
 
-export type UsersControllerRemoveData = {
+export type AdminUsersControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/users/{id}';
+    url: '/admin/users/{id}';
 };
 
-export type UsersControllerRemoveResponses = {
+export type AdminUsersControllerRemoveResponses = {
     /**
      * User deleted
      */
     204: void;
 };
 
-export type UsersControllerRemoveResponse = UsersControllerRemoveResponses[keyof UsersControllerRemoveResponses];
+export type AdminUsersControllerRemoveResponse = AdminUsersControllerRemoveResponses[keyof AdminUsersControllerRemoveResponses];
 
-export type UsersControllerFindOneData = {
+export type AdminUsersControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/users/{id}';
+    url: '/admin/users/{id}';
 };
 
-export type UsersControllerFindOneResponses = {
+export type AdminUsersControllerFindOneResponses = {
     200: UserDetailDto;
 };
 
-export type UsersControllerFindOneResponse = UsersControllerFindOneResponses[keyof UsersControllerFindOneResponses];
+export type AdminUsersControllerFindOneResponse = AdminUsersControllerFindOneResponses[keyof AdminUsersControllerFindOneResponses];
 
-export type UsersControllerUpdateData = {
+export type AdminUsersControllerUpdateData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/users/{id}';
+    url: '/admin/users/{id}';
 };
 
-export type UsersControllerUpdateResponses = {
+export type AdminUsersControllerUpdateResponses = {
     200: UserDetailDto;
 };
 
-export type UsersControllerUpdateResponse = UsersControllerUpdateResponses[keyof UsersControllerUpdateResponses];
+export type AdminUsersControllerUpdateResponse = AdminUsersControllerUpdateResponses[keyof AdminUsersControllerUpdateResponses];
 
-export type UsersControllerAssignRolesData = {
+export type AdminUsersControllerAssignRolesData = {
     body: AssignRolesDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/users/{id}/roles';
+    url: '/admin/users/{id}/roles';
 };
 
-export type UsersControllerAssignRolesResponses = {
+export type AdminUsersControllerAssignRolesResponses = {
     200: UserDetailDto;
 };
 
-export type UsersControllerAssignRolesResponse = UsersControllerAssignRolesResponses[keyof UsersControllerAssignRolesResponses];
+export type AdminUsersControllerAssignRolesResponse = AdminUsersControllerAssignRolesResponses[keyof AdminUsersControllerAssignRolesResponses];
 
-export type UsersControllerAssignPermissionsData = {
+export type AdminUsersControllerAssignPermissionsData = {
     body: AssignUserPermissionsDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/users/{id}/permissions';
+    url: '/admin/users/{id}/permissions';
 };
 
-export type UsersControllerAssignPermissionsResponses = {
+export type AdminUsersControllerAssignPermissionsResponses = {
     200: UserDetailDto;
 };
 
-export type UsersControllerAssignPermissionsResponse = UsersControllerAssignPermissionsResponses[keyof UsersControllerAssignPermissionsResponses];
+export type AdminUsersControllerAssignPermissionsResponse = AdminUsersControllerAssignPermissionsResponses[keyof AdminUsersControllerAssignPermissionsResponses];
 
-export type RolesControllerFindAllData = {
+export type AdminRolesControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -1267,90 +1386,90 @@ export type RolesControllerFindAllData = {
          */
         name?: string;
     };
-    url: '/roles';
+    url: '/admin/roles';
 };
 
-export type RolesControllerFindAllResponses = {
+export type AdminRolesControllerFindAllResponses = {
     200: RolePaginatedResponseDto;
 };
 
-export type RolesControllerFindAllResponse = RolesControllerFindAllResponses[keyof RolesControllerFindAllResponses];
+export type AdminRolesControllerFindAllResponse = AdminRolesControllerFindAllResponses[keyof AdminRolesControllerFindAllResponses];
 
-export type RolesControllerCreateRoleData = {
+export type AdminRolesControllerCreateRoleData = {
     body: CreateRoleDto;
     path?: never;
     query?: never;
-    url: '/roles';
+    url: '/admin/roles';
 };
 
-export type RolesControllerCreateRoleResponses = {
+export type AdminRolesControllerCreateRoleResponses = {
     /**
      * Role created successfully
      */
     201: RoleResponseDto;
 };
 
-export type RolesControllerCreateRoleResponse = RolesControllerCreateRoleResponses[keyof RolesControllerCreateRoleResponses];
+export type AdminRolesControllerCreateRoleResponse = AdminRolesControllerCreateRoleResponses[keyof AdminRolesControllerCreateRoleResponses];
 
-export type RolesControllerRemoveData = {
+export type AdminRolesControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/roles/{id}';
+    url: '/admin/roles/{id}';
 };
 
-export type RolesControllerRemoveResponses = {
+export type AdminRolesControllerRemoveResponses = {
     200: unknown;
 };
 
-export type RolesControllerFindOneData = {
+export type AdminRolesControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/roles/{id}';
+    url: '/admin/roles/{id}';
 };
 
-export type RolesControllerFindOneResponses = {
+export type AdminRolesControllerFindOneResponses = {
     200: RoleResponseDto;
 };
 
-export type RolesControllerFindOneResponse = RolesControllerFindOneResponses[keyof RolesControllerFindOneResponses];
+export type AdminRolesControllerFindOneResponse = AdminRolesControllerFindOneResponses[keyof AdminRolesControllerFindOneResponses];
 
-export type RolesControllerUpdateData = {
+export type AdminRolesControllerUpdateData = {
     body: UpdateRoleDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/roles/{id}';
+    url: '/admin/roles/{id}';
 };
 
-export type RolesControllerUpdateResponses = {
+export type AdminRolesControllerUpdateResponses = {
     200: RoleResponseDto;
 };
 
-export type RolesControllerUpdateResponse = RolesControllerUpdateResponses[keyof RolesControllerUpdateResponses];
+export type AdminRolesControllerUpdateResponse = AdminRolesControllerUpdateResponses[keyof AdminRolesControllerUpdateResponses];
 
-export type RolesControllerAssignPermissionsData = {
+export type AdminRolesControllerAssignPermissionsData = {
     body: AssignPermissionsDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/roles/{id}/permissions';
+    url: '/admin/roles/{id}/permissions';
 };
 
-export type RolesControllerAssignPermissionsResponses = {
+export type AdminRolesControllerAssignPermissionsResponses = {
     200: RoleResponseDto;
 };
 
-export type RolesControllerAssignPermissionsResponse = RolesControllerAssignPermissionsResponses[keyof RolesControllerAssignPermissionsResponses];
+export type AdminRolesControllerAssignPermissionsResponse = AdminRolesControllerAssignPermissionsResponses[keyof AdminRolesControllerAssignPermissionsResponses];
 
-export type PermissionsControllerFindAllData = {
+export type AdminPermissionsControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -1365,88 +1484,88 @@ export type PermissionsControllerFindAllData = {
          */
         action?: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
     };
-    url: '/permissions';
+    url: '/admin/permissions';
 };
 
-export type PermissionsControllerFindAllResponses = {
+export type AdminPermissionsControllerFindAllResponses = {
     200: PermissionPaginatedResponseDto;
 };
 
-export type PermissionsControllerFindAllResponse = PermissionsControllerFindAllResponses[keyof PermissionsControllerFindAllResponses];
+export type AdminPermissionsControllerFindAllResponse = AdminPermissionsControllerFindAllResponses[keyof AdminPermissionsControllerFindAllResponses];
 
-export type PermissionsControllerCreateData = {
+export type AdminPermissionsControllerCreateData = {
     body: CreatePermissionDto;
     path?: never;
     query?: never;
-    url: '/permissions';
+    url: '/admin/permissions';
 };
 
-export type PermissionsControllerCreateResponses = {
+export type AdminPermissionsControllerCreateResponses = {
     201: Permission;
 };
 
-export type PermissionsControllerCreateResponse = PermissionsControllerCreateResponses[keyof PermissionsControllerCreateResponses];
+export type AdminPermissionsControllerCreateResponse = AdminPermissionsControllerCreateResponses[keyof AdminPermissionsControllerCreateResponses];
 
-export type PermissionsControllerGetMetaData = {
+export type AdminPermissionsControllerGetMetaData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/permissions/meta';
+    url: '/admin/permissions/meta';
 };
 
-export type PermissionsControllerGetMetaResponses = {
+export type AdminPermissionsControllerGetMetaResponses = {
     200: PermissionMetaResponseDto;
 };
 
-export type PermissionsControllerGetMetaResponse = PermissionsControllerGetMetaResponses[keyof PermissionsControllerGetMetaResponses];
+export type AdminPermissionsControllerGetMetaResponse = AdminPermissionsControllerGetMetaResponses[keyof AdminPermissionsControllerGetMetaResponses];
 
-export type PermissionsControllerRemoveData = {
+export type AdminPermissionsControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/permissions/{id}';
+    url: '/admin/permissions/{id}';
 };
 
-export type PermissionsControllerRemoveResponses = {
+export type AdminPermissionsControllerRemoveResponses = {
     /**
      * Permission deleted
      */
     200: unknown;
 };
 
-export type PermissionsControllerFindOneData = {
+export type AdminPermissionsControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/permissions/{id}';
+    url: '/admin/permissions/{id}';
 };
 
-export type PermissionsControllerFindOneResponses = {
+export type AdminPermissionsControllerFindOneResponses = {
     200: Permission;
 };
 
-export type PermissionsControllerFindOneResponse = PermissionsControllerFindOneResponses[keyof PermissionsControllerFindOneResponses];
+export type AdminPermissionsControllerFindOneResponse = AdminPermissionsControllerFindOneResponses[keyof AdminPermissionsControllerFindOneResponses];
 
-export type PermissionsControllerUpdateData = {
+export type AdminPermissionsControllerUpdateData = {
     body: UpdatePermissionDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/permissions/{id}';
+    url: '/admin/permissions/{id}';
 };
 
-export type PermissionsControllerUpdateResponses = {
+export type AdminPermissionsControllerUpdateResponses = {
     200: Permission;
 };
 
-export type PermissionsControllerUpdateResponse = PermissionsControllerUpdateResponses[keyof PermissionsControllerUpdateResponses];
+export type AdminPermissionsControllerUpdateResponse = AdminPermissionsControllerUpdateResponses[keyof AdminPermissionsControllerUpdateResponses];
 
-export type CategoriesControllerFindAllData = {
+export type AdminCategoriesControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -1465,85 +1584,85 @@ export type CategoriesControllerFindAllData = {
          */
         isActive?: boolean;
     };
-    url: '/categories';
+    url: '/admin/categories';
 };
 
-export type CategoriesControllerFindAllResponses = {
+export type AdminCategoriesControllerFindAllResponses = {
     200: CategoryPaginatedResponseDto;
 };
 
-export type CategoriesControllerFindAllResponse = CategoriesControllerFindAllResponses[keyof CategoriesControllerFindAllResponses];
+export type AdminCategoriesControllerFindAllResponse = AdminCategoriesControllerFindAllResponses[keyof AdminCategoriesControllerFindAllResponses];
 
-export type CategoriesControllerCreateData = {
+export type AdminCategoriesControllerCreateData = {
     body: CreateCategoryDto;
     path?: never;
     query?: never;
-    url: '/categories';
+    url: '/admin/categories';
 };
 
-export type CategoriesControllerCreateResponses = {
-    201: CategoryResponseDto;
+export type AdminCategoriesControllerCreateResponses = {
+    201: AdminCategoryResponseDto;
 };
 
-export type CategoriesControllerCreateResponse = CategoriesControllerCreateResponses[keyof CategoriesControllerCreateResponses];
+export type AdminCategoriesControllerCreateResponse = AdminCategoriesControllerCreateResponses[keyof AdminCategoriesControllerCreateResponses];
 
-export type CategoriesControllerFindTreeData = {
+export type AdminCategoriesControllerFindTreeData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/categories/tree';
+    url: '/admin/categories/tree';
 };
 
-export type CategoriesControllerFindTreeResponses = {
+export type AdminCategoriesControllerFindTreeResponses = {
     200: Array<CategoryTreeNodeDto>;
 };
 
-export type CategoriesControllerFindTreeResponse = CategoriesControllerFindTreeResponses[keyof CategoriesControllerFindTreeResponses];
+export type AdminCategoriesControllerFindTreeResponse = AdminCategoriesControllerFindTreeResponses[keyof AdminCategoriesControllerFindTreeResponses];
 
-export type CategoriesControllerRemoveData = {
+export type AdminCategoriesControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/categories/{id}';
+    url: '/admin/categories/{id}';
 };
 
-export type CategoriesControllerRemoveResponses = {
+export type AdminCategoriesControllerRemoveResponses = {
     200: unknown;
 };
 
-export type CategoriesControllerFindOneData = {
+export type AdminCategoriesControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/categories/{id}';
+    url: '/admin/categories/{id}';
 };
 
-export type CategoriesControllerFindOneResponses = {
-    200: CategoryResponseDto;
+export type AdminCategoriesControllerFindOneResponses = {
+    200: AdminCategoryResponseDto;
 };
 
-export type CategoriesControllerFindOneResponse = CategoriesControllerFindOneResponses[keyof CategoriesControllerFindOneResponses];
+export type AdminCategoriesControllerFindOneResponse = AdminCategoriesControllerFindOneResponses[keyof AdminCategoriesControllerFindOneResponses];
 
-export type CategoriesControllerUpdateData = {
+export type AdminCategoriesControllerUpdateData = {
     body: UpdateCategoryDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/categories/{id}';
+    url: '/admin/categories/{id}';
 };
 
-export type CategoriesControllerUpdateResponses = {
-    200: CategoryResponseDto;
+export type AdminCategoriesControllerUpdateResponses = {
+    200: AdminCategoryResponseDto;
 };
 
-export type CategoriesControllerUpdateResponse = CategoriesControllerUpdateResponses[keyof CategoriesControllerUpdateResponses];
+export type AdminCategoriesControllerUpdateResponse = AdminCategoriesControllerUpdateResponses[keyof AdminCategoriesControllerUpdateResponses];
 
-export type CategoriesControllerUploadImageData = {
+export type AdminCategoriesControllerUploadImageData = {
     body: {
         file: Blob | File;
     };
@@ -1551,61 +1670,61 @@ export type CategoriesControllerUploadImageData = {
         id: string;
     };
     query?: never;
-    url: '/categories/{id}/image/upload';
+    url: '/admin/categories/{id}/image/upload';
 };
 
-export type CategoriesControllerUploadImageResponses = {
-    200: CategoryResponseDto;
+export type AdminCategoriesControllerUploadImageResponses = {
+    200: AdminCategoryResponseDto;
 };
 
-export type CategoriesControllerUploadImageResponse = CategoriesControllerUploadImageResponses[keyof CategoriesControllerUploadImageResponses];
+export type AdminCategoriesControllerUploadImageResponse = AdminCategoriesControllerUploadImageResponses[keyof AdminCategoriesControllerUploadImageResponses];
 
-export type CategoriesControllerRemoveImageData = {
+export type AdminCategoriesControllerRemoveImageData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/categories/{id}/image';
+    url: '/admin/categories/{id}/image';
 };
 
-export type CategoriesControllerRemoveImageResponses = {
-    200: CategoryResponseDto;
+export type AdminCategoriesControllerRemoveImageResponses = {
+    200: AdminCategoryResponseDto;
 };
 
-export type CategoriesControllerRemoveImageResponse = CategoriesControllerRemoveImageResponses[keyof CategoriesControllerRemoveImageResponses];
+export type AdminCategoriesControllerRemoveImageResponse = AdminCategoriesControllerRemoveImageResponses[keyof AdminCategoriesControllerRemoveImageResponses];
 
-export type MediaControllerUploadOneData = {
+export type AdminMediaControllerUploadOneData = {
     body: {
         file: Blob | File;
     };
     path?: never;
     query?: never;
-    url: '/media/upload';
+    url: '/admin/media/upload';
 };
 
-export type MediaControllerUploadOneResponses = {
+export type AdminMediaControllerUploadOneResponses = {
     201: UploadResultDto;
 };
 
-export type MediaControllerUploadOneResponse = MediaControllerUploadOneResponses[keyof MediaControllerUploadOneResponses];
+export type AdminMediaControllerUploadOneResponse = AdminMediaControllerUploadOneResponses[keyof AdminMediaControllerUploadOneResponses];
 
-export type MediaControllerUploadManyData = {
+export type AdminMediaControllerUploadManyData = {
     body: {
         files: Array<Blob | File>;
     };
     path?: never;
     query?: never;
-    url: '/media/upload/multiple';
+    url: '/admin/media/upload/multiple';
 };
 
-export type MediaControllerUploadManyResponses = {
+export type AdminMediaControllerUploadManyResponses = {
     200: MultiUploadResultDto;
 };
 
-export type MediaControllerUploadManyResponse = MediaControllerUploadManyResponses[keyof MediaControllerUploadManyResponses];
+export type AdminMediaControllerUploadManyResponse = AdminMediaControllerUploadManyResponses[keyof AdminMediaControllerUploadManyResponses];
 
-export type MediaControllerRemoveData = {
+export type AdminMediaControllerRemoveData = {
     body?: never;
     path: {
         /**
@@ -1614,14 +1733,14 @@ export type MediaControllerRemoveData = {
         publicId: string;
     };
     query?: never;
-    url: '/media/{publicId}';
+    url: '/admin/media/{publicId}';
 };
 
-export type MediaControllerRemoveResponses = {
+export type AdminMediaControllerRemoveResponses = {
     200: unknown;
 };
 
-export type ProductsControllerFindAllData = {
+export type AdminProductsControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -1641,294 +1760,193 @@ export type ProductsControllerFindAllData = {
          */
         isFeatured?: boolean;
     };
-    url: '/products';
+    url: '/admin/products';
 };
 
-export type ProductsControllerFindAllResponses = {
+export type AdminProductsControllerFindAllResponses = {
     200: ProductPaginatedResponseDto;
 };
 
-export type ProductsControllerFindAllResponse = ProductsControllerFindAllResponses[keyof ProductsControllerFindAllResponses];
+export type AdminProductsControllerFindAllResponse = AdminProductsControllerFindAllResponses[keyof AdminProductsControllerFindAllResponses];
 
-export type ProductsControllerCreateData = {
+export type AdminProductsControllerCreateData = {
     body: CreateProductDto;
     path?: never;
     query?: never;
-    url: '/products';
+    url: '/admin/products';
 };
 
-export type ProductsControllerCreateResponses = {
-    201: ProductResponseDto;
+export type AdminProductsControllerCreateResponses = {
+    201: AdminProductResponseDto;
 };
 
-export type ProductsControllerCreateResponse = ProductsControllerCreateResponses[keyof ProductsControllerCreateResponses];
+export type AdminProductsControllerCreateResponse = AdminProductsControllerCreateResponses[keyof AdminProductsControllerCreateResponses];
 
-export type ProductsControllerRemoveData = {
+export type AdminProductsControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/products/{id}';
+    url: '/admin/products/{id}';
 };
 
-export type ProductsControllerRemoveResponses = {
+export type AdminProductsControllerRemoveResponses = {
     200: unknown;
 };
 
-export type ProductsControllerFindOneData = {
+export type AdminProductsControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/products/{id}';
+    url: '/admin/products/{id}';
 };
 
-export type ProductsControllerFindOneResponses = {
-    200: ProductResponseDto;
+export type AdminProductsControllerFindOneResponses = {
+    200: AdminProductResponseDto;
 };
 
-export type ProductsControllerFindOneResponse = ProductsControllerFindOneResponses[keyof ProductsControllerFindOneResponses];
+export type AdminProductsControllerFindOneResponse = AdminProductsControllerFindOneResponses[keyof AdminProductsControllerFindOneResponses];
 
-export type ProductsControllerUpdateData = {
+export type AdminProductsControllerUpdateData = {
     body: UpdateProductDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/products/{id}';
+    url: '/admin/products/{id}';
 };
 
-export type ProductsControllerUpdateResponses = {
-    200: ProductResponseDto;
+export type AdminProductsControllerUpdateResponses = {
+    200: AdminProductResponseDto;
 };
 
-export type ProductsControllerUpdateResponse = ProductsControllerUpdateResponses[keyof ProductsControllerUpdateResponses];
+export type AdminProductsControllerUpdateResponse = AdminProductsControllerUpdateResponses[keyof AdminProductsControllerUpdateResponses];
 
-export type ProductsControllerAddImageData = {
+export type AdminProductsControllerAddImageData = {
     body: CreateProductImageDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/products/{id}/images';
+    url: '/admin/products/{id}/images';
 };
 
-export type ProductsControllerAddImageResponses = {
+export type AdminProductsControllerAddImageResponses = {
     201: ProductImageResponseDto;
 };
 
-export type ProductsControllerAddImageResponse = ProductsControllerAddImageResponses[keyof ProductsControllerAddImageResponses];
+export type AdminProductsControllerAddImageResponse = AdminProductsControllerAddImageResponses[keyof AdminProductsControllerAddImageResponses];
 
-export type ProductsControllerUploadImageData = {
+export type AdminProductsControllerUploadImageData = {
     body: {
         file: Blob | File;
         alt?: string;
         isPrimary?: boolean;
         sortOrder?: number;
+        variant_id?: string;
     };
     path: {
         id: string;
     };
     query?: never;
-    url: '/products/{id}/images/upload';
+    url: '/admin/products/{id}/images/upload';
 };
 
-export type ProductsControllerUploadImageResponses = {
+export type AdminProductsControllerUploadImageResponses = {
     201: ProductImageResponseDto;
 };
 
-export type ProductsControllerUploadImageResponse = ProductsControllerUploadImageResponses[keyof ProductsControllerUploadImageResponses];
+export type AdminProductsControllerUploadImageResponse = AdminProductsControllerUploadImageResponses[keyof AdminProductsControllerUploadImageResponses];
 
-export type ProductsControllerRemoveImageData = {
+export type AdminProductsControllerRemoveImageData = {
     body?: never;
     path: {
         id: string;
         imageId: string;
     };
     query?: never;
-    url: '/products/{id}/images/{imageId}';
+    url: '/admin/products/{id}/images/{imageId}';
 };
 
-export type ProductsControllerRemoveImageResponses = {
+export type AdminProductsControllerRemoveImageResponses = {
     200: unknown;
 };
 
-export type ProductsControllerAddVariantData = {
+export type AdminProductsControllerAddVariantData = {
     body: CreateProductVariantDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/products/{id}/variants';
+    url: '/admin/products/{id}/variants';
 };
 
-export type ProductsControllerAddVariantResponses = {
+export type AdminProductsControllerAddVariantResponses = {
     201: ProductVariantResponseDto;
 };
 
-export type ProductsControllerAddVariantResponse = ProductsControllerAddVariantResponses[keyof ProductsControllerAddVariantResponses];
+export type AdminProductsControllerAddVariantResponse = AdminProductsControllerAddVariantResponses[keyof AdminProductsControllerAddVariantResponses];
 
-export type ProductsControllerRemoveVariantData = {
+export type AdminProductsControllerRemoveVariantData = {
     body?: never;
     path: {
         id: string;
         variantId: string;
     };
     query?: never;
-    url: '/products/{id}/variants/{variantId}';
+    url: '/admin/products/{id}/variants/{variantId}';
 };
 
-export type ProductsControllerRemoveVariantResponses = {
+export type AdminProductsControllerRemoveVariantResponses = {
     200: unknown;
 };
 
-export type ProductsControllerUpdateVariantData = {
+export type AdminProductsControllerUpdateVariantData = {
     body: UpdateProductVariantDto;
     path: {
         id: string;
         variantId: string;
     };
     query?: never;
-    url: '/products/{id}/variants/{variantId}';
+    url: '/admin/products/{id}/variants/{variantId}';
 };
 
-export type ProductsControllerUpdateVariantResponses = {
+export type AdminProductsControllerUpdateVariantResponses = {
     200: ProductVariantResponseDto;
 };
 
-export type ProductsControllerUpdateVariantResponse = ProductsControllerUpdateVariantResponses[keyof ProductsControllerUpdateVariantResponses];
+export type AdminProductsControllerUpdateVariantResponse = AdminProductsControllerUpdateVariantResponses[keyof AdminProductsControllerUpdateVariantResponses];
 
-export type TagsControllerFindAllTagsData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/tags';
-};
-
-export type TagsControllerFindAllTagsResponses = {
-    200: Array<TagResponseDto>;
-};
-
-export type TagsControllerFindAllTagsResponse = TagsControllerFindAllTagsResponses[keyof TagsControllerFindAllTagsResponses];
-
-export type TagsControllerCreateTagData = {
+export type AdminTagsControllerCreateTagData = {
     body: CreateTagDto;
     path?: never;
     query?: never;
-    url: '/tags';
+    url: '/admin/tags';
 };
 
-export type TagsControllerCreateTagResponses = {
-    201: TagResponseDto;
+export type AdminTagsControllerCreateTagResponses = {
+    201: AdminTagResponseDto;
 };
 
-export type TagsControllerCreateTagResponse = TagsControllerCreateTagResponses[keyof TagsControllerCreateTagResponses];
+export type AdminTagsControllerCreateTagResponse = AdminTagsControllerCreateTagResponses[keyof AdminTagsControllerCreateTagResponses];
 
-export type TagsControllerRemoveTagData = {
+export type AdminTagsControllerRemoveTagData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/tags/{id}';
+    url: '/admin/tags/{id}';
 };
 
-export type TagsControllerRemoveTagResponses = {
+export type AdminTagsControllerRemoveTagResponses = {
     200: unknown;
 };
 
-export type AddressesControllerFindAllData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/users/me/addresses';
-};
-
-export type AddressesControllerFindAllResponses = {
-    200: Array<AddressResponseDto>;
-};
-
-export type AddressesControllerFindAllResponse = AddressesControllerFindAllResponses[keyof AddressesControllerFindAllResponses];
-
-export type AddressesControllerCreateData = {
-    body: CreateAddressDto;
-    path?: never;
-    query?: never;
-    url: '/users/me/addresses';
-};
-
-export type AddressesControllerCreateResponses = {
-    200: AddressResponseDto;
-};
-
-export type AddressesControllerCreateResponse = AddressesControllerCreateResponses[keyof AddressesControllerCreateResponses];
-
-export type AddressesControllerRemoveData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/users/me/addresses/{id}';
-};
-
-export type AddressesControllerRemoveResponses = {
-    /**
-     * Address deleted
-     */
-    204: void;
-};
-
-export type AddressesControllerRemoveResponse = AddressesControllerRemoveResponses[keyof AddressesControllerRemoveResponses];
-
-export type AddressesControllerFindOneData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/users/me/addresses/{id}';
-};
-
-export type AddressesControllerFindOneResponses = {
-    200: AddressResponseDto;
-};
-
-export type AddressesControllerFindOneResponse = AddressesControllerFindOneResponses[keyof AddressesControllerFindOneResponses];
-
-export type AddressesControllerUpdateData = {
-    body: UpdateAddressDto;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/users/me/addresses/{id}';
-};
-
-export type AddressesControllerUpdateResponses = {
-    200: AddressResponseDto;
-};
-
-export type AddressesControllerUpdateResponse = AddressesControllerUpdateResponses[keyof AddressesControllerUpdateResponses];
-
-export type AddressesControllerSetDefaultData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/users/me/addresses/{id}/default';
-};
-
-export type AddressesControllerSetDefaultResponses = {
-    200: AddressResponseDto;
-};
-
-export type AddressesControllerSetDefaultResponse = AddressesControllerSetDefaultResponses[keyof AddressesControllerSetDefaultResponses];
-
-export type OrdersControllerFindAllData = {
+export type AdminOrdersControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -1940,123 +1958,46 @@ export type OrdersControllerFindAllData = {
          */
         user_id?: string;
     };
-    url: '/orders';
+    url: '/admin/orders';
 };
 
-export type OrdersControllerFindAllResponses = {
-    200: OrderPaginatedResponseDto;
+export type AdminOrdersControllerFindAllResponses = {
+    200: AdminOrderPaginatedResponseDto;
 };
 
-export type OrdersControllerFindAllResponse = OrdersControllerFindAllResponses[keyof OrdersControllerFindAllResponses];
+export type AdminOrdersControllerFindAllResponse = AdminOrdersControllerFindAllResponses[keyof AdminOrdersControllerFindAllResponses];
 
-export type OrdersControllerCreateData = {
-    body: CreateOrderDto;
-    path?: never;
-    query?: never;
-    url: '/orders';
-};
-
-export type OrdersControllerCreateResponses = {
-    201: OrderResponseDto;
-};
-
-export type OrdersControllerCreateResponse = OrdersControllerCreateResponses[keyof OrdersControllerCreateResponses];
-
-export type OrdersControllerFindMineData = {
-    body?: never;
-    path?: never;
-    query?: {
-        page?: number;
-        limit?: number;
-        status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
-        /**
-         * Filter by user ID (admin only)
-         */
-        user_id?: string;
-    };
-    url: '/orders/me';
-};
-
-export type OrdersControllerFindMineResponses = {
-    200: OrderPaginatedResponseDto;
-};
-
-export type OrdersControllerFindMineResponse = OrdersControllerFindMineResponses[keyof OrdersControllerFindMineResponses];
-
-export type OrdersControllerFindMineOneData = {
+export type AdminOrdersControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/orders/me/{id}';
+    url: '/admin/orders/{id}';
 };
 
-export type OrdersControllerFindMineOneResponses = {
-    200: OrderResponseDto;
+export type AdminOrdersControllerFindOneResponses = {
+    200: AdminOrderResponseDto;
 };
 
-export type OrdersControllerFindMineOneResponse = OrdersControllerFindMineOneResponses[keyof OrdersControllerFindMineOneResponses];
+export type AdminOrdersControllerFindOneResponse = AdminOrdersControllerFindOneResponses[keyof AdminOrdersControllerFindOneResponses];
 
-export type OrdersControllerCancelData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/orders/me/{id}/cancel';
-};
-
-export type OrdersControllerCancelResponses = {
-    200: OrderResponseDto;
-};
-
-export type OrdersControllerCancelResponse = OrdersControllerCancelResponses[keyof OrdersControllerCancelResponses];
-
-export type OrdersControllerFindOneData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/orders/{id}';
-};
-
-export type OrdersControllerFindOneResponses = {
-    200: OrderResponseDto;
-};
-
-export type OrdersControllerFindOneResponse = OrdersControllerFindOneResponses[keyof OrdersControllerFindOneResponses];
-
-export type OrdersControllerUpdateStatusData = {
+export type AdminOrdersControllerUpdateStatusData = {
     body: UpdateOrderStatusDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/orders/{id}/status';
+    url: '/admin/orders/{id}/status';
 };
 
-export type OrdersControllerUpdateStatusResponses = {
-    200: OrderResponseDto;
+export type AdminOrdersControllerUpdateStatusResponses = {
+    200: AdminOrderResponseDto;
 };
 
-export type OrdersControllerUpdateStatusResponse = OrdersControllerUpdateStatusResponses[keyof OrdersControllerUpdateStatusResponses];
+export type AdminOrdersControllerUpdateStatusResponse = AdminOrdersControllerUpdateStatusResponses[keyof AdminOrdersControllerUpdateStatusResponses];
 
-export type DiscountsControllerValidateData = {
-    body: ValidateDiscountDto;
-    path?: never;
-    query?: never;
-    url: '/discounts/validate';
-};
-
-export type DiscountsControllerValidateResponses = {
-    200: ValidateDiscountResponseDto;
-};
-
-export type DiscountsControllerValidateResponse = DiscountsControllerValidateResponses[keyof DiscountsControllerValidateResponses];
-
-export type DiscountsControllerFindAllData = {
+export type AdminDiscountsControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -2065,74 +2006,74 @@ export type DiscountsControllerFindAllData = {
         search?: string;
         isActive?: boolean;
     };
-    url: '/discounts';
+    url: '/admin/discounts';
 };
 
-export type DiscountsControllerFindAllResponses = {
-    200: DiscountPaginatedResponseDto;
+export type AdminDiscountsControllerFindAllResponses = {
+    200: AdminDiscountPaginatedResponseDto;
 };
 
-export type DiscountsControllerFindAllResponse = DiscountsControllerFindAllResponses[keyof DiscountsControllerFindAllResponses];
+export type AdminDiscountsControllerFindAllResponse = AdminDiscountsControllerFindAllResponses[keyof AdminDiscountsControllerFindAllResponses];
 
-export type DiscountsControllerCreateData = {
+export type AdminDiscountsControllerCreateData = {
     body: CreateDiscountDto;
     path?: never;
     query?: never;
-    url: '/discounts';
+    url: '/admin/discounts';
 };
 
-export type DiscountsControllerCreateResponses = {
-    201: DiscountResponseDto;
+export type AdminDiscountsControllerCreateResponses = {
+    201: AdminDiscountResponseDto;
 };
 
-export type DiscountsControllerCreateResponse = DiscountsControllerCreateResponses[keyof DiscountsControllerCreateResponses];
+export type AdminDiscountsControllerCreateResponse = AdminDiscountsControllerCreateResponses[keyof AdminDiscountsControllerCreateResponses];
 
-export type DiscountsControllerRemoveData = {
+export type AdminDiscountsControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/discounts/{id}';
+    url: '/admin/discounts/{id}';
 };
 
-export type DiscountsControllerRemoveResponses = {
+export type AdminDiscountsControllerRemoveResponses = {
     204: void;
 };
 
-export type DiscountsControllerRemoveResponse = DiscountsControllerRemoveResponses[keyof DiscountsControllerRemoveResponses];
+export type AdminDiscountsControllerRemoveResponse = AdminDiscountsControllerRemoveResponses[keyof AdminDiscountsControllerRemoveResponses];
 
-export type DiscountsControllerFindOneData = {
+export type AdminDiscountsControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/discounts/{id}';
+    url: '/admin/discounts/{id}';
 };
 
-export type DiscountsControllerFindOneResponses = {
-    200: DiscountResponseDto;
+export type AdminDiscountsControllerFindOneResponses = {
+    200: AdminDiscountResponseDto;
 };
 
-export type DiscountsControllerFindOneResponse = DiscountsControllerFindOneResponses[keyof DiscountsControllerFindOneResponses];
+export type AdminDiscountsControllerFindOneResponse = AdminDiscountsControllerFindOneResponses[keyof AdminDiscountsControllerFindOneResponses];
 
-export type DiscountsControllerUpdateData = {
+export type AdminDiscountsControllerUpdateData = {
     body: UpdateDiscountDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/discounts/{id}';
+    url: '/admin/discounts/{id}';
 };
 
-export type DiscountsControllerUpdateResponses = {
-    200: DiscountResponseDto;
+export type AdminDiscountsControllerUpdateResponses = {
+    200: AdminDiscountResponseDto;
 };
 
-export type DiscountsControllerUpdateResponse = DiscountsControllerUpdateResponses[keyof DiscountsControllerUpdateResponses];
+export type AdminDiscountsControllerUpdateResponse = AdminDiscountsControllerUpdateResponses[keyof AdminDiscountsControllerUpdateResponses];
 
-export type PaymentsControllerFindAllData = {
+export type AdminPaymentsControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -2148,168 +2089,46 @@ export type PaymentsControllerFindAllData = {
          */
         user_id?: string;
     };
-    url: '/payments';
+    url: '/admin/payments';
 };
 
-export type PaymentsControllerFindAllResponses = {
-    200: PaymentPaginatedResponseDto;
+export type AdminPaymentsControllerFindAllResponses = {
+    200: AdminPaymentPaginatedResponseDto;
 };
 
-export type PaymentsControllerFindAllResponse = PaymentsControllerFindAllResponses[keyof PaymentsControllerFindAllResponses];
+export type AdminPaymentsControllerFindAllResponse = AdminPaymentsControllerFindAllResponses[keyof AdminPaymentsControllerFindAllResponses];
 
-export type PaymentsControllerCreateData = {
-    body: CreatePaymentDto;
-    path?: never;
-    query?: never;
-    url: '/payments';
-};
-
-export type PaymentsControllerCreateResponses = {
-    201: PaymentResponseDto;
-};
-
-export type PaymentsControllerCreateResponse = PaymentsControllerCreateResponses[keyof PaymentsControllerCreateResponses];
-
-export type PaymentsControllerFindMineData = {
-    body?: never;
-    path?: never;
-    query?: {
-        page?: number;
-        limit?: number;
-        status?: 'pending' | 'completed' | 'failed' | 'refunded';
-        /**
-         * Filter by order (admin)
-         */
-        order_id?: string;
-        /**
-         * Filter by user (admin)
-         */
-        user_id?: string;
-    };
-    url: '/payments/me';
-};
-
-export type PaymentsControllerFindMineResponses = {
-    200: PaymentPaginatedResponseDto;
-};
-
-export type PaymentsControllerFindMineResponse = PaymentsControllerFindMineResponses[keyof PaymentsControllerFindMineResponses];
-
-export type PaymentsControllerFindMineOneData = {
+export type AdminPaymentsControllerFindOneData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/payments/me/{id}';
+    url: '/admin/payments/{id}';
 };
 
-export type PaymentsControllerFindMineOneResponses = {
-    200: PaymentResponseDto;
+export type AdminPaymentsControllerFindOneResponses = {
+    200: AdminPaymentResponseDto;
 };
 
-export type PaymentsControllerFindMineOneResponse = PaymentsControllerFindMineOneResponses[keyof PaymentsControllerFindMineOneResponses];
+export type AdminPaymentsControllerFindOneResponse = AdminPaymentsControllerFindOneResponses[keyof AdminPaymentsControllerFindOneResponses];
 
-export type PaymentsControllerFindOneData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/payments/{id}';
-};
-
-export type PaymentsControllerFindOneResponses = {
-    200: PaymentResponseDto;
-};
-
-export type PaymentsControllerFindOneResponse = PaymentsControllerFindOneResponses[keyof PaymentsControllerFindOneResponses];
-
-export type PaymentsControllerUpdateStatusData = {
+export type AdminPaymentsControllerUpdateStatusData = {
     body: UpdatePaymentStatusDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/payments/{id}/status';
+    url: '/admin/payments/{id}/status';
 };
 
-export type PaymentsControllerUpdateStatusResponses = {
-    200: PaymentResponseDto;
+export type AdminPaymentsControllerUpdateStatusResponses = {
+    200: AdminPaymentResponseDto;
 };
 
-export type PaymentsControllerUpdateStatusResponse = PaymentsControllerUpdateStatusResponses[keyof PaymentsControllerUpdateStatusResponses];
+export type AdminPaymentsControllerUpdateStatusResponse = AdminPaymentsControllerUpdateStatusResponses[keyof AdminPaymentsControllerUpdateStatusResponses];
 
-export type CartsControllerClearCartData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/carts/me';
-};
-
-export type CartsControllerClearCartResponses = {
-    204: void;
-};
-
-export type CartsControllerClearCartResponse = CartsControllerClearCartResponses[keyof CartsControllerClearCartResponses];
-
-export type CartsControllerGetCartData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/carts/me';
-};
-
-export type CartsControllerGetCartResponses = {
-    200: CartResponseDto;
-};
-
-export type CartsControllerGetCartResponse = CartsControllerGetCartResponses[keyof CartsControllerGetCartResponses];
-
-export type CartsControllerAddItemData = {
-    body: AddCartItemDto;
-    path?: never;
-    query?: never;
-    url: '/carts/me/items';
-};
-
-export type CartsControllerAddItemResponses = {
-    200: CartResponseDto;
-};
-
-export type CartsControllerAddItemResponse = CartsControllerAddItemResponses[keyof CartsControllerAddItemResponses];
-
-export type CartsControllerRemoveItemData = {
-    body?: never;
-    path: {
-        itemId: string;
-    };
-    query?: never;
-    url: '/carts/me/items/{itemId}';
-};
-
-export type CartsControllerRemoveItemResponses = {
-    200: CartResponseDto;
-};
-
-export type CartsControllerRemoveItemResponse = CartsControllerRemoveItemResponses[keyof CartsControllerRemoveItemResponses];
-
-export type CartsControllerUpdateItemData = {
-    body: UpdateCartItemDto;
-    path: {
-        itemId: string;
-    };
-    query?: never;
-    url: '/carts/me/items/{itemId}';
-};
-
-export type CartsControllerUpdateItemResponses = {
-    200: CartResponseDto;
-};
-
-export type CartsControllerUpdateItemResponse = CartsControllerUpdateItemResponses[keyof CartsControllerUpdateItemResponses];
-
-export type ReviewsControllerFindAllData = {
+export type AdminReviewsControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
@@ -2321,228 +2140,59 @@ export type ReviewsControllerFindAllData = {
         isApproved?: boolean;
         isVerified?: boolean;
     };
-    url: '/reviews';
+    url: '/admin/reviews';
 };
 
-export type ReviewsControllerFindAllResponses = {
-    200: ReviewPaginatedResponseDto;
+export type AdminReviewsControllerFindAllResponses = {
+    200: AdminReviewPaginatedResponseDto;
 };
 
-export type ReviewsControllerFindAllResponse = ReviewsControllerFindAllResponses[keyof ReviewsControllerFindAllResponses];
+export type AdminReviewsControllerFindAllResponse = AdminReviewsControllerFindAllResponses[keyof AdminReviewsControllerFindAllResponses];
 
-export type ReviewsControllerCreateData = {
-    body: CreateReviewDto;
-    path?: never;
-    query?: never;
-    url: '/reviews';
-};
-
-export type ReviewsControllerCreateResponses = {
-    201: ReviewResponseDto;
-};
-
-export type ReviewsControllerCreateResponse = ReviewsControllerCreateResponses[keyof ReviewsControllerCreateResponses];
-
-export type ReviewsControllerFindMyReviewsData = {
-    body?: never;
-    path?: never;
-    query?: {
-        page?: number;
-        limit?: number;
-        product_id?: string;
-        user_id?: string;
-        rating?: number;
-        isApproved?: boolean;
-        isVerified?: boolean;
-    };
-    url: '/reviews/me';
-};
-
-export type ReviewsControllerFindMyReviewsResponses = {
-    200: ReviewPaginatedResponseDto;
-};
-
-export type ReviewsControllerFindMyReviewsResponse = ReviewsControllerFindMyReviewsResponses[keyof ReviewsControllerFindMyReviewsResponses];
-
-export type ReviewsControllerRemoveData = {
+export type AdminReviewsControllerApproveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/reviews/{id}';
+    url: '/admin/reviews/{id}/approve';
 };
 
-export type ReviewsControllerRemoveResponses = {
-    200: unknown;
+export type AdminReviewsControllerApproveResponses = {
+    200: AdminReviewResponseDto;
 };
 
-export type ReviewsControllerUpdateData = {
-    body: UpdateReviewDto;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/reviews/{id}';
-};
+export type AdminReviewsControllerApproveResponse = AdminReviewsControllerApproveResponses[keyof AdminReviewsControllerApproveResponses];
 
-export type ReviewsControllerUpdateResponses = {
-    200: ReviewResponseDto;
-};
-
-export type ReviewsControllerUpdateResponse = ReviewsControllerUpdateResponses[keyof ReviewsControllerUpdateResponses];
-
-export type ReviewsControllerApproveData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/reviews/{id}/approve';
-};
-
-export type ReviewsControllerApproveResponses = {
-    200: ReviewResponseDto;
-};
-
-export type ReviewsControllerApproveResponse = ReviewsControllerApproveResponses[keyof ReviewsControllerApproveResponses];
-
-export type ProductReviewsControllerFindApprovedData = {
-    body?: never;
-    path: {
-        productId: string;
-    };
-    query?: {
-        page?: number;
-        limit?: number;
-        product_id?: string;
-        user_id?: string;
-        rating?: number;
-        isApproved?: boolean;
-        isVerified?: boolean;
-    };
-    url: '/products/{productId}/reviews';
-};
-
-export type ProductReviewsControllerFindApprovedResponses = {
-    200: ReviewPaginatedResponseDto;
-};
-
-export type ProductReviewsControllerFindApprovedResponse = ProductReviewsControllerFindApprovedResponses[keyof ProductReviewsControllerFindApprovedResponses];
-
-export type WishlistsControllerClearWishlistData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/wishlists/me';
-};
-
-export type WishlistsControllerClearWishlistResponses = {
-    204: void;
-};
-
-export type WishlistsControllerClearWishlistResponse = WishlistsControllerClearWishlistResponses[keyof WishlistsControllerClearWishlistResponses];
-
-export type WishlistsControllerGetWishlistData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/wishlists/me';
-};
-
-export type WishlistsControllerGetWishlistResponses = {
-    200: WishlistResponseDto;
-};
-
-export type WishlistsControllerGetWishlistResponse = WishlistsControllerGetWishlistResponses[keyof WishlistsControllerGetWishlistResponses];
-
-export type WishlistsControllerAddProductData = {
-    body: AddToWishlistDto;
-    path?: never;
-    query?: never;
-    url: '/wishlists/me';
-};
-
-export type WishlistsControllerAddProductResponses = {
-    200: WishlistResponseDto;
-};
-
-export type WishlistsControllerAddProductResponse = WishlistsControllerAddProductResponses[keyof WishlistsControllerAddProductResponses];
-
-export type WishlistsControllerRemoveProductData = {
-    body?: never;
-    path: {
-        productId: string;
-    };
-    query?: never;
-    url: '/wishlists/me/{productId}';
-};
-
-export type WishlistsControllerRemoveProductResponses = {
-    200: WishlistResponseDto;
-};
-
-export type WishlistsControllerRemoveProductResponse = WishlistsControllerRemoveProductResponses[keyof WishlistsControllerRemoveProductResponses];
-
-export type BannersControllerFindActiveData = {
+export type AdminBannersControllerFindAllData = {
     body?: never;
     path?: never;
     query?: {
         position?: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
     };
-    url: '/banners';
+    url: '/admin/banners';
 };
 
-export type BannersControllerFindActiveResponses = {
-    200: Array<BannerResponseDto>;
+export type AdminBannersControllerFindAllResponses = {
+    200: Array<AdminBannerResponseDto>;
 };
 
-export type BannersControllerFindActiveResponse = BannersControllerFindActiveResponses[keyof BannersControllerFindActiveResponses];
+export type AdminBannersControllerFindAllResponse = AdminBannersControllerFindAllResponses[keyof AdminBannersControllerFindAllResponses];
 
-export type BannersControllerCreateData = {
+export type AdminBannersControllerCreateData = {
     body: CreateBannerDto;
     path?: never;
     query?: never;
-    url: '/banners';
+    url: '/admin/banners';
 };
 
-export type BannersControllerCreateResponses = {
-    201: BannerResponseDto;
+export type AdminBannersControllerCreateResponses = {
+    201: AdminBannerResponseDto;
 };
 
-export type BannersControllerCreateResponse = BannersControllerCreateResponses[keyof BannersControllerCreateResponses];
+export type AdminBannersControllerCreateResponse = AdminBannersControllerCreateResponses[keyof AdminBannersControllerCreateResponses];
 
-export type BannersControllerTrackClickData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/banners/{id}/click';
-};
-
-export type BannersControllerTrackClickResponses = {
-    204: void;
-};
-
-export type BannersControllerTrackClickResponse = BannersControllerTrackClickResponses[keyof BannersControllerTrackClickResponses];
-
-export type BannersControllerFindAllData = {
-    body?: never;
-    path?: never;
-    query?: {
-        position?: 'hero' | 'promo_strip' | 'mid_page' | 'popup';
-    };
-    url: '/banners/admin';
-};
-
-export type BannersControllerFindAllResponses = {
-    200: Array<BannerResponseDto>;
-};
-
-export type BannersControllerFindAllResponse = BannersControllerFindAllResponses[keyof BannersControllerFindAllResponses];
-
-export type BannersControllerUploadImageData = {
+export type AdminBannersControllerUploadImageData = {
     body: {
         file: Blob | File;
         /**
@@ -2554,54 +2204,54 @@ export type BannersControllerUploadImageData = {
         id: string;
     };
     query?: never;
-    url: '/banners/{id}/upload-image';
+    url: '/admin/banners/{id}/upload-image';
 };
 
-export type BannersControllerUploadImageResponses = {
-    200: BannerResponseDto;
+export type AdminBannersControllerUploadImageResponses = {
+    200: AdminBannerResponseDto;
 };
 
-export type BannersControllerUploadImageResponse = BannersControllerUploadImageResponses[keyof BannersControllerUploadImageResponses];
+export type AdminBannersControllerUploadImageResponse = AdminBannersControllerUploadImageResponses[keyof AdminBannersControllerUploadImageResponses];
 
-export type BannersControllerReorderData = {
+export type AdminBannersControllerReorderData = {
     body: ReorderBannersDto;
     path?: never;
     query?: never;
-    url: '/banners/reorder';
+    url: '/admin/banners/reorder';
 };
 
-export type BannersControllerReorderResponses = {
+export type AdminBannersControllerReorderResponses = {
     204: void;
 };
 
-export type BannersControllerReorderResponse = BannersControllerReorderResponses[keyof BannersControllerReorderResponses];
+export type AdminBannersControllerReorderResponse = AdminBannersControllerReorderResponses[keyof AdminBannersControllerReorderResponses];
 
-export type BannersControllerRemoveData = {
+export type AdminBannersControllerRemoveData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: '/banners/{id}';
+    url: '/admin/banners/{id}';
 };
 
-export type BannersControllerRemoveResponses = {
+export type AdminBannersControllerRemoveResponses = {
     204: void;
 };
 
-export type BannersControllerRemoveResponse = BannersControllerRemoveResponses[keyof BannersControllerRemoveResponses];
+export type AdminBannersControllerRemoveResponse = AdminBannersControllerRemoveResponses[keyof AdminBannersControllerRemoveResponses];
 
-export type BannersControllerUpdateData = {
+export type AdminBannersControllerUpdateData = {
     body: UpdateBannerDto;
     path: {
         id: string;
     };
     query?: never;
-    url: '/banners/{id}';
+    url: '/admin/banners/{id}';
 };
 
-export type BannersControllerUpdateResponses = {
-    200: BannerResponseDto;
+export type AdminBannersControllerUpdateResponses = {
+    200: AdminBannerResponseDto;
 };
 
-export type BannersControllerUpdateResponse = BannersControllerUpdateResponses[keyof BannersControllerUpdateResponses];
+export type AdminBannersControllerUpdateResponse = AdminBannersControllerUpdateResponses[keyof AdminBannersControllerUpdateResponses];
