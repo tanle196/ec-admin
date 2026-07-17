@@ -77,7 +77,7 @@ export const useAuthActions = () => {
         auth.setAccessToken(accessToken)
       }
       if (refreshToken) {
-        setCookie(REFRESH_TOKEN, JSON.stringify(refreshToken))
+        setCookie(REFRESH_TOKEN, refreshToken)
       }
 
       try {
