@@ -15,9 +15,9 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
-import { usePermissions } from '@/features/permissions/hooks'
-import { useAssignRolePermissions } from '../hooks'
+import { usePermissionsAllRaw } from '@/features/permissions/hooks'
 import { type Role } from '../data/schema'
+import { useAssignRolePermissions } from '../hooks'
 
 type Props = {
   open: boolean
@@ -35,8 +35,12 @@ const ACTION_LABEL: Record<string, string> = {
   'assign.role': 'Assign Role',
 }
 
-export function RolesAssignPermissionsDialog({ open, onOpenChange, currentRow }: Props) {
-  const { data: permissionsRaw, isLoading } = usePermissions()
+export function RolesAssignPermissionsDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: Props) {
+  const { data: permissionsRaw, isLoading } = usePermissionsAllRaw()
   const { mutate: assignPermissions, isPending } = useAssignRolePermissions()
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
@@ -47,7 +51,7 @@ export function RolesAssignPermissionsDialog({ open, onOpenChange, currentRow }:
     }
   }, [open, currentRow])
 
-  const allPermissions = permissionsRaw?.data ?? []
+  const allPermissions = permissionsRaw ?? []
 
   const grouped = allPermissions.reduce<Record<string, typeof allPermissions>>(
     (acc, p) => {
@@ -99,7 +103,10 @@ export function RolesAssignPermissionsDialog({ open, onOpenChange, currentRow }:
           <DialogTitle>Assign Permissions</DialogTitle>
           <DialogDescription>
             Select permissions for role{' '}
-            <span className='font-semibold text-foreground'>{currentRow.name}</span>.
+            <span className='font-semibold text-foreground'>
+              {currentRow.name}
+            </span>
+            .
           </DialogDescription>
         </DialogHeader>
 
@@ -114,15 +121,14 @@ export function RolesAssignPermissionsDialog({ open, onOpenChange, currentRow }:
             <div className='grid grid-cols-1 gap-4 p-6 md:grid-cols-2'>
               {Object.entries(grouped).map(([module, permissions]) => {
                 const ids = permissions.map((p) => p.id)
-                const checkedCount = ids.filter((id) => selectedIds.has(id)).length
+                const checkedCount = ids.filter((id) =>
+                  selectedIds.has(id)
+                ).length
                 const allChecked = checkedCount === ids.length
                 const someChecked = checkedCount > 0 && !allChecked
 
                 return (
-                  <div
-                    key={module}
-                    className='rounded-lg border bg-card'
-                  >
+                  <div key={module} className='rounded-lg border bg-card'>
                     {/* Module header */}
                     <div className='flex items-center justify-between rounded-t-lg bg-muted/50 px-4 py-3'>
                       <div className='flex items-center gap-2'>
@@ -158,7 +164,10 @@ export function RolesAssignPermissionsDialog({ open, onOpenChange, currentRow }:
                             onCheckedChange={() => toggle(p.id)}
                             className='mt-0.5'
                           />
-                          <label htmlFor={p.id} className='flex cursor-pointer flex-col'>
+                          <label
+                            htmlFor={p.id}
+                            className='flex cursor-pointer flex-col'
+                          >
                             <span className='text-sm font-medium'>
                               {ACTION_LABEL[p.action] ?? p.action}
                             </span>
@@ -182,7 +191,8 @@ export function RolesAssignPermissionsDialog({ open, onOpenChange, currentRow }:
 
         <DialogFooter className='items-center px-6 py-4'>
           <span className='mr-auto text-sm text-muted-foreground'>
-            {selectedIds.size} permission{selectedIds.size !== 1 ? 's' : ''} selected
+            {selectedIds.size} permission{selectedIds.size !== 1 ? 's' : ''}{' '}
+            selected
           </span>
           <Button
             variant='outline'

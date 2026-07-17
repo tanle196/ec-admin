@@ -1,4 +1,5 @@
 export { usePermissions } from './usePermissions'
+export { usePermissionsAllRaw } from './usePermissionsAllRaw'
 export { usePermissionMeta } from './usePermissionMeta'
 export { useCreatePermission } from './useCreatePermission'
 export { useDeletePermission } from './useDeletePermission'
