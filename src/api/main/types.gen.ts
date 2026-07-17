@@ -118,7 +118,7 @@ export type UserListQueryDto = {
 export type PermissionResponseDto = {
     id: string;
     module: string;
-    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
+    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'upload' | 'assign.role';
     description: string;
     isSystem: boolean;
     createdAt: Date;
@@ -249,7 +249,7 @@ export type CreatePermissionDto = {
      * Module
      */
     module: string;
-    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
+    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'upload' | 'assign.role';
     description?: string;
     /**
      * Đánh dấu permission hệ thống
@@ -277,7 +277,7 @@ export type Permission = {
     /**
      * Hành động CRUD
      */
-    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
+    action: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'upload' | 'assign.role';
     description?: string;
     /**
      * Permission hệ thống (readonly)
@@ -690,7 +690,7 @@ export type OrderResponseDto = {
         [key: string]: unknown;
     };
     orderNumber: string;
-    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
     subtotal: number;
     shippingFee: number;
     discount: number;
@@ -704,11 +704,23 @@ export type OrderResponseDto = {
     updatedAt: Date;
 };
 
+export type CheckoutDto = {
+    /**
+     * Delivery address ID
+     */
+    address_id: string;
+    /**
+     * Discount coupon code
+     */
+    discountCode?: string;
+    notes?: string;
+};
+
 export type OrderListItemDto = {
     id: string;
     user_id: string;
     orderNumber: string;
-    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
     total: number;
     createdAt: Date;
 };
@@ -720,11 +732,38 @@ export type OrderPaginatedResponseDto = {
     data: Array<OrderListItemDto>;
 };
 
+export type UpdateOrderDto = {
+    /**
+     * Delivery address ID
+     */
+    address_id?: string;
+    /**
+     * Replaces the entire item list
+     */
+    items?: Array<CreateOrderItemDto>;
+    notes?: string;
+};
+
+export type OrderStatusHistoryResponseDto = {
+    id: string;
+    order_id: string;
+    fromStatus?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
+    toStatus: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
+    changedByType: 'customer' | 'admin' | 'system';
+    changedById?: {
+        [key: string]: unknown;
+    };
+    note?: {
+        [key: string]: unknown;
+    };
+    createdAt: Date;
+};
+
 export type AdminOrderListItemDto = {
     id: string;
     user_id: string;
     orderNumber: string;
-    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
     total: number;
     createdAt: Date;
 };
@@ -743,7 +782,7 @@ export type AdminOrderResponseDto = {
         [key: string]: unknown;
     };
     orderNumber: string;
-    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
     subtotal: number;
     shippingFee: number;
     discount: number;
@@ -758,7 +797,11 @@ export type AdminOrderResponseDto = {
 };
 
 export type UpdateOrderStatusDto = {
-    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+    status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
+    /**
+     * Reason recorded in the order status history
+     */
+    note?: string;
 };
 
 export type ValidateDiscountDto = {
@@ -850,77 +893,6 @@ export type UpdateDiscountDto = {
     expiresAt?: Date;
 };
 
-export type CreatePaymentDto = {
-    /**
-     * Order ID to pay for
-     */
-    order_id: string;
-    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
-};
-
-export type PaymentResponseDto = {
-    id: string;
-    order_id: string;
-    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
-    status: 'pending' | 'completed' | 'failed' | 'refunded';
-    amount: number;
-    transactionId?: {
-        [key: string]: unknown;
-    };
-    metadata?: {
-        [key: string]: unknown;
-    };
-    paidAt?: {
-        [key: string]: unknown;
-    };
-    createdAt: Date;
-    updatedAt: Date;
-};
-
-export type PaymentPaginatedResponseDto = {
-    total: number;
-    page: number;
-    limit: number;
-    data: Array<PaymentResponseDto>;
-};
-
-export type AdminPaymentResponseDto = {
-    id: string;
-    order_id: string;
-    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
-    status: 'pending' | 'completed' | 'failed' | 'refunded';
-    amount: number;
-    transactionId?: {
-        [key: string]: unknown;
-    };
-    metadata?: {
-        [key: string]: unknown;
-    };
-    paidAt?: {
-        [key: string]: unknown;
-    };
-    createdAt: Date;
-    updatedAt: Date;
-};
-
-export type AdminPaymentPaginatedResponseDto = {
-    total: number;
-    page: number;
-    limit: number;
-    data: Array<AdminPaymentResponseDto>;
-};
-
-export type UpdatePaymentStatusDto = {
-    status: 'pending' | 'completed' | 'failed' | 'refunded';
-    transactionId?: string;
-    /**
-     * Raw response from payment gateway
-     */
-    metadata?: {
-        [key: string]: unknown;
-    };
-};
-
 export type CartItemVariantDto = {
     id: string;
     name: string;
@@ -960,6 +932,117 @@ export type UpdateCartItemDto = {
      * New quantity (min 1)
      */
     quantity: number;
+};
+
+export type CreatePaymentDto = {
+    /**
+     * Order ID to pay for
+     */
+    order_id: string;
+    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
+};
+
+export type PaymentResponseDto = {
+    id: string;
+    order_id: string;
+    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
+    status: 'pending' | 'completed' | 'failed' | 'partially_refunded' | 'refunded';
+    amount: number;
+    transactionId?: {
+        [key: string]: unknown;
+    };
+    metadata?: {
+        [key: string]: unknown;
+    };
+    paidAt?: {
+        [key: string]: unknown;
+    };
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type PaymentPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<PaymentResponseDto>;
+};
+
+export type AdminPaymentResponseDto = {
+    id: string;
+    order_id: string;
+    method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
+    status: 'pending' | 'completed' | 'failed' | 'partially_refunded' | 'refunded';
+    amount: number;
+    transactionId?: {
+        [key: string]: unknown;
+    };
+    metadata?: {
+        [key: string]: unknown;
+    };
+    paidAt?: {
+        [key: string]: unknown;
+    };
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export type AdminPaymentPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<AdminPaymentResponseDto>;
+};
+
+export type UpdatePaymentStatusDto = {
+    status: 'pending' | 'completed' | 'failed' | 'partially_refunded' | 'refunded';
+    transactionId?: string;
+    /**
+     * Raw response from payment gateway
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+};
+
+export type RefundItemInputDto = {
+    /**
+     * Order item ID to refund
+     */
+    order_item_id: string;
+    /**
+     * Quantity to refund
+     */
+    quantity: number;
+};
+
+export type CreateRefundDto = {
+    items: Array<RefundItemInputDto>;
+    reason: string;
+};
+
+export type RefundItemResponseDto = {
+    id: string;
+    order_item_id: string;
+    quantity: number;
+    amount: number;
+};
+
+export type RefundResponseDto = {
+    id: string;
+    payment_id: string;
+    order_id: string;
+    amount: number;
+    reason: string;
+    status: 'pending' | 'succeeded' | 'failed';
+    transactionId?: {
+        [key: string]: unknown;
+    };
+    actorId?: {
+        [key: string]: unknown;
+    };
+    items: Array<RefundItemResponseDto>;
+    createdAt: Date;
 };
 
 export type CreateReviewDto = {
@@ -1482,7 +1565,7 @@ export type AdminPermissionsControllerFindAllData = {
         /**
          * Filter by action
          */
-        action?: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'assign.role';
+        action?: 'create' | 'read' | 'update' | 'delete' | 'cancel' | 'publish' | 'upload' | 'assign.role';
     };
     url: '/admin/permissions';
 };
@@ -1518,6 +1601,19 @@ export type AdminPermissionsControllerGetMetaResponses = {
 };
 
 export type AdminPermissionsControllerGetMetaResponse = AdminPermissionsControllerGetMetaResponses[keyof AdminPermissionsControllerGetMetaResponses];
+
+export type AdminPermissionsControllerFindAllRawData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin/permissions/all';
+};
+
+export type AdminPermissionsControllerFindAllRawResponses = {
+    200: Array<Permission>;
+};
+
+export type AdminPermissionsControllerFindAllRawResponse = AdminPermissionsControllerFindAllRawResponses[keyof AdminPermissionsControllerFindAllRawResponses];
 
 export type AdminPermissionsControllerRemoveData = {
     body?: never;
@@ -1952,11 +2048,25 @@ export type AdminOrdersControllerFindAllData = {
     query?: {
         page?: number;
         limit?: number;
-        status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+        status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'partially_refunded' | 'refunded';
         /**
          * Filter by user ID (admin only)
          */
         user_id?: string;
+        /**
+         * Search by order number (partial match)
+         */
+        order_number?: string;
+        /**
+         * Filter orders created on or after this date
+         */
+        from_date?: string;
+        /**
+         * Filter orders created on or before this date
+         */
+        to_date?: string;
+        sort_by?: 'createdAt' | 'total' | 'orderNumber';
+        sort_order?: 'ASC' | 'DESC';
     };
     url: '/admin/orders';
 };
@@ -1996,6 +2106,21 @@ export type AdminOrdersControllerUpdateStatusResponses = {
 };
 
 export type AdminOrdersControllerUpdateStatusResponse = AdminOrdersControllerUpdateStatusResponses[keyof AdminOrdersControllerUpdateStatusResponses];
+
+export type AdminOrdersControllerGetHistoryData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/admin/orders/{id}/history';
+};
+
+export type AdminOrdersControllerGetHistoryResponses = {
+    200: Array<OrderStatusHistoryResponseDto>;
+};
+
+export type AdminOrdersControllerGetHistoryResponse = AdminOrdersControllerGetHistoryResponses[keyof AdminOrdersControllerGetHistoryResponses];
 
 export type AdminDiscountsControllerFindAllData = {
     body?: never;
@@ -2079,7 +2204,7 @@ export type AdminPaymentsControllerFindAllData = {
     query?: {
         page?: number;
         limit?: number;
-        status?: 'pending' | 'completed' | 'failed' | 'refunded';
+        status?: 'pending' | 'completed' | 'failed' | 'partially_refunded' | 'refunded';
         /**
          * Filter by order (admin)
          */
@@ -2127,6 +2252,36 @@ export type AdminPaymentsControllerUpdateStatusResponses = {
 };
 
 export type AdminPaymentsControllerUpdateStatusResponse = AdminPaymentsControllerUpdateStatusResponses[keyof AdminPaymentsControllerUpdateStatusResponses];
+
+export type AdminPaymentsControllerFindRefundsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/admin/payments/{id}/refunds';
+};
+
+export type AdminPaymentsControllerFindRefundsResponses = {
+    200: Array<RefundResponseDto>;
+};
+
+export type AdminPaymentsControllerFindRefundsResponse = AdminPaymentsControllerFindRefundsResponses[keyof AdminPaymentsControllerFindRefundsResponses];
+
+export type AdminPaymentsControllerCreateRefundData = {
+    body: CreateRefundDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/admin/payments/{id}/refunds';
+};
+
+export type AdminPaymentsControllerCreateRefundResponses = {
+    200: RefundResponseDto;
+};
+
+export type AdminPaymentsControllerCreateRefundResponse = AdminPaymentsControllerCreateRefundResponses[keyof AdminPaymentsControllerCreateRefundResponses];
 
 export type AdminReviewsControllerFindAllData = {
     body?: never;

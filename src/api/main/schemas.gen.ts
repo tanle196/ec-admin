@@ -252,6 +252,7 @@ export const PermissionResponseDtoSchema = {
                 'delete',
                 'cancel',
                 'publish',
+                'upload',
                 'assign.role'
             ]
         },
@@ -629,6 +630,7 @@ export const CreatePermissionDtoSchema = {
                 'delete',
                 'cancel',
                 'publish',
+                'upload',
                 'assign.role'
             ],
             example: 'read'
@@ -684,6 +686,7 @@ export const PermissionSchema = {
                 'delete',
                 'cancel',
                 'publish',
+                'upload',
                 'assign.role'
             ],
             description: 'Hành động CRUD'
@@ -2061,6 +2064,7 @@ export const OrderResponseDtoSchema = {
                 'shipped',
                 'delivered',
                 'cancelled',
+                'partially_refunded',
                 'refunded'
             ]
         },
@@ -2116,6 +2120,29 @@ export const OrderResponseDtoSchema = {
     ]
 } as const;
 
+export const CheckoutDtoSchema = {
+    type: 'object',
+    properties: {
+        address_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Delivery address ID'
+        },
+        discountCode: {
+            type: 'string',
+            example: 'SALE20',
+            description: 'Discount coupon code'
+        },
+        notes: {
+            type: 'string',
+            example: 'Giao giờ hành chính'
+        }
+    },
+    required: [
+        'address_id'
+    ]
+} as const;
+
 export const OrderListItemDtoSchema = {
     type: 'object',
     properties: {
@@ -2137,6 +2164,7 @@ export const OrderListItemDtoSchema = {
                 'shipped',
                 'delivered',
                 'cancelled',
+                'partially_refunded',
                 'refunded'
             ]
         },
@@ -2188,6 +2216,91 @@ export const OrderPaginatedResponseDtoSchema = {
     ]
 } as const;
 
+export const UpdateOrderDtoSchema = {
+    type: 'object',
+    properties: {
+        address_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Delivery address ID'
+        },
+        items: {
+            description: 'Replaces the entire item list',
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/CreateOrderItemDto'
+            }
+        },
+        notes: {
+            type: 'string',
+            example: 'Giao giờ hành chính'
+        }
+    }
+} as const;
+
+export const OrderStatusHistoryResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        fromStatus: {
+            type: 'string',
+            enum: [
+                'pending',
+                'confirmed',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+                'partially_refunded',
+                'refunded'
+            ]
+        },
+        toStatus: {
+            type: 'string',
+            enum: [
+                'pending',
+                'confirmed',
+                'processing',
+                'shipped',
+                'delivered',
+                'cancelled',
+                'partially_refunded',
+                'refunded'
+            ]
+        },
+        changedByType: {
+            type: 'string',
+            enum: [
+                'customer',
+                'admin',
+                'system'
+            ]
+        },
+        changedById: {
+            type: 'object'
+        },
+        note: {
+            type: 'object'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'order_id',
+        'toStatus',
+        'changedByType',
+        'createdAt'
+    ]
+} as const;
+
 export const AdminOrderListItemDtoSchema = {
     type: 'object',
     properties: {
@@ -2209,6 +2322,7 @@ export const AdminOrderListItemDtoSchema = {
                 'shipped',
                 'delivered',
                 'cancelled',
+                'partially_refunded',
                 'refunded'
             ]
         },
@@ -2284,6 +2398,7 @@ export const AdminOrderResponseDtoSchema = {
                 'shipped',
                 'delivered',
                 'cancelled',
+                'partially_refunded',
                 'refunded'
             ]
         },
@@ -2351,8 +2466,14 @@ export const UpdateOrderStatusDtoSchema = {
                 'shipped',
                 'delivered',
                 'cancelled',
+                'partially_refunded',
                 'refunded'
             ]
+        },
+        note: {
+            type: 'string',
+            example: 'Customer requested cancellation via hotline',
+            description: 'Reason recorded in the order status history'
         }
     },
     required: [
@@ -2599,241 +2720,6 @@ export const UpdateDiscountDtoSchema = {
     }
 } as const;
 
-export const CreatePaymentDtoSchema = {
-    type: 'object',
-    properties: {
-        order_id: {
-            type: 'string',
-            example: 'uuid-v4',
-            description: 'Order ID to pay for'
-        },
-        method: {
-            type: 'string',
-            enum: [
-                'cod',
-                'vnpay',
-                'momo',
-                'zalopay',
-                'stripe',
-                'bank_transfer'
-            ],
-            example: 'cod'
-        }
-    },
-    required: [
-        'order_id',
-        'method'
-    ]
-} as const;
-
-export const PaymentResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'string'
-        },
-        order_id: {
-            type: 'string'
-        },
-        method: {
-            type: 'string',
-            enum: [
-                'cod',
-                'vnpay',
-                'momo',
-                'zalopay',
-                'stripe',
-                'bank_transfer'
-            ]
-        },
-        status: {
-            type: 'string',
-            enum: [
-                'pending',
-                'completed',
-                'failed',
-                'refunded'
-            ]
-        },
-        amount: {
-            type: 'number'
-        },
-        transactionId: {
-            type: 'object'
-        },
-        metadata: {
-            type: 'object'
-        },
-        paidAt: {
-            type: 'object'
-        },
-        createdAt: {
-            format: 'date-time',
-            type: 'string'
-        },
-        updatedAt: {
-            format: 'date-time',
-            type: 'string'
-        }
-    },
-    required: [
-        'id',
-        'order_id',
-        'method',
-        'status',
-        'amount',
-        'createdAt',
-        'updatedAt'
-    ]
-} as const;
-
-export const PaymentPaginatedResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        total: {
-            type: 'number',
-            example: 100
-        },
-        page: {
-            type: 'number',
-            example: 1
-        },
-        limit: {
-            type: 'number',
-            example: 10
-        },
-        data: {
-            type: 'array',
-            items: {
-                $ref: '#/components/schemas/PaymentResponseDto'
-            }
-        }
-    },
-    required: [
-        'total',
-        'page',
-        'limit',
-        'data'
-    ]
-} as const;
-
-export const AdminPaymentResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        id: {
-            type: 'string'
-        },
-        order_id: {
-            type: 'string'
-        },
-        method: {
-            type: 'string',
-            enum: [
-                'cod',
-                'vnpay',
-                'momo',
-                'zalopay',
-                'stripe',
-                'bank_transfer'
-            ]
-        },
-        status: {
-            type: 'string',
-            enum: [
-                'pending',
-                'completed',
-                'failed',
-                'refunded'
-            ]
-        },
-        amount: {
-            type: 'number'
-        },
-        transactionId: {
-            type: 'object'
-        },
-        metadata: {
-            type: 'object'
-        },
-        paidAt: {
-            type: 'object'
-        },
-        createdAt: {
-            format: 'date-time',
-            type: 'string'
-        },
-        updatedAt: {
-            format: 'date-time',
-            type: 'string'
-        }
-    },
-    required: [
-        'id',
-        'order_id',
-        'method',
-        'status',
-        'amount',
-        'createdAt',
-        'updatedAt'
-    ]
-} as const;
-
-export const AdminPaymentPaginatedResponseDtoSchema = {
-    type: 'object',
-    properties: {
-        total: {
-            type: 'number',
-            example: 100
-        },
-        page: {
-            type: 'number',
-            example: 1
-        },
-        limit: {
-            type: 'number',
-            example: 10
-        },
-        data: {
-            type: 'array',
-            items: {
-                $ref: '#/components/schemas/AdminPaymentResponseDto'
-            }
-        }
-    },
-    required: [
-        'total',
-        'page',
-        'limit',
-        'data'
-    ]
-} as const;
-
-export const UpdatePaymentStatusDtoSchema = {
-    type: 'object',
-    properties: {
-        status: {
-            type: 'string',
-            enum: [
-                'pending',
-                'completed',
-                'failed',
-                'refunded'
-            ]
-        },
-        transactionId: {
-            type: 'string',
-            example: 'TXN-ABC123'
-        },
-        metadata: {
-            type: 'object',
-            description: 'Raw response from payment gateway'
-        }
-    },
-    required: [
-        'status'
-    ]
-} as const;
-
 export const CartItemVariantDtoSchema = {
     type: 'object',
     properties: {
@@ -2965,6 +2851,363 @@ export const UpdateCartItemDtoSchema = {
     },
     required: [
         'quantity'
+    ]
+} as const;
+
+export const CreatePaymentDtoSchema = {
+    type: 'object',
+    properties: {
+        order_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Order ID to pay for'
+        },
+        method: {
+            type: 'string',
+            enum: [
+                'cod',
+                'vnpay',
+                'momo',
+                'zalopay',
+                'stripe',
+                'bank_transfer'
+            ],
+            example: 'cod'
+        }
+    },
+    required: [
+        'order_id',
+        'method'
+    ]
+} as const;
+
+export const PaymentResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        method: {
+            type: 'string',
+            enum: [
+                'cod',
+                'vnpay',
+                'momo',
+                'zalopay',
+                'stripe',
+                'bank_transfer'
+            ]
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'completed',
+                'failed',
+                'partially_refunded',
+                'refunded'
+            ]
+        },
+        amount: {
+            type: 'number'
+        },
+        transactionId: {
+            type: 'object'
+        },
+        metadata: {
+            type: 'object'
+        },
+        paidAt: {
+            type: 'object'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'order_id',
+        'method',
+        'status',
+        'amount',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const PaymentPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/PaymentResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const AdminPaymentResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        method: {
+            type: 'string',
+            enum: [
+                'cod',
+                'vnpay',
+                'momo',
+                'zalopay',
+                'stripe',
+                'bank_transfer'
+            ]
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'completed',
+                'failed',
+                'partially_refunded',
+                'refunded'
+            ]
+        },
+        amount: {
+            type: 'number'
+        },
+        transactionId: {
+            type: 'object'
+        },
+        metadata: {
+            type: 'object'
+        },
+        paidAt: {
+            type: 'object'
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        updatedAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'order_id',
+        'method',
+        'status',
+        'amount',
+        'createdAt',
+        'updatedAt'
+    ]
+} as const;
+
+export const AdminPaymentPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/AdminPaymentResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const UpdatePaymentStatusDtoSchema = {
+    type: 'object',
+    properties: {
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'completed',
+                'failed',
+                'partially_refunded',
+                'refunded'
+            ]
+        },
+        transactionId: {
+            type: 'string',
+            example: 'TXN-ABC123'
+        },
+        metadata: {
+            type: 'object',
+            description: 'Raw response from payment gateway'
+        }
+    },
+    required: [
+        'status'
+    ]
+} as const;
+
+export const RefundItemInputDtoSchema = {
+    type: 'object',
+    properties: {
+        order_item_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Order item ID to refund'
+        },
+        quantity: {
+            type: 'number',
+            example: 1,
+            description: 'Quantity to refund'
+        }
+    },
+    required: [
+        'order_item_id',
+        'quantity'
+    ]
+} as const;
+
+export const CreateRefundDtoSchema = {
+    type: 'object',
+    properties: {
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RefundItemInputDto'
+            }
+        },
+        reason: {
+            type: 'string',
+            example: 'Sản phẩm bị lỗi khi giao hàng'
+        }
+    },
+    required: [
+        'items',
+        'reason'
+    ]
+} as const;
+
+export const RefundItemResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_item_id: {
+            type: 'string'
+        },
+        quantity: {
+            type: 'number'
+        },
+        amount: {
+            type: 'number'
+        }
+    },
+    required: [
+        'id',
+        'order_item_id',
+        'quantity',
+        'amount'
+    ]
+} as const;
+
+export const RefundResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        payment_id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        amount: {
+            type: 'number'
+        },
+        reason: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'succeeded',
+                'failed'
+            ]
+        },
+        transactionId: {
+            type: 'object'
+        },
+        actorId: {
+            type: 'object'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RefundItemResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'payment_id',
+        'order_id',
+        'amount',
+        'reason',
+        'status',
+        'items',
+        'createdAt'
     ]
 } as const;
 
