@@ -18,6 +18,10 @@ export function handleServerError(error: unknown) {
     errMsg = 'No content.'
   }
 
+  if (error instanceof AxiosError && error.response?.status === 403) {
+    errMsg = 'Forbidden'
+  }
+
   if (error instanceof AxiosError) {
     const title = error.response?.data?.title
     if (typeof title === 'string' && title.length > 0) {
