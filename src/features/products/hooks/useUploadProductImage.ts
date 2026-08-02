@@ -8,16 +8,17 @@ type UploadProductImageParams = {
   alt?: string
   isPrimary?: boolean
   sortOrder?: number
+  variant_id?: string
 }
 
 export const useUploadProductImage = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, file, alt, isPrimary, sortOrder }: UploadProductImageParams) =>
+    mutationFn: ({ id, file, alt, isPrimary, sortOrder, variant_id }: UploadProductImageParams) =>
       productService.uploadImage({
         path: { id },
-        body: { file, ...(alt && { alt }), isPrimary, sortOrder },
+        body: { file, ...(alt && { alt }), isPrimary, sortOrder, variant_id },
       }),
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: productKeys.detail(id) })
