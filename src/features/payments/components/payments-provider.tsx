@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useDialogState from '@/hooks/use-dialog-state'
 import { type PaymentListItem } from '../data/schema'
 
-type PaymentsDialogType = 'view' | 'update-status'
+type PaymentsDialogType = 'view' | 'update-status' | 'refund'
 
 type PaymentsContextType = {
   open: PaymentsDialogType | null

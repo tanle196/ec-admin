@@ -44,6 +44,7 @@ const statusLabel: Record<PaymentStatus, string> = {
   pending: 'Pending',
   completed: 'Completed',
   failed: 'Failed',
+  partially_refunded: 'Partially Refunded',
   refunded: 'Refunded',
 }
 

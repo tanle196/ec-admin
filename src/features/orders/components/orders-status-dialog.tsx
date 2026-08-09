@@ -45,6 +45,7 @@ const statusLabel: Record<OrderStatus, string> = {
   shipped: 'Shipped',
   delivered: 'Delivered',
   cancelled: 'Cancelled',
+  partially_refunded: 'Partially Refunded',
   refunded: 'Refunded',
 }
 

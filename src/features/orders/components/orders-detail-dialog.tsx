@@ -24,6 +24,7 @@ const statusVariant: Record<OrderStatus, 'default' | 'secondary' | 'outline' | '
   shipped: 'default',
   delivered: 'default',
   cancelled: 'destructive',
+  partially_refunded: 'outline',
   refunded: 'outline',
 }
 

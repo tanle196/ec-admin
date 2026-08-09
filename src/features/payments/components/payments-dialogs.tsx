@@ -1,4 +1,5 @@
 import { PaymentsDetailDialog } from './payments-detail-dialog'
+import { PaymentsRefundDialog } from './payments-refund-dialog'
 import { PaymentsStatusDialog } from './payments-status-dialog'
 import { usePaymentsContext } from './payments-provider'
 
@@ -26,6 +27,13 @@ export function PaymentsDialogs() {
           <PaymentsStatusDialog
             key={`payment-status-${currentRow.id}`}
             open={open === 'update-status'}
+            onOpenChange={closeWithRow}
+            currentRow={currentRow}
+          />
+
+          <PaymentsRefundDialog
+            key={`payment-refund-${currentRow.id}`}
+            open={open === 'refund'}
             onOpenChange={closeWithRow}
             currentRow={currentRow}
           />

@@ -6,18 +6,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { usePayment } from '../hooks'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { usePayment, useRefunds } from '../hooks'
 import {
   type PaymentListItem,
   type PaymentStatus,
   type PaymentMethod,
+  type RefundStatus,
 } from '../data/schema'
 
 const statusVariant: Record<PaymentStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   pending: 'secondary',
   completed: 'default',
   failed: 'destructive',
+  partially_refunded: 'outline',
   refunded: 'outline',
+}
+
+const refundStatusVariant: Record<RefundStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+  pending: 'secondary',
+  succeeded: 'default',
+  failed: 'destructive',
 }
 
 const methodLabel: Record<PaymentMethod, string> = {
@@ -40,6 +56,7 @@ type PaymentsDetailDialogProps = {
 
 export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: PaymentsDetailDialogProps) {
   const { data: payment, isLoading } = usePayment(open ? currentRow.id : null)
+  const { data: refunds } = useRefunds(open ? currentRow.id : null)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -96,6 +113,40 @@ export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: Payment
                 </div>
               )}
             </div>
+
+            {refunds && refunds.length > 0 && (
+              <div>
+                <h4 className='mb-2 text-sm font-semibold'>Refund History</h4>
+                <div className='rounded-md border'>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Reason</TableHead>
+                        <TableHead className='w-28 text-right'>Amount</TableHead>
+                        <TableHead className='w-28'>Status</TableHead>
+                        <TableHead className='w-32'>Date</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {refunds.map((refund) => (
+                        <TableRow key={refund.id}>
+                          <TableCell className='max-w-48 truncate'>{refund.reason}</TableCell>
+                          <TableCell className='text-right'>{formatVND(refund.amount)}</TableCell>
+                          <TableCell>
+                            <Badge variant={refundStatusVariant[refund.status]} className='capitalize'>
+                              {refund.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className='text-xs text-muted-foreground'>
+                            {format(refund.createdAt, 'dd/MM/yyyy HH:mm')}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </DialogContent>

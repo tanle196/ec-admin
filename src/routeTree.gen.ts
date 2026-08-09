@@ -33,6 +33,7 @@ import { Route as AuthenticatedTagsIndexRouteImport } from './routes/_authentica
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedRolesIndexRouteImport } from './routes/_authenticated/roles/index'
 import { Route as AuthenticatedReviewsIndexRouteImport } from './routes/_authenticated/reviews/index'
+import { Route as AuthenticatedRefundRequestsIndexRouteImport } from './routes/_authenticated/refund-requests/index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedPermissionsIndexRouteImport } from './routes/_authenticated/permissions/index'
 import { Route as AuthenticatedPaymentsIndexRouteImport } from './routes/_authenticated/payments/index'
@@ -171,6 +172,12 @@ const AuthenticatedReviewsIndexRoute =
     path: '/reviews/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRefundRequestsIndexRoute =
+  AuthenticatedRefundRequestsIndexRouteImport.update({
+    id: '/refund-requests/',
+    path: '/refund-requests/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProductsIndexRoute =
   AuthenticatedProductsIndexRouteImport.update({
     id: '/products/',
@@ -303,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/payments/': typeof AuthenticatedPaymentsIndexRoute
   '/permissions/': typeof AuthenticatedPermissionsIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
+  '/refund-requests/': typeof AuthenticatedRefundRequestsIndexRoute
   '/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/roles/': typeof AuthenticatedRolesIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -342,6 +350,7 @@ export interface FileRoutesByTo {
   '/payments': typeof AuthenticatedPaymentsIndexRoute
   '/permissions': typeof AuthenticatedPermissionsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
+  '/refund-requests': typeof AuthenticatedRefundRequestsIndexRoute
   '/reviews': typeof AuthenticatedReviewsIndexRoute
   '/roles': typeof AuthenticatedRolesIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -386,6 +395,7 @@ export interface FileRoutesById {
   '/_authenticated/payments/': typeof AuthenticatedPaymentsIndexRoute
   '/_authenticated/permissions/': typeof AuthenticatedPermissionsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
+  '/_authenticated/refund-requests/': typeof AuthenticatedRefundRequestsIndexRoute
   '/_authenticated/reviews/': typeof AuthenticatedReviewsIndexRoute
   '/_authenticated/roles/': typeof AuthenticatedRolesIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -428,6 +438,7 @@ export interface FileRouteTypes {
     | '/payments/'
     | '/permissions/'
     | '/products/'
+    | '/refund-requests/'
     | '/reviews/'
     | '/roles/'
     | '/settings/'
@@ -467,6 +478,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/permissions'
     | '/products'
+    | '/refund-requests'
     | '/reviews'
     | '/roles'
     | '/settings'
@@ -510,6 +522,7 @@ export interface FileRouteTypes {
     | '/_authenticated/payments/'
     | '/_authenticated/permissions/'
     | '/_authenticated/products/'
+    | '/_authenticated/refund-requests/'
     | '/_authenticated/reviews/'
     | '/_authenticated/roles/'
     | '/_authenticated/settings/'
@@ -705,6 +718,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReviewsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/refund-requests/': {
+      id: '/_authenticated/refund-requests/'
+      path: '/refund-requests'
+      fullPath: '/refund-requests/'
+      preLoaderRoute: typeof AuthenticatedRefundRequestsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/products/': {
       id: '/_authenticated/products/'
       path: '/products'
@@ -863,6 +883,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPaymentsIndexRoute: typeof AuthenticatedPaymentsIndexRoute
   AuthenticatedPermissionsIndexRoute: typeof AuthenticatedPermissionsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
+  AuthenticatedRefundRequestsIndexRoute: typeof AuthenticatedRefundRequestsIndexRoute
   AuthenticatedReviewsIndexRoute: typeof AuthenticatedReviewsIndexRoute
   AuthenticatedRolesIndexRoute: typeof AuthenticatedRolesIndexRoute
   AuthenticatedTagsIndexRoute: typeof AuthenticatedTagsIndexRoute
@@ -883,6 +904,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPaymentsIndexRoute: AuthenticatedPaymentsIndexRoute,
   AuthenticatedPermissionsIndexRoute: AuthenticatedPermissionsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
+  AuthenticatedRefundRequestsIndexRoute: AuthenticatedRefundRequestsIndexRoute,
   AuthenticatedReviewsIndexRoute: AuthenticatedReviewsIndexRoute,
   AuthenticatedRolesIndexRoute: AuthenticatedRolesIndexRoute,
   AuthenticatedTagsIndexRoute: AuthenticatedTagsIndexRoute,

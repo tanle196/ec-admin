@@ -2,42 +2,29 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
-import { type PaymentListItem, type PaymentStatus, type PaymentMethod } from '../data/schema'
+import { type RefundRequestListItem, type RefundRequestStatus } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
-const statusVariant: Record<PaymentStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<RefundRequestStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
   pending: 'secondary',
-  completed: 'default',
-  failed: 'destructive',
-  partially_refunded: 'outline',
-  refunded: 'outline',
+  approved: 'default',
+  rejected: 'destructive',
 }
 
-const statusLabel: Record<PaymentStatus, string> = {
+const statusLabel: Record<RefundRequestStatus, string> = {
   pending: 'Pending',
-  completed: 'Completed',
-  failed: 'Failed',
-  partially_refunded: 'Partially Refunded',
-  refunded: 'Refunded',
-}
-
-const methodLabel: Record<PaymentMethod, string> = {
-  cod: 'COD',
-  vnpay: 'VNPay',
-  momo: 'MoMo',
-  zalopay: 'ZaloPay',
-  stripe: 'Stripe',
-  bank_transfer: 'Bank Transfer',
+  approved: 'Approved',
+  rejected: 'Rejected',
 }
 
 const formatVND = (amount: number) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
 
-export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
+export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Payment ID' />
+      <DataTableColumnHeader column={column} title='Request ID' />
     ),
     cell: ({ row }) => (
       <span className='font-mono text-xs text-muted-foreground'>{row.getValue('id')}</span>
@@ -54,23 +41,12 @@ export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
     ),
   },
   {
-    accessorKey: 'method',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Method' />
-    ),
-    cell: ({ row }) => {
-      const method = row.getValue('method') as PaymentMethod
-      return <span className='text-sm'>{methodLabel[method]}</span>
-    },
-    meta: { className: 'w-32' },
-  },
-  {
     accessorKey: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
-      const status = row.getValue('status') as PaymentStatus
+      const status = row.getValue('status') as RefundRequestStatus
       return (
         <Badge variant={statusVariant[status]}>
           {statusLabel[status]}
@@ -90,9 +66,18 @@ export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
     meta: { className: 'w-36' },
   },
   {
+    accessorKey: 'reason',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Reason' />
+    ),
+    cell: ({ row }) => (
+      <span className='block max-w-64 truncate text-sm'>{row.getValue('reason')}</span>
+    ),
+  },
+  {
     accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Created At' />
+      <DataTableColumnHeader column={column} title='Requested At' />
     ),
     cell: ({ row }) => {
       const date = row.getValue('createdAt') as Date

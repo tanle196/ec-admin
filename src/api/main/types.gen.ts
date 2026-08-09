@@ -1045,6 +1045,61 @@ export type RefundResponseDto = {
     createdAt: Date;
 };
 
+export type CreateRefundRequestDto = {
+    /**
+     * Payment ID to refund
+     */
+    payment_id: string;
+    items: Array<RefundItemInputDto>;
+    reason: string;
+};
+
+export type RefundRequestItemResponseDto = {
+    id: string;
+    order_item_id: string;
+    quantity: number;
+    amount: number;
+};
+
+export type RefundRequestResponseDto = {
+    id: string;
+    payment_id: string;
+    order_id: string;
+    requested_by: string;
+    amount: number;
+    reason: string;
+    status: 'pending' | 'approved' | 'rejected';
+    adminNote?: {
+        [key: string]: unknown;
+    };
+    reviewedBy?: {
+        [key: string]: unknown;
+    };
+    reviewedAt?: {
+        [key: string]: unknown;
+    };
+    refund_id?: {
+        [key: string]: unknown;
+    };
+    items: Array<RefundRequestItemResponseDto>;
+    createdAt: Date;
+};
+
+export type RefundRequestPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<RefundRequestResponseDto>;
+};
+
+export type ApproveRefundRequestDto = {
+    note?: string;
+};
+
+export type RejectRefundRequestDto = {
+    note: string;
+};
+
 export type CreateReviewDto = {
     /**
      * Product to review
@@ -2282,6 +2337,76 @@ export type AdminPaymentsControllerCreateRefundResponses = {
 };
 
 export type AdminPaymentsControllerCreateRefundResponse = AdminPaymentsControllerCreateRefundResponses[keyof AdminPaymentsControllerCreateRefundResponses];
+
+export type AdminRefundRequestsControllerFindAllData = {
+    body?: never;
+    path?: never;
+    query?: {
+        page?: number;
+        limit?: number;
+        status?: 'pending' | 'approved' | 'rejected';
+        /**
+         * Filter by order
+         */
+        order_id?: string;
+        /**
+         * Filter by payment
+         */
+        payment_id?: string;
+    };
+    url: '/admin/refund-requests';
+};
+
+export type AdminRefundRequestsControllerFindAllResponses = {
+    200: RefundRequestPaginatedResponseDto;
+};
+
+export type AdminRefundRequestsControllerFindAllResponse = AdminRefundRequestsControllerFindAllResponses[keyof AdminRefundRequestsControllerFindAllResponses];
+
+export type AdminRefundRequestsControllerFindOneData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/admin/refund-requests/{id}';
+};
+
+export type AdminRefundRequestsControllerFindOneResponses = {
+    200: RefundRequestResponseDto;
+};
+
+export type AdminRefundRequestsControllerFindOneResponse = AdminRefundRequestsControllerFindOneResponses[keyof AdminRefundRequestsControllerFindOneResponses];
+
+export type AdminRefundRequestsControllerApproveData = {
+    body: ApproveRefundRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/admin/refund-requests/{id}/approve';
+};
+
+export type AdminRefundRequestsControllerApproveResponses = {
+    200: RefundRequestResponseDto;
+};
+
+export type AdminRefundRequestsControllerApproveResponse = AdminRefundRequestsControllerApproveResponses[keyof AdminRefundRequestsControllerApproveResponses];
+
+export type AdminRefundRequestsControllerRejectData = {
+    body: RejectRefundRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/admin/refund-requests/{id}/reject';
+};
+
+export type AdminRefundRequestsControllerRejectResponses = {
+    200: RefundRequestResponseDto;
+};
+
+export type AdminRefundRequestsControllerRejectResponse = AdminRefundRequestsControllerRejectResponses[keyof AdminRefundRequestsControllerRejectResponses];
 
 export type AdminReviewsControllerFindAllData = {
     body?: never;

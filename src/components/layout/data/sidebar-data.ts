@@ -33,6 +33,7 @@ import {
   Boxes,
   Receipt,
   Contact,
+  Undo2,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -119,6 +120,11 @@ export const sidebarData: SidebarData = {
               title: 'Payments',
               url: '/payments',
               icon: CreditCard,
+            },
+            {
+              title: 'Refund Requests',
+              url: '/refund-requests',
+              icon: Undo2,
             },
           ],
         },

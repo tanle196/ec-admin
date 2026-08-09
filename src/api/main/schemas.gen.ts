@@ -3211,6 +3211,174 @@ export const RefundResponseDtoSchema = {
     ]
 } as const;
 
+export const CreateRefundRequestDtoSchema = {
+    type: 'object',
+    properties: {
+        payment_id: {
+            type: 'string',
+            example: 'uuid-v4',
+            description: 'Payment ID to refund'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RefundItemInputDto'
+            }
+        },
+        reason: {
+            type: 'string',
+            example: 'Sản phẩm bị lỗi khi giao hàng'
+        }
+    },
+    required: [
+        'payment_id',
+        'items',
+        'reason'
+    ]
+} as const;
+
+export const RefundRequestItemResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        order_item_id: {
+            type: 'string'
+        },
+        quantity: {
+            type: 'number'
+        },
+        amount: {
+            type: 'number'
+        }
+    },
+    required: [
+        'id',
+        'order_item_id',
+        'quantity',
+        'amount'
+    ]
+} as const;
+
+export const RefundRequestResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        payment_id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        requested_by: {
+            type: 'string'
+        },
+        amount: {
+            type: 'number'
+        },
+        reason: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'approved',
+                'rejected'
+            ]
+        },
+        adminNote: {
+            type: 'object'
+        },
+        reviewedBy: {
+            type: 'object'
+        },
+        reviewedAt: {
+            type: 'object'
+        },
+        refund_id: {
+            type: 'object'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RefundRequestItemResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        }
+    },
+    required: [
+        'id',
+        'payment_id',
+        'order_id',
+        'requested_by',
+        'amount',
+        'reason',
+        'status',
+        'items',
+        'createdAt'
+    ]
+} as const;
+
+export const RefundRequestPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RefundRequestResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const ApproveRefundRequestDtoSchema = {
+    type: 'object',
+    properties: {
+        note: {
+            type: 'string',
+            example: 'Đã kiểm tra, hợp lệ'
+        }
+    }
+} as const;
+
+export const RejectRefundRequestDtoSchema = {
+    type: 'object',
+    properties: {
+        note: {
+            type: 'string',
+            example: 'Sản phẩm không thuộc diện được hoàn tiền'
+        }
+    },
+    required: [
+        'note'
+    ]
+} as const;
+
 export const CreateReviewDtoSchema = {
     type: 'object',
     properties: {

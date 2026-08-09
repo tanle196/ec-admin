@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Eye, RefreshCw, Undo2 } from 'lucide-react'
+import { Check, Eye, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,17 +9,17 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type PaymentListItem } from '../data/schema'
-import { usePaymentsContext } from './payments-provider'
+import { type RefundRequestListItem } from '../data/schema'
+import { useRefundRequestsContext } from './refund-requests-provider'
 
 type DataTableRowActionsProps = {
-  row: Row<PaymentListItem>
+  row: Row<RefundRequestListItem>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const { setOpen, setCurrentRow } = usePaymentsContext()
-  const payment = row.original
-  const canRefund = payment.status === 'completed' || payment.status === 'partially_refunded'
+  const { setOpen, setCurrentRow } = useRefundRequestsContext()
+  const refundRequest = row.original
+  const isPending = refundRequest.status === 'pending'
 
   return (
     <DropdownMenu modal={false}>
@@ -35,7 +35,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       <DropdownMenuContent align='end' className='w-44'>
         <DropdownMenuItem
           onClick={() => {
-            setCurrentRow(row.original)
+            setCurrentRow(refundRequest)
             setOpen('view')
           }}
         >
@@ -45,26 +45,27 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
+          disabled={!isPending}
           onClick={() => {
-            setCurrentRow(row.original)
-            setOpen('update-status')
+            setCurrentRow(refundRequest)
+            setOpen('approve')
           }}
         >
-          Update Status
+          Approve
           <DropdownMenuShortcut>
-            <RefreshCw size={16} />
+            <Check size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
-          disabled={!canRefund}
+          disabled={!isPending}
           onClick={() => {
-            setCurrentRow(payment)
-            setOpen('refund')
+            setCurrentRow(refundRequest)
+            setOpen('reject')
           }}
         >
-          Refund
+          Reject
           <DropdownMenuShortcut>
-            <Undo2 size={16} />
+            <X size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
