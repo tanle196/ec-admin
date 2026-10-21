@@ -361,33 +361,33 @@ export const adminPaymentsControllerCreateRefundResponseTransformer = async (dat
     return data;
 };
 
-const refundRequestResponseDtoSchemaResponseTransformer = (data: any) => {
+const adminRefundRequestResponseDtoSchemaResponseTransformer = (data: any) => {
     data.createdAt = new Date(data.createdAt);
     return data;
 };
 
-const refundRequestPaginatedResponseDtoSchemaResponseTransformer = (data: any) => {
-    data.data = data.data.map((item: any) => refundRequestResponseDtoSchemaResponseTransformer(item));
+const adminRefundRequestPaginatedResponseDtoSchemaResponseTransformer = (data: any) => {
+    data.data = data.data.map((item: any) => adminRefundRequestResponseDtoSchemaResponseTransformer(item));
     return data;
 };
 
 export const adminRefundRequestsControllerFindAllResponseTransformer = async (data: any): Promise<AdminRefundRequestsControllerFindAllResponse> => {
-    data = refundRequestPaginatedResponseDtoSchemaResponseTransformer(data);
+    data = adminRefundRequestPaginatedResponseDtoSchemaResponseTransformer(data);
     return data;
 };
 
 export const adminRefundRequestsControllerFindOneResponseTransformer = async (data: any): Promise<AdminRefundRequestsControllerFindOneResponse> => {
-    data = refundRequestResponseDtoSchemaResponseTransformer(data);
+    data = adminRefundRequestResponseDtoSchemaResponseTransformer(data);
     return data;
 };
 
 export const adminRefundRequestsControllerApproveResponseTransformer = async (data: any): Promise<AdminRefundRequestsControllerApproveResponse> => {
-    data = refundRequestResponseDtoSchemaResponseTransformer(data);
+    data = adminRefundRequestResponseDtoSchemaResponseTransformer(data);
     return data;
 };
 
 export const adminRefundRequestsControllerRejectResponseTransformer = async (data: any): Promise<AdminRefundRequestsControllerRejectResponse> => {
-    data = refundRequestResponseDtoSchemaResponseTransformer(data);
+    data = adminRefundRequestResponseDtoSchemaResponseTransformer(data);
     return data;
 };
 

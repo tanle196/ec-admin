@@ -942,6 +942,12 @@ export type CreatePaymentDto = {
     method: 'cod' | 'vnpay' | 'momo' | 'zalopay' | 'stripe' | 'bank_transfer';
 };
 
+export type PaymentMetadataDto = {
+    checkoutUrl?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type PaymentResponseDto = {
     id: string;
     order_id: string;
@@ -951,14 +957,12 @@ export type PaymentResponseDto = {
     transactionId?: {
         [key: string]: unknown;
     };
-    metadata?: {
-        [key: string]: unknown;
-    };
     paidAt?: {
         [key: string]: unknown;
     };
     createdAt: Date;
     updatedAt: Date;
+    metadata?: PaymentMetadataDto | null;
 };
 
 export type PaymentPaginatedResponseDto = {
@@ -977,14 +981,14 @@ export type AdminPaymentResponseDto = {
     transactionId?: {
         [key: string]: unknown;
     };
-    metadata?: {
-        [key: string]: unknown;
-    };
     paidAt?: {
         [key: string]: unknown;
     };
     createdAt: Date;
     updatedAt: Date;
+    metadata?: {
+        [key: string]: unknown;
+    };
 };
 
 export type AdminPaymentPaginatedResponseDto = {
@@ -1072,9 +1076,6 @@ export type RefundRequestResponseDto = {
     adminNote?: {
         [key: string]: unknown;
     };
-    reviewedBy?: {
-        [key: string]: unknown;
-    };
     reviewedAt?: {
         [key: string]: unknown;
     };
@@ -1090,6 +1091,37 @@ export type RefundRequestPaginatedResponseDto = {
     page: number;
     limit: number;
     data: Array<RefundRequestResponseDto>;
+};
+
+export type AdminRefundRequestResponseDto = {
+    id: string;
+    payment_id: string;
+    order_id: string;
+    requested_by: string;
+    amount: number;
+    reason: string;
+    status: 'pending' | 'approved' | 'rejected';
+    adminNote?: {
+        [key: string]: unknown;
+    };
+    reviewedAt?: {
+        [key: string]: unknown;
+    };
+    refund_id?: {
+        [key: string]: unknown;
+    };
+    items: Array<RefundRequestItemResponseDto>;
+    createdAt: Date;
+    reviewedBy?: {
+        [key: string]: unknown;
+    };
+};
+
+export type AdminRefundRequestPaginatedResponseDto = {
+    total: number;
+    page: number;
+    limit: number;
+    data: Array<AdminRefundRequestResponseDto>;
 };
 
 export type ApproveRefundRequestDto = {
@@ -1123,7 +1155,7 @@ export type ReviewAuthorDto = {
 export type ReviewResponseDto = {
     id: string;
     user_id: string;
-    user: ReviewAuthorDto;
+    user?: ReviewAuthorDto | null;
     product_id: string;
     rating: number;
     title?: {
@@ -1154,7 +1186,7 @@ export type UpdateReviewDto = {
 export type AdminReviewResponseDto = {
     id: string;
     user_id: string;
-    user: ReviewAuthorDto;
+    user?: ReviewAuthorDto | null;
     product_id: string;
     rating: number;
     title?: {
@@ -2358,7 +2390,7 @@ export type AdminRefundRequestsControllerFindAllData = {
 };
 
 export type AdminRefundRequestsControllerFindAllResponses = {
-    200: RefundRequestPaginatedResponseDto;
+    200: AdminRefundRequestPaginatedResponseDto;
 };
 
 export type AdminRefundRequestsControllerFindAllResponse = AdminRefundRequestsControllerFindAllResponses[keyof AdminRefundRequestsControllerFindAllResponses];
@@ -2373,7 +2405,7 @@ export type AdminRefundRequestsControllerFindOneData = {
 };
 
 export type AdminRefundRequestsControllerFindOneResponses = {
-    200: RefundRequestResponseDto;
+    200: AdminRefundRequestResponseDto;
 };
 
 export type AdminRefundRequestsControllerFindOneResponse = AdminRefundRequestsControllerFindOneResponses[keyof AdminRefundRequestsControllerFindOneResponses];
@@ -2388,7 +2420,7 @@ export type AdminRefundRequestsControllerApproveData = {
 };
 
 export type AdminRefundRequestsControllerApproveResponses = {
-    200: RefundRequestResponseDto;
+    200: AdminRefundRequestResponseDto;
 };
 
 export type AdminRefundRequestsControllerApproveResponse = AdminRefundRequestsControllerApproveResponses[keyof AdminRefundRequestsControllerApproveResponses];
@@ -2403,7 +2435,7 @@ export type AdminRefundRequestsControllerRejectData = {
 };
 
 export type AdminRefundRequestsControllerRejectResponses = {
-    200: RefundRequestResponseDto;
+    200: AdminRefundRequestResponseDto;
 };
 
 export type AdminRefundRequestsControllerRejectResponse = AdminRefundRequestsControllerRejectResponses[keyof AdminRefundRequestsControllerRejectResponses];

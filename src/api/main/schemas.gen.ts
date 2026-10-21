@@ -2881,6 +2881,16 @@ export const CreatePaymentDtoSchema = {
     ]
 } as const;
 
+export const PaymentMetadataDtoSchema = {
+    type: 'object',
+    properties: {
+        checkoutUrl: {
+            type: 'object',
+            nullable: true
+        }
+    }
+} as const;
+
 export const PaymentResponseDtoSchema = {
     type: 'object',
     properties: {
@@ -2917,9 +2927,6 @@ export const PaymentResponseDtoSchema = {
         transactionId: {
             type: 'object'
         },
-        metadata: {
-            type: 'object'
-        },
         paidAt: {
             type: 'object'
         },
@@ -2930,6 +2937,15 @@ export const PaymentResponseDtoSchema = {
         updatedAt: {
             format: 'date-time',
             type: 'string'
+        },
+        metadata: {
+            nullable: true,
+            type: 'object',
+            allOf: [
+                {
+                    $ref: '#/components/schemas/PaymentMetadataDto'
+                }
+            ]
         }
     },
     required: [
@@ -3009,9 +3025,6 @@ export const AdminPaymentResponseDtoSchema = {
         transactionId: {
             type: 'object'
         },
-        metadata: {
-            type: 'object'
-        },
         paidAt: {
             type: 'object'
         },
@@ -3022,6 +3035,9 @@ export const AdminPaymentResponseDtoSchema = {
         updatedAt: {
             format: 'date-time',
             type: 'string'
+        },
+        metadata: {
+            type: 'object'
         }
     },
     required: [
@@ -3293,9 +3309,6 @@ export const RefundRequestResponseDtoSchema = {
         adminNote: {
             type: 'object'
         },
-        reviewedBy: {
-            type: 'object'
-        },
         reviewedAt: {
             type: 'object'
         },
@@ -3345,6 +3358,101 @@ export const RefundRequestPaginatedResponseDtoSchema = {
             type: 'array',
             items: {
                 $ref: '#/components/schemas/RefundRequestResponseDto'
+            }
+        }
+    },
+    required: [
+        'total',
+        'page',
+        'limit',
+        'data'
+    ]
+} as const;
+
+export const AdminRefundRequestResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        payment_id: {
+            type: 'string'
+        },
+        order_id: {
+            type: 'string'
+        },
+        requested_by: {
+            type: 'string'
+        },
+        amount: {
+            type: 'number'
+        },
+        reason: {
+            type: 'string'
+        },
+        status: {
+            type: 'string',
+            enum: [
+                'pending',
+                'approved',
+                'rejected'
+            ]
+        },
+        adminNote: {
+            type: 'object'
+        },
+        reviewedAt: {
+            type: 'object'
+        },
+        refund_id: {
+            type: 'object'
+        },
+        items: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/RefundRequestItemResponseDto'
+            }
+        },
+        createdAt: {
+            format: 'date-time',
+            type: 'string'
+        },
+        reviewedBy: {
+            type: 'object'
+        }
+    },
+    required: [
+        'id',
+        'payment_id',
+        'order_id',
+        'requested_by',
+        'amount',
+        'reason',
+        'status',
+        'items',
+        'createdAt'
+    ]
+} as const;
+
+export const AdminRefundRequestPaginatedResponseDtoSchema = {
+    type: 'object',
+    properties: {
+        total: {
+            type: 'number',
+            example: 100
+        },
+        page: {
+            type: 'number',
+            example: 1
+        },
+        limit: {
+            type: 'number',
+            example: 10
+        },
+        data: {
+            type: 'array',
+            items: {
+                $ref: '#/components/schemas/AdminRefundRequestResponseDto'
             }
         }
     },
@@ -3435,7 +3543,13 @@ export const ReviewResponseDtoSchema = {
             type: 'string'
         },
         user: {
-            $ref: '#/components/schemas/ReviewAuthorDto'
+            nullable: true,
+            type: 'object',
+            allOf: [
+                {
+                    $ref: '#/components/schemas/ReviewAuthorDto'
+                }
+            ]
         },
         product_id: {
             type: 'string'
@@ -3469,7 +3583,6 @@ export const ReviewResponseDtoSchema = {
     required: [
         'id',
         'user_id',
-        'user',
         'product_id',
         'rating',
         'isVerified',
@@ -3537,7 +3650,13 @@ export const AdminReviewResponseDtoSchema = {
             type: 'string'
         },
         user: {
-            $ref: '#/components/schemas/ReviewAuthorDto'
+            nullable: true,
+            type: 'object',
+            allOf: [
+                {
+                    $ref: '#/components/schemas/ReviewAuthorDto'
+                }
+            ]
         },
         product_id: {
             type: 'string'
@@ -3571,7 +3690,6 @@ export const AdminReviewResponseDtoSchema = {
     required: [
         'id',
         'user_id',
-        'user',
         'product_id',
         'rating',
         'isVerified',
