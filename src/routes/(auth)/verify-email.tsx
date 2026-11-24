@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
+import { createFileRoute } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
 import { authService } from '@/features/auth/api/authService'
 import { AuthLayout } from '@/features/auth/auth-layout'
@@ -25,7 +25,9 @@ export const Route = createFileRoute('/(auth)/verify-email')({
     <AuthLayout>
       <div className='flex flex-col items-center gap-4 py-8'>
         <Loader2 className='h-12 w-12 animate-spin text-primary' />
-        <p className='text-sm text-muted-foreground'>Verifying your account...</p>
+        <p className='text-sm text-muted-foreground'>
+          Verifying your account...
+        </p>
       </div>
     </AuthLayout>
   ),

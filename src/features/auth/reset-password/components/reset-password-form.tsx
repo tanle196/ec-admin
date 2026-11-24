@@ -19,9 +19,7 @@ import { useResetPassword } from '../../hooks/useResetPassword'
 
 const formSchema = z
   .object({
-    newPassword: z
-      .string()
-      .min(8, 'Password must be at least 8 characters.'),
+    newPassword: z.string().min(8, 'Password must be at least 8 characters.'),
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -47,12 +45,18 @@ export function ResetPasswordForm({
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const flow = resetPassword({ body: { token, newPassword: data.newPassword } })
+    const flow = resetPassword({
+      body: { token, newPassword: data.newPassword },
+    })
 
     toast.promise(flow, {
       loading: 'Resetting password...',
       success: 'Password reset successfully!',
-      error: (err) => getErrorMessage(err, 'Failed to reset password. The link may be invalid or expired.'),
+      error: (err) =>
+        getErrorMessage(
+          err,
+          'Failed to reset password. The link may be invalid or expired.'
+        ),
     })
 
     try {

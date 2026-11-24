@@ -85,7 +85,9 @@ export function ProfileForm() {
               className='bg-muted'
             />
           )}
-          <FormDescription>Email cannot be changed from this page.</FormDescription>
+          <FormDescription>
+            Email cannot be changed from this page.
+          </FormDescription>
         </FormItem>
 
         <FormItem>
@@ -99,7 +101,9 @@ export function ProfileForm() {
               className='bg-muted font-mono'
             />
           )}
-          <FormDescription>Your unique identifier in the system.</FormDescription>
+          <FormDescription>
+            Your unique identifier in the system.
+          </FormDescription>
         </FormItem>
 
         {roles.length > 0 && (
@@ -112,7 +116,9 @@ export function ProfileForm() {
                 </Badge>
               ))}
             </div>
-            <FormDescription>Roles are managed by administrators.</FormDescription>
+            <FormDescription>
+              Roles are managed by administrators.
+            </FormDescription>
           </FormItem>
         )}
 

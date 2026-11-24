@@ -23,9 +23,7 @@ export function Tags() {
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Tags</h2>
-            <p className='text-muted-foreground'>
-              Manage product tags here.
-            </p>
+            <p className='text-muted-foreground'>Manage product tags here.</p>
           </div>
           <TagsPrimaryButtons />
         </div>

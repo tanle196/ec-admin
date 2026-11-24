@@ -6,8 +6,8 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDeleteDiscount } from '../hooks'
 import { type Discount } from '../data/schema'
+import { useDeleteDiscount } from '../hooks'
 
 type DiscountsDeleteDialogProps = {
   open: boolean
@@ -64,7 +64,7 @@ export function DiscountsDeleteDialog({
         >
           <p className='mb-2'>
             Are you sure you want to delete discount{' '}
-            <span className='font-bold font-mono'>{currentRow.code}</span>?
+            <span className='font-mono font-bold'>{currentRow.code}</span>?
             <br />
             This action cannot be undone.
           </p>

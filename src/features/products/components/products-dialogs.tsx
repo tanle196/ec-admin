@@ -1,8 +1,8 @@
 import { ProductsActionDialog } from './products-action-dialog'
 import { ProductsDeleteDialog } from './products-delete-dialog'
 import { ProductsImageDialog } from './products-image-dialog'
-import { ProductsVariantDialog } from './products-variant-dialog'
 import { useProductsContext } from './products-provider'
+import { ProductsVariantDialog } from './products-variant-dialog'
 
 export function ProductsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useProductsContext()
@@ -19,7 +19,9 @@ export function ProductsDialogs() {
       <ProductsActionDialog
         key='product-add'
         open={open === 'add'}
-        onOpenChange={(isOpen) => { if (!isOpen) setOpen(null) }}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setOpen(null)
+        }}
       />
 
       {currentRow && (

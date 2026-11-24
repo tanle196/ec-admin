@@ -29,8 +29,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  ORDER_STATUSES,
+  type OrderListItem,
+  type OrderStatus,
+} from '../data/schema'
 import { useUpdateOrderStatus } from '../hooks'
-import { ORDER_STATUSES, type OrderListItem, type OrderStatus } from '../data/schema'
 
 const formSchema = z.object({
   status: z.enum(ORDER_STATUSES),
@@ -55,7 +59,11 @@ type OrdersStatusDialogProps = {
   currentRow: OrderListItem
 }
 
-export function OrdersStatusDialog({ open, onOpenChange, currentRow }: OrdersStatusDialogProps) {
+export function OrdersStatusDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: OrdersStatusDialogProps) {
   const { mutate: updateStatus, isPending } = useUpdateOrderStatus()
 
   const form = useForm<StatusForm>({
@@ -93,12 +101,14 @@ export function OrdersStatusDialog({ open, onOpenChange, currentRow }: OrdersSta
       <DialogContent className='sm:max-w-sm'>
         <DialogHeader className='text-start'>
           <DialogTitle>Update Order Status</DialogTitle>
-          <DialogDescription>
-            Order #{currentRow.orderNumber}
-          </DialogDescription>
+          <DialogDescription>Order #{currentRow.orderNumber}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form id='order-status-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form
+            id='order-status-form'
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-4'
+          >
             <FormField
               control={form.control}
               name='status'

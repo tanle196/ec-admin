@@ -1,11 +1,18 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
-import { type PaymentListItem, type PaymentStatus, type PaymentMethod } from '../data/schema'
+import {
+  type PaymentListItem,
+  type PaymentStatus,
+  type PaymentMethod,
+} from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
-const statusVariant: Record<PaymentStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  PaymentStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   completed: 'default',
   failed: 'destructive',
@@ -31,7 +38,9 @@ const methodLabel: Record<PaymentMethod, string> = {
 }
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
   {
@@ -40,7 +49,9 @@ export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
       <DataTableColumnHeader column={column} title='Payment ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('id')}
+      </span>
     ),
     enableHiding: false,
   },
@@ -50,7 +61,9 @@ export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
       <DataTableColumnHeader column={column} title='Order ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('order_id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('order_id')}
+      </span>
     ),
   },
   {
@@ -72,9 +85,7 @@ export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
     cell: ({ row }) => {
       const status = row.getValue('status') as PaymentStatus
       return (
-        <Badge variant={statusVariant[status]}>
-          {statusLabel[status]}
-        </Badge>
+        <Badge variant={statusVariant[status]}>{statusLabel[status]}</Badge>
       )
     },
     meta: { className: 'w-28' },
@@ -85,7 +96,9 @@ export const paymentsColumns: ColumnDef<PaymentListItem>[] = [
       <DataTableColumnHeader column={column} title='Amount' />
     ),
     cell: ({ row }) => (
-      <span className='text-sm font-medium'>{formatVND(row.getValue('amount'))}</span>
+      <span className='text-sm font-medium'>
+        {formatVND(row.getValue('amount'))}
+      </span>
     ),
     meta: { className: 'w-36' },
   },

@@ -1,5 +1,5 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
@@ -24,7 +24,9 @@ const toDate = (v: unknown): Date | null => {
 export const discountsColumns: ColumnDef<Discount>[] = [
   {
     accessorKey: 'code',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Code' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Code' />
+    ),
     cell: ({ row }) => (
       <LongText className='max-w-40 font-mono font-semibold uppercase'>
         {row.getValue('code')}
@@ -34,7 +36,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'type',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Type' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Type' />
+    ),
     cell: ({ row }) => {
       const type = row.getValue('type') as string
       return (
@@ -47,7 +51,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'value',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Value' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Value' />
+    ),
     cell: ({ row }) => (
       <span className='font-medium'>{formatValue(row.original)}</span>
     ),
@@ -55,7 +61,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'minOrderValue',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Min Order' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Min Order' />
+    ),
     cell: ({ row }) => {
       const val = toNumber(row.getValue('minOrderValue'))
       return (
@@ -68,7 +76,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'usageLimit',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Limit' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Limit' />
+    ),
     cell: ({ row }) => {
       const limit = toNumber(row.getValue('usageLimit'))
       const used = row.original.usedCount
@@ -82,7 +92,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'isActive',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
     cell: ({ row }) => {
       const isActive = row.getValue('isActive') as boolean
       return (
@@ -95,7 +107,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'expiresAt',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Expires At' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Expires At' />
+    ),
     cell: ({ row }) => {
       const date = toDate(row.getValue('expiresAt'))
       return (
@@ -108,7 +122,9 @@ export const discountsColumns: ColumnDef<Discount>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Created At' />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Created At' />
+    ),
     cell: ({ row }) => {
       const date = row.getValue('createdAt') as Date
       return (

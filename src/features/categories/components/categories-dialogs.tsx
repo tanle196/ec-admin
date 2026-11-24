@@ -17,7 +17,9 @@ export function CategoriesDialogs() {
       <CategoriesActionDialog
         key='category-add'
         open={open === 'add'}
-        onOpenChange={(isOpen) => { if (!isOpen) setOpen(null) }}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setOpen(null)
+        }}
       />
 
       {currentRow && (

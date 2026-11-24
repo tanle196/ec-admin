@@ -1,7 +1,11 @@
 import { z } from 'zod'
 
-export const REFUND_REQUEST_STATUSES = ['pending', 'approved', 'rejected'] as const
-export type RefundRequestStatus = typeof REFUND_REQUEST_STATUSES[number]
+export const REFUND_REQUEST_STATUSES = [
+  'pending',
+  'approved',
+  'rejected',
+] as const
+export type RefundRequestStatus = (typeof REFUND_REQUEST_STATUSES)[number]
 
 export const refundRequestItemSchema = z.object({
   id: z.string(),

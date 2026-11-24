@@ -1,9 +1,15 @@
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { type OrderListItem, type OrderStatus } from '@/features/orders/data/schema'
+import {
+  type OrderListItem,
+  type OrderStatus,
+} from '@/features/orders/data/schema'
 
-const statusVariant: Record<OrderStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  OrderStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   confirmed: 'default',
   processing: 'default',
@@ -15,7 +21,9 @@ const statusVariant: Record<OrderStatus, 'default' | 'secondary' | 'outline' | '
 }
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 interface RecentOrdersProps {
   orders: OrderListItem[]

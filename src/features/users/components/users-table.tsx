@@ -104,9 +104,9 @@ export function UsersTable({ search, navigate }: DataTableProps) {
       page: pagination.pageIndex + 1,
       limit: pagination.pageSize,
       email: (emailFilter?.value as string | undefined) || undefined,
-      role: (Array.isArray(roleFilter?.value) ? roleFilter.value[0] : undefined) as
-        | string
-        | undefined,
+      role: (Array.isArray(roleFilter?.value)
+        ? roleFilter.value[0]
+        : undefined) as string | undefined,
     })
   }, [pagination, columnFilters])
 

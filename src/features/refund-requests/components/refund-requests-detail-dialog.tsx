@@ -14,17 +14,25 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  type RefundRequestListItem,
+  type RefundRequestStatus,
+} from '../data/schema'
 import { useRefundRequest } from '../hooks'
-import { type RefundRequestListItem, type RefundRequestStatus } from '../data/schema'
 
-const statusVariant: Record<RefundRequestStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  RefundRequestStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   approved: 'default',
   rejected: 'destructive',
 }
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 type RefundRequestsDetailDialogProps = {
   open: boolean
@@ -32,8 +40,14 @@ type RefundRequestsDetailDialogProps = {
   currentRow: RefundRequestListItem
 }
 
-export function RefundRequestsDetailDialog({ open, onOpenChange, currentRow }: RefundRequestsDetailDialogProps) {
-  const { data: refundRequest, isLoading } = useRefundRequest(open ? currentRow.id : null)
+export function RefundRequestsDetailDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: RefundRequestsDetailDialogProps) {
+  const { data: refundRequest, isLoading } = useRefundRequest(
+    open ? currentRow.id : null
+  )
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -53,29 +67,42 @@ export function RefundRequestsDetailDialog({ open, onOpenChange, currentRow }: R
             <div className='grid grid-cols-2 gap-3'>
               <div>
                 <p className='text-muted-foreground'>Request ID</p>
-                <p className='mt-1 font-mono text-xs break-all'>{refundRequest.id}</p>
+                <p className='mt-1 font-mono text-xs break-all'>
+                  {refundRequest.id}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Order ID</p>
-                <p className='mt-1 font-mono text-xs break-all'>{refundRequest.order_id}</p>
+                <p className='mt-1 font-mono text-xs break-all'>
+                  {refundRequest.order_id}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Payment ID</p>
-                <p className='mt-1 font-mono text-xs break-all'>{refundRequest.payment_id}</p>
+                <p className='mt-1 font-mono text-xs break-all'>
+                  {refundRequest.payment_id}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Status</p>
-                <Badge variant={statusVariant[refundRequest.status]} className='mt-1 capitalize'>
+                <Badge
+                  variant={statusVariant[refundRequest.status]}
+                  className='mt-1 capitalize'
+                >
                   {refundRequest.status}
                 </Badge>
               </div>
               <div>
                 <p className='text-muted-foreground'>Amount</p>
-                <p className='mt-1 font-semibold'>{formatVND(refundRequest.amount)}</p>
+                <p className='mt-1 font-semibold'>
+                  {formatVND(refundRequest.amount)}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Requested At</p>
-                <p className='mt-1'>{format(refundRequest.createdAt, 'dd/MM/yyyy HH:mm')}</p>
+                <p className='mt-1'>
+                  {format(refundRequest.createdAt, 'dd/MM/yyyy HH:mm')}
+                </p>
               </div>
               <div className='col-span-2'>
                 <p className='text-muted-foreground'>Reason</p>
@@ -103,9 +130,15 @@ export function RefundRequestsDetailDialog({ open, onOpenChange, currentRow }: R
                   <TableBody>
                     {refundRequest.items.map((item) => (
                       <TableRow key={item.id}>
-                        <TableCell className='font-mono text-xs'>{item.order_item_id}</TableCell>
-                        <TableCell className='text-right'>{item.quantity}</TableCell>
-                        <TableCell className='text-right'>{formatVND(item.amount)}</TableCell>
+                        <TableCell className='font-mono text-xs'>
+                          {item.order_item_id}
+                        </TableCell>
+                        <TableCell className='text-right'>
+                          {item.quantity}
+                        </TableCell>
+                        <TableCell className='text-right'>
+                          {formatVND(item.amount)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

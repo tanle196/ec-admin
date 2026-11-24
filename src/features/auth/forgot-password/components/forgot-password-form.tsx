@@ -41,7 +41,8 @@ export function ForgotPasswordForm({
     toast.promise(flow, {
       loading: 'Sending email...',
       success: `Reset link sent to ${data.email}`,
-      error: (err) => getErrorMessage(err, 'Failed to send reset email. Please try again.'),
+      error: (err) =>
+        getErrorMessage(err, 'Failed to send reset email. Please try again.'),
     })
 
     try {

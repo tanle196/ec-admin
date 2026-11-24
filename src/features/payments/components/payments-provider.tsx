@@ -27,6 +27,7 @@ export function PaymentsProvider({ children }: { children: React.ReactNode }) {
 // eslint-disable-next-line react-refresh/only-export-components
 export const usePaymentsContext = () => {
   const ctx = React.useContext(PaymentsContext)
-  if (!ctx) throw new Error('usePaymentsContext must be used within <PaymentsProvider>')
+  if (!ctx)
+    throw new Error('usePaymentsContext must be used within <PaymentsProvider>')
   return ctx
 }

@@ -22,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -29,9 +30,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
+import {
+  PAYMENT_STATUSES,
+  type PaymentListItem,
+  type PaymentStatus,
+} from '../data/schema'
 import { useUpdatePaymentStatus } from '../hooks'
-import { PAYMENT_STATUSES, type PaymentListItem, type PaymentStatus } from '../data/schema'
 
 const formSchema = z.object({
   status: z.enum(PAYMENT_STATUSES),
@@ -54,7 +58,11 @@ type PaymentsStatusDialogProps = {
   currentRow: PaymentListItem
 }
 
-export function PaymentsStatusDialog({ open, onOpenChange, currentRow }: PaymentsStatusDialogProps) {
+export function PaymentsStatusDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: PaymentsStatusDialogProps) {
   const { mutate: updateStatus, isPending } = useUpdatePaymentStatus()
 
   const form = useForm<StatusForm>({
@@ -97,11 +105,16 @@ export function PaymentsStatusDialog({ open, onOpenChange, currentRow }: Payment
         <DialogHeader className='text-start'>
           <DialogTitle>Update Payment Status</DialogTitle>
           <DialogDescription>
-            Payment ID: <span className='font-mono text-xs'>{currentRow.id}</span>
+            Payment ID:{' '}
+            <span className='font-mono text-xs'>{currentRow.id}</span>
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form id='payment-status-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form
+            id='payment-status-form'
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-4'
+          >
             <FormField
               control={form.control}
               name='status'
@@ -131,7 +144,10 @@ export function PaymentsStatusDialog({ open, onOpenChange, currentRow }: Payment
               name='transactionId'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Transaction ID <span className='text-muted-foreground'>(optional)</span></FormLabel>
+                  <FormLabel>
+                    Transaction ID{' '}
+                    <span className='text-muted-foreground'>(optional)</span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder='Enter transaction ID' {...field} />
                   </FormControl>

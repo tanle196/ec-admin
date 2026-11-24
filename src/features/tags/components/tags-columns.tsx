@@ -11,7 +11,9 @@ export const tagsColumns: ColumnDef<Tag>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48 font-medium'>{row.getValue('name')}</LongText>
+      <LongText className='max-w-48 font-medium'>
+        {row.getValue('name')}
+      </LongText>
     ),
     enableHiding: false,
   },
@@ -21,7 +23,7 @@ export const tagsColumns: ColumnDef<Tag>[] = [
       <DataTableColumnHeader column={column} title='Slug' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48 text-muted-foreground font-mono text-xs'>
+      <LongText className='max-w-48 font-mono text-xs text-muted-foreground'>
         {row.getValue('slug')}
       </LongText>
     ),

@@ -4,10 +4,10 @@ import { useEffect } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -25,13 +25,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import { SelectDropdown } from '@/components/select-dropdown'
 import { useCategories } from '@/features/categories/hooks'
 import { useTags } from '@/features/tags/hooks'
-import { useCreateProduct, useUpdateProduct } from '../hooks'
 import { type Product } from '../data/schema'
+import { useCreateProduct, useUpdateProduct } from '../hooks'
 
 const statusOptions = [
   { label: 'Draft', value: 'draft' },
@@ -44,7 +44,9 @@ const formSchema = z.object({
   slug: z.string().optional(),
   category_id: z.string().min(1, 'Category is required.'),
   description: z.string().optional(),
-  basePrice: z.coerce.number<number>().min(0, 'Price must be a non-negative number.'),
+  basePrice: z.coerce
+    .number<number>()
+    .min(0, 'Price must be a non-negative number.'),
   sku: z.string().min(1, 'SKU is required.'),
   status: z.enum(['draft', 'published', 'archived']).optional(),
   isFeatured: z.boolean().optional(),
@@ -154,13 +156,15 @@ export function ProductsActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Edit Product' : 'Add New Product'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Edit Product' : 'Add New Product'}
+          </DialogTitle>
           <DialogDescription>
             {isEdit ? 'Update the product here. ' : 'Create new product here. '}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className='w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3 max-h-[60vh]'>
+        <div className='max-h-[60vh] w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3'>
           <Form {...form}>
             <form
               id='product-form'
@@ -226,7 +230,9 @@ export function ProductsActionDialog({
                 name='category_id'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Category</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Category
+                    </FormLabel>
                     <SelectDropdown
                       defaultValue={field.value}
                       onValueChange={field.onChange}
@@ -243,7 +249,9 @@ export function ProductsActionDialog({
                 name='basePrice'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Base Price</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Base Price
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -263,7 +271,9 @@ export function ProductsActionDialog({
                 name='status'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Status</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Status
+                    </FormLabel>
                     <SelectDropdown
                       defaultValue={field.value}
                       onValueChange={field.onChange}
@@ -280,7 +290,9 @@ export function ProductsActionDialog({
                 name='description'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-start space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 pt-2 text-end'>Description</FormLabel>
+                    <FormLabel className='col-span-2 pt-2 text-end'>
+                      Description
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder='Optional description...'
@@ -307,10 +319,14 @@ export function ProductsActionDialog({
                   }
                   return (
                     <FormItem className='grid grid-cols-6 items-start space-y-0 gap-x-4 gap-y-1'>
-                      <FormLabel className='col-span-2 pt-1.5 text-end'>Tags</FormLabel>
+                      <FormLabel className='col-span-2 pt-1.5 text-end'>
+                        Tags
+                      </FormLabel>
                       <div className='col-span-4 flex flex-wrap gap-1.5'>
                         {allTags.length === 0 && (
-                          <span className='text-xs text-muted-foreground'>No tags available.</span>
+                          <span className='text-xs text-muted-foreground'>
+                            No tags available.
+                          </span>
                         )}
                         {allTags.map((tag) => {
                           const selected = selectedIds.includes(tag.id)
@@ -318,7 +334,7 @@ export function ProductsActionDialog({
                             <Badge
                               key={tag.id}
                               variant={selected ? 'default' : 'outline'}
-                              className='cursor-pointer select-none gap-1'
+                              className='cursor-pointer gap-1 select-none'
                               onClick={() => toggle(tag.id)}
                             >
                               {tag.name}
@@ -337,7 +353,9 @@ export function ProductsActionDialog({
                 name='isFeatured'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Featured</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Featured
+                    </FormLabel>
                     <FormControl>
                       <Switch
                         checked={field.value}

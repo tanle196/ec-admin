@@ -5,7 +5,6 @@ import { Loader2, UserPlus } from 'lucide-react'
 import { IconFacebook, IconGithub } from '@/assets/brand-icons'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { useAuthActions } from '@/features/auth/hooks'
 import {
   Form,
   FormControl,
@@ -16,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { useAuthActions } from '@/features/auth/hooks'
 
 const formSchema = z
   .object({

@@ -36,7 +36,10 @@ type TagsActionDialogProps = {
   onOpenChange: (open: boolean) => void
 }
 
-export function TagsActionDialog({ open, onOpenChange }: TagsActionDialogProps) {
+export function TagsActionDialog({
+  open,
+  onOpenChange,
+}: TagsActionDialogProps) {
   const { mutate: createTag, isPending } = useCreateTag()
 
   const form = useForm<TagForm>({

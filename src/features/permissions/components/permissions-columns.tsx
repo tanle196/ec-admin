@@ -1,5 +1,5 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Lock } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
@@ -9,10 +9,13 @@ import { DataTableRowActions } from './data-table-row-actions'
 const ACTION_BADGE_COLORS: Record<string, string> = {
   create: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
   read: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  update: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  update:
+    'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
   delete: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  cancel: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-  publish: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+  cancel:
+    'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+  publish:
+    'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
   'assign.role':
     'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
 }
@@ -24,7 +27,9 @@ export const permissionsColumns: ColumnDef<Permission>[] = [
       <DataTableColumnHeader column={column} title='Module' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-sm font-medium'>{row.getValue('module')}</span>
+      <span className='font-mono text-sm font-medium'>
+        {row.getValue('module')}
+      </span>
     ),
     enableHiding: false,
   },

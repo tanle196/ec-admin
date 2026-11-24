@@ -1,6 +1,6 @@
 import { OrdersDetailDialog } from './orders-detail-dialog'
-import { OrdersStatusDialog } from './orders-status-dialog'
 import { useOrdersContext } from './orders-provider'
+import { OrdersStatusDialog } from './orders-status-dialog'
 
 export function OrdersDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useOrdersContext()

@@ -128,7 +128,8 @@ describe('UsersInviteDialog', () => {
     )
 
     const EMAIL_VALUE = 'test@example.com'
-    const ROLE_VALUE = 'superadmin'
+    const ROLE_LABEL = 'Superadmin'
+    const ROLE_VALUE = 'super-admin'
     const DESC_VALUE = 'Welcome aboard!'
 
     const emailInput = getByRole('textbox', { name: /Email/i })
@@ -136,7 +137,7 @@ describe('UsersInviteDialog', () => {
 
     const roleSelect = getByRole('combobox', { name: /Role/i })
     await userEvent.click(roleSelect)
-    await userEvent.click(getByRole('option', { name: ROLE_VALUE }))
+    await userEvent.click(getByRole('option', { name: ROLE_LABEL }))
 
     const descInput = getByRole('textbox', { name: /Description/i })
     await userEvent.fill(descInput, DESC_VALUE)

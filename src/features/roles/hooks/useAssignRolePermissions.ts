@@ -6,7 +6,13 @@ export const useAssignRolePermissions = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, permissionIds }: { id: string; permissionIds: string[] }) =>
+    mutationFn: ({
+      id,
+      permissionIds,
+    }: {
+      id: string
+      permissionIds: string[]
+    }) =>
       roleService.assignPermissions({ path: { id }, body: { permissionIds } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: roleKeys.all })

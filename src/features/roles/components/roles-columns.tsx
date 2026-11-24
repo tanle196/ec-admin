@@ -1,5 +1,5 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
@@ -13,7 +13,9 @@ export const rolesColumns: ColumnDef<Role>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48 font-medium'>{row.getValue('name')}</LongText>
+      <LongText className='max-w-48 font-medium'>
+        {row.getValue('name')}
+      </LongText>
     ),
     enableHiding: false,
   },
@@ -37,7 +39,7 @@ export const rolesColumns: ColumnDef<Role>[] = [
     cell: ({ row }) => {
       const permissions = row.original.permissions ?? []
       if (permissions.length === 0) {
-        return <span className='text-muted-foreground text-sm'>None</span>
+        return <span className='text-sm text-muted-foreground'>None</span>
       }
       return (
         <Badge variant='secondary'>

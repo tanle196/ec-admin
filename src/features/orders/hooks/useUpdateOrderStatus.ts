@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { type OrderStatus } from '../data/schema'
 import { orderService } from '../api/orderService'
+import { type OrderStatus } from '../data/schema'
 import { orderKeys } from '../queryKeys'
 
 type UpdateStatusParams = {

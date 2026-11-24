@@ -4,8 +4,8 @@ import { useRef, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { ImageIcon, Pencil, Trash2, UploadCloud } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -24,13 +24,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { type Product } from '../data/schema'
 import {
   useProduct,
   useAddProductImage,
   useUploadProductImage,
   useRemoveProductImage,
 } from '../hooks'
-import { type Product } from '../data/schema'
 
 const urlSchema = z.object({
   url: z.string().url('Must be a valid URL.').min(1, 'Image URL is required.'),
@@ -57,7 +57,8 @@ export function ProductsImageDialog({
 }: ProductsImageDialogProps) {
   const { data: product, isLoading } = useProduct(currentRow.id)
   const { mutate: addImage, isPending: isAdding } = useAddProductImage()
-  const { mutate: uploadImage, isPending: isUploading } = useUploadProductImage()
+  const { mutate: uploadImage, isPending: isUploading } =
+    useUploadProductImage()
   const { mutate: removeImage, isPending: isRemoving } = useRemoveProductImage()
   const [showForm, setShowForm] = useState(false)
 
@@ -77,7 +78,8 @@ export function ProductsImageDialog({
 
   // The base product only ever has a single image; variant-specific images are
   // managed separately in the variants dialog.
-  const currentImage = (product?.images ?? []).find((img) => !img.variant_id) ?? null
+  const currentImage =
+    (product?.images ?? []).find((img) => !img.variant_id) ?? null
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -176,7 +178,7 @@ export function ProductsImageDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className='w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3 max-h-[60vh] space-y-4'>
+        <div className='max-h-[60vh] w-[calc(100%+0.75rem)] space-y-4 overflow-y-auto py-1 pe-3'>
           {isLoading && (
             <p className='text-sm text-muted-foreground'>Loading image...</p>
           )}
@@ -185,13 +187,17 @@ export function ProductsImageDialog({
             <div className='flex items-center gap-3 rounded-md border p-2'>
               <img
                 src={currentImage.url}
-                alt={typeof currentImage.alt === 'string' ? currentImage.alt : ''}
-                className='h-16 w-16 rounded object-cover shrink-0 bg-muted'
+                alt={
+                  typeof currentImage.alt === 'string' ? currentImage.alt : ''
+                }
+                className='h-16 w-16 shrink-0 rounded bg-muted object-cover'
                 onError={(e) => {
                   ;(e.currentTarget as HTMLImageElement).style.display = 'none'
                 }}
               />
-              <p className='flex-1 min-w-0 text-sm truncate'>{currentImage.url}</p>
+              <p className='min-w-0 flex-1 truncate text-sm'>
+                {currentImage.url}
+              </p>
               <Button
                 variant='ghost'
                 size='icon'
@@ -204,7 +210,7 @@ export function ProductsImageDialog({
               <Button
                 variant='ghost'
                 size='icon'
-                className='h-8 w-8 text-destructive hover:text-destructive shrink-0'
+                className='h-8 w-8 shrink-0 text-destructive hover:text-destructive'
                 disabled={isBusy}
                 onClick={handleRemove}
               >
@@ -215,7 +221,7 @@ export function ProductsImageDialog({
 
           {!isLoading && (!currentImage || showForm) && (
             <div>
-              <p className='text-sm font-medium mb-3'>
+              <p className='mb-3 text-sm font-medium'>
                 {currentImage ? 'Replace Image' : 'Add Image'}
               </p>
               <Tabs defaultValue='upload'>
@@ -234,7 +240,9 @@ export function ProductsImageDialog({
                 <TabsContent value='upload'>
                   <Form {...uploadForm}>
                     <form
-                      onSubmit={uploadForm.handleSubmit(onSubmitUpload)}
+                      onSubmit={(e) =>
+                        uploadForm.handleSubmit(onSubmitUpload)(e)
+                      }
                       className='space-y-3'
                     >
                       <div className='grid grid-cols-6 items-start gap-x-4 gap-y-1'>
@@ -247,7 +255,7 @@ export function ProductsImageDialog({
                               <img
                                 src={imagePreview}
                                 alt='Preview'
-                                className='h-20 w-20 rounded-md object-cover border bg-muted'
+                                className='h-20 w-20 rounded-md border bg-muted object-cover'
                               />
                               <Button
                                 type='button'
@@ -281,7 +289,7 @@ export function ProductsImageDialog({
                             {imageFile ? 'Change file' : 'Choose file'}
                           </Button>
                           {imageFile && (
-                            <p className='text-xs text-muted-foreground truncate max-w-40'>
+                            <p className='max-w-40 truncate text-xs text-muted-foreground'>
                               {imageFile.name}
                             </p>
                           )}
@@ -293,7 +301,9 @@ export function ProductsImageDialog({
                         name='alt'
                         render={({ field }) => (
                           <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                            <FormLabel className='col-span-2 text-end'>Alt text</FormLabel>
+                            <FormLabel className='col-span-2 text-end'>
+                              Alt text
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder='Image description'
@@ -322,7 +332,11 @@ export function ProductsImageDialog({
                             Cancel
                           </Button>
                         )}
-                        <Button type='submit' size='sm' disabled={isUploading || !imageFile}>
+                        <Button
+                          type='submit'
+                          size='sm'
+                          disabled={isUploading || !imageFile}
+                        >
                           <UploadCloud size={16} className='mr-1' />
                           {isUploading ? 'Uploading...' : 'Upload Image'}
                         </Button>
@@ -343,7 +357,9 @@ export function ProductsImageDialog({
                         name='url'
                         render={({ field }) => (
                           <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                            <FormLabel className='col-span-2 text-end'>URL</FormLabel>
+                            <FormLabel className='col-span-2 text-end'>
+                              URL
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder='https://example.com/image.jpg'
@@ -361,7 +377,9 @@ export function ProductsImageDialog({
                         name='alt'
                         render={({ field }) => (
                           <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                            <FormLabel className='col-span-2 text-end'>Alt text</FormLabel>
+                            <FormLabel className='col-span-2 text-end'>
+                              Alt text
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder='Image description'

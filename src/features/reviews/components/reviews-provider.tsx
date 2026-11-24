@@ -27,6 +27,7 @@ export function ReviewsProvider({ children }: { children: React.ReactNode }) {
 // eslint-disable-next-line react-refresh/only-export-components
 export const useReviewsContext = () => {
   const ctx = React.useContext(ReviewsContext)
-  if (!ctx) throw new Error('useReviewsContext must be used within <ReviewsProvider>')
+  if (!ctx)
+    throw new Error('useReviewsContext must be used within <ReviewsProvider>')
   return ctx
 }

@@ -14,15 +14,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { usePayment, useRefunds } from '../hooks'
 import {
   type PaymentListItem,
   type PaymentStatus,
   type PaymentMethod,
   type RefundStatus,
 } from '../data/schema'
+import { usePayment, useRefunds } from '../hooks'
 
-const statusVariant: Record<PaymentStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  PaymentStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   completed: 'default',
   failed: 'destructive',
@@ -30,7 +33,10 @@ const statusVariant: Record<PaymentStatus, 'default' | 'secondary' | 'outline' |
   refunded: 'outline',
 }
 
-const refundStatusVariant: Record<RefundStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const refundStatusVariant: Record<
+  RefundStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   succeeded: 'default',
   failed: 'destructive',
@@ -46,7 +52,9 @@ const methodLabel: Record<PaymentMethod, string> = {
 }
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 type PaymentsDetailDialogProps = {
   open: boolean
@@ -54,7 +62,11 @@ type PaymentsDetailDialogProps = {
   currentRow: PaymentListItem
 }
 
-export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: PaymentsDetailDialogProps) {
+export function PaymentsDetailDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: PaymentsDetailDialogProps) {
   const { data: payment, isLoading } = usePayment(open ? currentRow.id : null)
   const { data: refunds } = useRefunds(open ? currentRow.id : null)
 
@@ -80,25 +92,36 @@ export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: Payment
               </div>
               <div>
                 <p className='text-muted-foreground'>Order ID</p>
-                <p className='mt-1 font-mono text-xs break-all'>{payment.order_id}</p>
+                <p className='mt-1 font-mono text-xs break-all'>
+                  {payment.order_id}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Status</p>
-                <Badge variant={statusVariant[payment.status]} className='mt-1 capitalize'>
+                <Badge
+                  variant={statusVariant[payment.status]}
+                  className='mt-1 capitalize'
+                >
                   {payment.status}
                 </Badge>
               </div>
               <div>
                 <p className='text-muted-foreground'>Method</p>
-                <p className='mt-1 font-medium'>{methodLabel[payment.method]}</p>
+                <p className='mt-1 font-medium'>
+                  {methodLabel[payment.method]}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Amount</p>
-                <p className='mt-1 font-semibold'>{formatVND(payment.amount)}</p>
+                <p className='mt-1 font-semibold'>
+                  {formatVND(payment.amount)}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>Created At</p>
-                <p className='mt-1'>{format(payment.createdAt, 'dd/MM/yyyy HH:mm')}</p>
+                <p className='mt-1'>
+                  {format(payment.createdAt, 'dd/MM/yyyy HH:mm')}
+                </p>
               </div>
               {payment.paidAt && (
                 <div>
@@ -109,7 +132,9 @@ export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: Payment
               {payment.transactionId && (
                 <div className='col-span-2'>
                   <p className='text-muted-foreground'>Transaction ID</p>
-                  <p className='mt-1 font-mono text-xs break-all'>{String(payment.transactionId)}</p>
+                  <p className='mt-1 font-mono text-xs break-all'>
+                    {String(payment.transactionId)}
+                  </p>
                 </div>
               )}
             </div>
@@ -122,7 +147,9 @@ export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: Payment
                     <TableHeader>
                       <TableRow>
                         <TableHead>Reason</TableHead>
-                        <TableHead className='w-28 text-right'>Amount</TableHead>
+                        <TableHead className='w-28 text-right'>
+                          Amount
+                        </TableHead>
                         <TableHead className='w-28'>Status</TableHead>
                         <TableHead className='w-32'>Date</TableHead>
                       </TableRow>
@@ -130,10 +157,17 @@ export function PaymentsDetailDialog({ open, onOpenChange, currentRow }: Payment
                     <TableBody>
                       {refunds.map((refund) => (
                         <TableRow key={refund.id}>
-                          <TableCell className='max-w-48 truncate'>{refund.reason}</TableCell>
-                          <TableCell className='text-right'>{formatVND(refund.amount)}</TableCell>
+                          <TableCell className='max-w-48 truncate'>
+                            {refund.reason}
+                          </TableCell>
+                          <TableCell className='text-right'>
+                            {formatVND(refund.amount)}
+                          </TableCell>
                           <TableCell>
-                            <Badge variant={refundStatusVariant[refund.status]} className='capitalize'>
+                            <Badge
+                              variant={refundStatusVariant[refund.status]}
+                              className='capitalize'
+                            >
                               {refund.status}
                             </Badge>
                           </TableCell>

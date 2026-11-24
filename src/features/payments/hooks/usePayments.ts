@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { paymentService } from '../api/paymentService'
-import { paymentKeys } from '../queryKeys'
 import { type PaymentStatus } from '../data/schema'
+import { paymentKeys } from '../queryKeys'
 
 type PaymentListQuery = {
   page?: number

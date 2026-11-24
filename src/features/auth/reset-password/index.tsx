@@ -19,7 +19,9 @@ export function ResetPassword({ token }: ResetPasswordProps) {
     <AuthLayout>
       <Card className='max-w-sm gap-4 sm:min-w-sm'>
         <CardHeader>
-          <CardTitle className='text-lg tracking-tight'>Reset Password</CardTitle>
+          <CardTitle className='text-lg tracking-tight'>
+            Reset Password
+          </CardTitle>
           <CardDescription>Enter your new password below.</CardDescription>
         </CardHeader>
         <CardContent>

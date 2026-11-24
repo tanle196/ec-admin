@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { type PaymentStatus } from '../data/schema'
 import { paymentService } from '../api/paymentService'
+import { type PaymentStatus } from '../data/schema'
 import { paymentKeys } from '../queryKeys'
 
 type UpdateStatusParams = {
@@ -14,7 +14,10 @@ export const useUpdatePaymentStatus = () => {
 
   return useMutation({
     mutationFn: ({ id, status, transactionId }: UpdateStatusParams) =>
-      paymentService.updateStatus({ path: { id }, body: { status, transactionId } }),
+      paymentService.updateStatus({
+        path: { id },
+        body: { status, transactionId },
+      }),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: paymentKeys.all })
       queryClient.invalidateQueries({ queryKey: paymentKeys.detail(id) })

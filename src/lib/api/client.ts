@@ -1,9 +1,9 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { adminAuthControllerRefresh } from '@/api/main'
 import { createClient } from '@/api/main/client'
+import { useAuthStore } from '@/stores/auth-store'
 import { getCookie, setCookie } from '@/lib/cookies'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/cookies'
-import { useAuthStore } from '@/stores/auth-store'
 
 const REFRESH_URL = '/admin/auth/refresh'
 
@@ -82,7 +82,10 @@ export const createApiClient = () => {
 
         const newAccessToken = await refreshAccessToken()
         if (newAccessToken) {
-          originalRequest.headers.set('Authorization', `Bearer ${newAccessToken}`)
+          originalRequest.headers.set(
+            'Authorization',
+            `Bearer ${newAccessToken}`
+          )
           return client.instance(originalRequest)
         }
       }

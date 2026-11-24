@@ -5,7 +5,14 @@ import { orderKeys } from '../queryKeys'
 type OrderListQuery = {
   page?: number
   limit?: number
-  status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
+  status?:
+    | 'pending'
+    | 'confirmed'
+    | 'processing'
+    | 'shipped'
+    | 'delivered'
+    | 'cancelled'
+    | 'refunded'
   user_id?: string
 }
 

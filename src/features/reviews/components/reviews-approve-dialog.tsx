@@ -8,8 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useApproveReview } from '../hooks'
 import { type Review } from '../data/schema'
+import { useApproveReview } from '../hooks'
 
 type ReviewsApproveDialogProps = {
   open: boolean
@@ -17,7 +17,11 @@ type ReviewsApproveDialogProps = {
   currentRow: Review
 }
 
-export function ReviewsApproveDialog({ open, onOpenChange, currentRow }: ReviewsApproveDialogProps) {
+export function ReviewsApproveDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: ReviewsApproveDialogProps) {
   const { mutate: approve, isPending } = useApproveReview()
 
   const handleApprove = () => {
@@ -36,11 +40,16 @@ export function ReviewsApproveDialog({ open, onOpenChange, currentRow }: Reviews
         <DialogHeader className='text-start'>
           <DialogTitle>Approve Review</DialogTitle>
           <DialogDescription>
-            Approve this review so it becomes publicly visible on the product page.
+            Approve this review so it becomes publicly visible on the product
+            page.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant='outline' onClick={() => onOpenChange(false)} disabled={isPending}>
+          <Button
+            variant='outline'
+            onClick={() => onOpenChange(false)}
+            disabled={isPending}
+          >
             Cancel
           </Button>
           <Button onClick={handleApprove} disabled={isPending}>

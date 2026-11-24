@@ -15,7 +15,14 @@ export const useUploadProductImage = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, file, alt, isPrimary, sortOrder, variant_id }: UploadProductImageParams) =>
+    mutationFn: ({
+      id,
+      file,
+      alt,
+      isPrimary,
+      sortOrder,
+      variant_id,
+    }: UploadProductImageParams) =>
       productService.uploadImage({
         path: { id },
         body: { file, ...(alt && { alt }), isPrimary, sortOrder, variant_id },

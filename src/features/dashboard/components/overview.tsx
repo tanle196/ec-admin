@@ -1,14 +1,35 @@
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 
 type MonthlyRevenue = { name: string; total: number }
 
 const EMPTY_DATA: MonthlyRevenue[] = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ].map((name) => ({ name, total: 0 }))
 
 const formatVND = (value: number) =>
-  new Intl.NumberFormat('vi-VN', { notation: 'compact', style: 'currency', currency: 'VND' }).format(value)
+  new Intl.NumberFormat('vi-VN', {
+    notation: 'compact',
+    style: 'currency',
+    currency: 'VND',
+  }).format(value)
 
 interface OverviewProps {
   data?: MonthlyRevenue[]
@@ -36,9 +57,10 @@ export function Overview({ data = EMPTY_DATA }: OverviewProps) {
         />
         <Tooltip
           formatter={(value) =>
-            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
-              Number(value)
-            )
+            new Intl.NumberFormat('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            }).format(Number(value))
           }
           cursor={{ fill: 'hsl(var(--muted))' }}
           contentStyle={{

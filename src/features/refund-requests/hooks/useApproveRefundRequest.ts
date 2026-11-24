@@ -24,7 +24,9 @@ export const useApproveRefundRequest = () => {
       queryClient.invalidateQueries({ queryKey: orderKeys.detail(orderId) })
       queryClient.invalidateQueries({ queryKey: paymentKeys.all })
       queryClient.invalidateQueries({ queryKey: paymentKeys.detail(paymentId) })
-      queryClient.invalidateQueries({ queryKey: paymentKeys.refunds(paymentId) })
+      queryClient.invalidateQueries({
+        queryKey: paymentKeys.refunds(paymentId),
+      })
     },
   })
 }

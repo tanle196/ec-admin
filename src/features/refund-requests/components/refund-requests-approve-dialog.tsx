@@ -5,8 +5,8 @@ import { toast } from 'sonner'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useApproveRefundRequest } from '../hooks'
 import { type RefundRequestListItem } from '../data/schema'
+import { useApproveRefundRequest } from '../hooks'
 
 type RefundRequestsApproveDialogProps = {
   open: boolean
@@ -14,13 +14,22 @@ type RefundRequestsApproveDialogProps = {
   currentRow: RefundRequestListItem
 }
 
-export function RefundRequestsApproveDialog({ open, onOpenChange, currentRow }: RefundRequestsApproveDialogProps) {
+export function RefundRequestsApproveDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: RefundRequestsApproveDialogProps) {
   const [note, setNote] = useState('')
   const { mutate: approveRefundRequest, isPending } = useApproveRefundRequest()
 
   const handleApprove = () => {
     approveRefundRequest(
-      { id: currentRow.id, orderId: currentRow.order_id, paymentId: currentRow.payment_id, note: note.trim() || undefined },
+      {
+        id: currentRow.id,
+        orderId: currentRow.order_id,
+        paymentId: currentRow.payment_id,
+        note: note.trim() || undefined,
+      },
       {
         onSuccess: () => {
           toast.success('Refund request approved.')
@@ -45,7 +54,8 @@ export function RefundRequestsApproveDialog({ open, onOpenChange, currentRow }: 
         <div className='space-y-4'>
           <p>
             This will create and execute a refund for order{' '}
-            <span className='font-mono text-xs'>{currentRow.order_id}</span>. This action cannot be undone.
+            <span className='font-mono text-xs'>{currentRow.order_id}</span>.
+            This action cannot be undone.
           </p>
           <Label className='block space-y-2'>
             <span>Admin note (optional)</span>

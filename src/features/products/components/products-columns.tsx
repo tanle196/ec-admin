@@ -1,12 +1,15 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
 import { type Product } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
-const statusVariant: Record<Product['status'], 'default' | 'secondary' | 'outline'> = {
+const statusVariant: Record<
+  Product['status'],
+  'default' | 'secondary' | 'outline'
+> = {
   published: 'default',
   draft: 'secondary',
   archived: 'outline',
@@ -19,7 +22,9 @@ export const productsColumns: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48 font-medium'>{row.getValue('name')}</LongText>
+      <LongText className='max-w-48 font-medium'>
+        {row.getValue('name')}
+      </LongText>
     ),
     enableHiding: false,
   },
@@ -43,7 +48,10 @@ export const productsColumns: ColumnDef<Product>[] = [
       const price = row.getValue('basePrice') as number
       return (
         <span className='text-sm font-medium'>
-          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)}
+          {new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          }).format(price)}
         </span>
       )
     },

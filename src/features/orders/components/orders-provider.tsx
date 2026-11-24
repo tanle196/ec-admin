@@ -27,6 +27,7 @@ export function OrdersProvider({ children }: { children: React.ReactNode }) {
 // eslint-disable-next-line react-refresh/only-export-components
 export const useOrdersContext = () => {
   const ctx = React.useContext(OrdersContext)
-  if (!ctx) throw new Error('useOrdersContext must be used within <OrdersProvider>')
+  if (!ctx)
+    throw new Error('useOrdersContext must be used within <OrdersProvider>')
   return ctx
 }

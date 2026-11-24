@@ -4,7 +4,8 @@ import { useRefundRequestsContext } from './refund-requests-provider'
 import { RefundRequestsRejectDialog } from './refund-requests-reject-dialog'
 
 export function RefundRequestsDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useRefundRequestsContext()
+  const { open, setOpen, currentRow, setCurrentRow } =
+    useRefundRequestsContext()
 
   const closeWithRow = (isOpen: boolean) => {
     if (!isOpen) {

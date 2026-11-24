@@ -1,11 +1,17 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
-import { type RefundRequestListItem, type RefundRequestStatus } from '../data/schema'
+import {
+  type RefundRequestListItem,
+  type RefundRequestStatus,
+} from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
-const statusVariant: Record<RefundRequestStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  RefundRequestStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   approved: 'default',
   rejected: 'destructive',
@@ -18,7 +24,9 @@ const statusLabel: Record<RefundRequestStatus, string> = {
 }
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
   {
@@ -27,7 +35,9 @@ export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
       <DataTableColumnHeader column={column} title='Request ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('id')}
+      </span>
     ),
     enableHiding: false,
   },
@@ -37,7 +47,9 @@ export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
       <DataTableColumnHeader column={column} title='Order ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('order_id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('order_id')}
+      </span>
     ),
   },
   {
@@ -48,9 +60,7 @@ export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
     cell: ({ row }) => {
       const status = row.getValue('status') as RefundRequestStatus
       return (
-        <Badge variant={statusVariant[status]}>
-          {statusLabel[status]}
-        </Badge>
+        <Badge variant={statusVariant[status]}>{statusLabel[status]}</Badge>
       )
     },
     meta: { className: 'w-28' },
@@ -61,7 +71,9 @@ export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
       <DataTableColumnHeader column={column} title='Amount' />
     ),
     cell: ({ row }) => (
-      <span className='text-sm font-medium'>{formatVND(row.getValue('amount'))}</span>
+      <span className='text-sm font-medium'>
+        {formatVND(row.getValue('amount'))}
+      </span>
     ),
     meta: { className: 'w-36' },
   },
@@ -71,7 +83,9 @@ export const refundRequestsColumns: ColumnDef<RefundRequestListItem>[] = [
       <DataTableColumnHeader column={column} title='Reason' />
     ),
     cell: ({ row }) => (
-      <span className='block max-w-64 truncate text-sm'>{row.getValue('reason')}</span>
+      <span className='block max-w-64 truncate text-sm'>
+        {row.getValue('reason')}
+      </span>
     ),
   },
   {

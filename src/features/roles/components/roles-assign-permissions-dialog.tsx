@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -43,13 +43,20 @@ export function RolesAssignPermissionsDialog({
   const { data: permissionsRaw, isLoading } = usePermissionsAllRaw()
   const { mutate: assignPermissions, isPending } = useAssignRolePermissions()
 
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const getInitialIds = () =>
+    new Set(currentRow.permissions?.map((p) => p.id) ?? [])
 
-  useEffect(() => {
-    if (open) {
-      setSelectedIds(new Set(currentRow.permissions?.map((p) => p.id) ?? []))
-    }
-  }, [open, currentRow])
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(getInitialIds)
+
+  // Re-sync selection whenever the dialog opens or the role changes.
+  // Done during render (not in an effect) to avoid a cascading re-render.
+  const [prevOpen, setPrevOpen] = useState(open)
+  const [prevRow, setPrevRow] = useState(currentRow)
+  if (open !== prevOpen || currentRow !== prevRow) {
+    setPrevOpen(open)
+    setPrevRow(currentRow)
+    if (open) setSelectedIds(getInitialIds())
+  }
 
   const allPermissions = permissionsRaw ?? []
 

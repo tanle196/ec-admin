@@ -1,7 +1,7 @@
 import { PaymentsDetailDialog } from './payments-detail-dialog'
+import { usePaymentsContext } from './payments-provider'
 import { PaymentsRefundDialog } from './payments-refund-dialog'
 import { PaymentsStatusDialog } from './payments-status-dialog'
-import { usePaymentsContext } from './payments-provider'
 
 export function PaymentsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = usePaymentsContext()

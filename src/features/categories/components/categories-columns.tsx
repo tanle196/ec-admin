@@ -1,5 +1,5 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
@@ -18,13 +18,13 @@ export const categoriesColumns: ColumnDef<Category>[] = [
         <img
           src={src}
           alt={row.getValue('name')}
-          className='h-9 w-9 rounded-md object-cover bg-muted shrink-0'
+          className='h-9 w-9 shrink-0 rounded-md bg-muted object-cover'
           onError={(e) => {
             e.currentTarget.style.display = 'none'
           }}
         />
       ) : (
-        <div className='flex h-9 w-9 items-center justify-center rounded-md border bg-muted text-muted-foreground shrink-0'>
+        <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-muted text-muted-foreground'>
           <ImageIcon size={14} />
         </div>
       )
@@ -39,7 +39,9 @@ export const categoriesColumns: ColumnDef<Category>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48 font-medium'>{row.getValue('name')}</LongText>
+      <LongText className='max-w-48 font-medium'>
+        {row.getValue('name')}
+      </LongText>
     ),
     enableHiding: false,
   },
@@ -49,7 +51,7 @@ export const categoriesColumns: ColumnDef<Category>[] = [
       <DataTableColumnHeader column={column} title='Slug' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48 text-muted-foreground font-mono text-xs'>
+      <LongText className='max-w-48 font-mono text-xs text-muted-foreground'>
         {row.getValue('slug')}
       </LongText>
     ),
@@ -60,7 +62,9 @@ export const categoriesColumns: ColumnDef<Category>[] = [
       <DataTableColumnHeader column={column} title='Order' />
     ),
     cell: ({ row }) => (
-      <span className='text-sm text-muted-foreground'>{row.getValue('sortOrder')}</span>
+      <span className='text-sm text-muted-foreground'>
+        {row.getValue('sortOrder')}
+      </span>
     ),
     meta: { className: 'w-20' },
   },

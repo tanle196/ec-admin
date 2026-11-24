@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
 import { ImageIcon, Trash2, UploadCloud } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -24,9 +24,10 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import { SelectDropdown } from '@/components/select-dropdown'
+import { type Category } from '../data/schema'
 import {
   useCategories,
   useCreateCategory,
@@ -34,7 +35,6 @@ import {
   useUploadCategoryImage,
   useRemoveCategoryImage,
 } from '../hooks'
-import { type Category } from '../data/schema'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Category name is required.'),
@@ -59,10 +59,14 @@ export function CategoriesActionDialog({
   onOpenChange,
 }: CategoriesActionDialogProps) {
   const isEdit = !!currentRow
-  const { mutateAsync: createCategory, isPending: isCreating } = useCreateCategory()
-  const { mutateAsync: updateCategory, isPending: isUpdating } = useUpdateCategory()
-  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadCategoryImage()
-  const { mutateAsync: removeImage, isPending: isRemoving } = useRemoveCategoryImage()
+  const { mutateAsync: createCategory, isPending: isCreating } =
+    useCreateCategory()
+  const { mutateAsync: updateCategory, isPending: isUpdating } =
+    useUpdateCategory()
+  const { mutateAsync: uploadImage, isPending: isUploading } =
+    useUploadCategoryImage()
+  const { mutateAsync: removeImage, isPending: isRemoving } =
+    useRemoveCategoryImage()
   const isPending = isCreating || isUpdating || isUploading || isRemoving
 
   const { data: categoriesData } = useCategories()
@@ -91,11 +95,28 @@ export function CategoriesActionDialog({
       name: currentRow?.name ?? '',
       slug: currentRow?.slug ?? '',
       parent_id: getParentId(currentRow),
-      description: typeof currentRow?.description === 'string' ? currentRow.description : '',
+      description:
+        typeof currentRow?.description === 'string'
+          ? currentRow.description
+          : '',
       sortOrder: currentRow?.sortOrder ?? 0,
       isActive: currentRow?.isActive ?? true,
     },
   })
+
+  // Reset local image state whenever the dialog opens or the row changes.
+  // Done during render (not in an effect) to avoid a cascading re-render.
+  const [prevOpen, setPrevOpen] = useState(open)
+  const [prevRow, setPrevRow] = useState(currentRow)
+  if (open !== prevOpen || currentRow !== prevRow) {
+    setPrevOpen(open)
+    setPrevRow(currentRow)
+    if (open) {
+      setImageFile(null)
+      setImagePreview(null)
+      setShouldRemoveImage(false)
+    }
+  }
 
   useEffect(() => {
     if (open) {
@@ -103,13 +124,13 @@ export function CategoriesActionDialog({
         name: currentRow?.name ?? '',
         slug: currentRow?.slug ?? '',
         parent_id: getParentId(currentRow),
-        description: typeof currentRow?.description === 'string' ? currentRow.description : '',
+        description:
+          typeof currentRow?.description === 'string'
+            ? currentRow.description
+            : '',
         sortOrder: currentRow?.sortOrder ?? 0,
         isActive: currentRow?.isActive ?? true,
       })
-      setImageFile(null)
-      setImagePreview(null)
-      setShouldRemoveImage(false)
     }
   }, [open, currentRow, form])
 
@@ -130,7 +151,8 @@ export function CategoriesActionDialog({
     if (isEdit && currentImageUrl) setShouldRemoveImage(true)
   }
 
-  const displayedImage = imagePreview ?? (shouldRemoveImage ? null : currentImageUrl)
+  const displayedImage =
+    imagePreview ?? (shouldRemoveImage ? null : currentImageUrl)
 
   const onSubmit = async (values: CategoryForm) => {
     const body = {
@@ -160,7 +182,9 @@ export function CategoriesActionDialog({
       }
       onOpenChange(false)
     } catch {
-      toast.error(isEdit ? 'Failed to update category.' : 'Failed to create category.')
+      toast.error(
+        isEdit ? 'Failed to update category.' : 'Failed to create category.'
+      )
     }
   }
 
@@ -174,13 +198,17 @@ export function CategoriesActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Edit Category' : 'Add New Category'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Edit Category' : 'Add New Category'}
+          </DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Update the category here. ' : 'Create new category here. '}
+            {isEdit
+              ? 'Update the category here. '
+              : 'Create new category here. '}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className='w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3 max-h-[60vh]'>
+        <div className='max-h-[60vh] w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3'>
           <Form {...form}>
             <form
               id='category-form'
@@ -228,7 +256,9 @@ export function CategoriesActionDialog({
                 name='parent_id'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Parent</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Parent
+                    </FormLabel>
                     <SelectDropdown
                       defaultValue={field.value}
                       onValueChange={field.onChange}
@@ -245,7 +275,9 @@ export function CategoriesActionDialog({
                 name='description'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-start space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 pt-2 text-end'>Description</FormLabel>
+                    <FormLabel className='col-span-2 pt-2 text-end'>
+                      Description
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder='Optional description...'
@@ -270,9 +302,10 @@ export function CategoriesActionDialog({
                       <img
                         src={displayedImage}
                         alt='Category image'
-                        className='h-24 w-24 rounded-md object-cover border bg-muted'
+                        className='h-24 w-24 rounded-md border bg-muted object-cover'
                         onError={(e) => {
-                          ;(e.currentTarget as HTMLImageElement).style.display = 'none'
+                          ;(e.currentTarget as HTMLImageElement).style.display =
+                            'none'
                         }}
                       />
                       <Button
@@ -316,7 +349,9 @@ export function CategoriesActionDialog({
                 name='sortOrder'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Sort Order</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Sort Order
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -334,7 +369,9 @@ export function CategoriesActionDialog({
                 name='isActive'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Active</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Active
+                    </FormLabel>
                     <FormControl>
                       <Switch
                         checked={field.value}

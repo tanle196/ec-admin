@@ -2,11 +2,20 @@ import { z } from 'zod'
 
 export const categorySchema = z.object({
   id: z.string(),
-  parent_id: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
+  parent_id: z
+    .union([z.string(), z.record(z.string(), z.unknown())])
+    .nullable()
+    .optional(),
   name: z.string(),
   slug: z.string(),
-  description: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
-  image: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
+  description: z
+    .union([z.string(), z.record(z.string(), z.unknown())])
+    .nullable()
+    .optional(),
+  image: z
+    .union([z.string(), z.record(z.string(), z.unknown())])
+    .nullable()
+    .optional(),
   sortOrder: z.number(),
   isActive: z.boolean(),
   createdAt: z.coerce.date(),

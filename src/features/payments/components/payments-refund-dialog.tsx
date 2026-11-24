@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { useOrder } from '@/features/orders/hooks'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -24,7 +23,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import {
   Table,
   TableBody,
@@ -33,8 +31,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useCreateRefund } from '../hooks'
+import { Textarea } from '@/components/ui/textarea'
+import { useOrder } from '@/features/orders/hooks'
 import { type PaymentListItem } from '../data/schema'
+import { useCreateRefund } from '../hooks'
 
 const refundItemFormSchema = z.object({
   order_item_id: z.string(),
@@ -63,7 +63,9 @@ const formSchema = z
 type RefundForm = z.infer<typeof formSchema>
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 type PaymentsRefundDialogProps = {
   open: boolean
@@ -71,7 +73,11 @@ type PaymentsRefundDialogProps = {
   currentRow: PaymentListItem
 }
 
-export function PaymentsRefundDialog({ open, onOpenChange, currentRow }: PaymentsRefundDialogProps) {
+export function PaymentsRefundDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: PaymentsRefundDialogProps) {
   const { data: order, isLoading } = useOrder(open ? currentRow.order_id : null)
   const { mutate: createRefund, isPending } = useCreateRefund()
 
@@ -99,10 +105,18 @@ export function PaymentsRefundDialog({ open, onOpenChange, currentRow }: Payment
   const onSubmit = (values: RefundForm) => {
     const items = values.items
       .filter((item) => item.quantity > 0)
-      .map((item) => ({ order_item_id: item.order_item_id, quantity: item.quantity }))
+      .map((item) => ({
+        order_item_id: item.order_item_id,
+        quantity: item.quantity,
+      }))
 
     createRefund(
-      { paymentId: currentRow.id, orderId: currentRow.order_id, items, reason: values.reason },
+      {
+        paymentId: currentRow.id,
+        orderId: currentRow.order_id,
+        items,
+        reason: values.reason,
+      },
       {
         onSuccess: () => {
           toast.success('Refund created successfully.')
@@ -125,7 +139,8 @@ export function PaymentsRefundDialog({ open, onOpenChange, currentRow }: Payment
         <DialogHeader className='text-start'>
           <DialogTitle>Refund Payment</DialogTitle>
           <DialogDescription>
-            Payment ID: <span className='font-mono text-xs'>{currentRow.id}</span>
+            Payment ID:{' '}
+            <span className='font-mono text-xs'>{currentRow.id}</span>
           </DialogDescription>
         </DialogHeader>
 
@@ -137,21 +152,31 @@ export function PaymentsRefundDialog({ open, onOpenChange, currentRow }: Payment
 
         {order && (
           <Form {...form}>
-            <form id='payment-refund-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+            <form
+              id='payment-refund-form'
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='space-y-4'
+            >
               <div className='rounded-md border'>
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Product</TableHead>
                       <TableHead className='w-20 text-right'>Ordered</TableHead>
-                      <TableHead className='w-24 text-right'>Refund Qty</TableHead>
+                      <TableHead className='w-24 text-right'>
+                        Refund Qty
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {fields.map((field, index) => (
                       <TableRow key={field.id}>
-                        <TableCell className='font-medium'>{field.productName}</TableCell>
-                        <TableCell className='text-right'>{field.maxQuantity}</TableCell>
+                        <TableCell className='font-medium'>
+                          {field.productName}
+                        </TableCell>
+                        <TableCell className='text-right'>
+                          {field.maxQuantity}
+                        </TableCell>
                         <TableCell className='text-right'>
                           <FormField
                             control={form.control}
@@ -197,14 +222,21 @@ export function PaymentsRefundDialog({ open, onOpenChange, currentRow }: Payment
               />
 
               <p className='text-sm text-muted-foreground'>
-                Payment amount: <span className='font-medium'>{formatVND(currentRow.amount)}</span>
+                Payment amount:{' '}
+                <span className='font-medium'>
+                  {formatVND(currentRow.amount)}
+                </span>
               </p>
             </form>
           </Form>
         )}
 
         <DialogFooter>
-          <Button type='submit' form='payment-refund-form' disabled={isPending || isLoading}>
+          <Button
+            type='submit'
+            form='payment-refund-form'
+            disabled={isPending || isLoading}
+          >
             {isPending ? 'Processing...' : 'Confirm Refund'}
           </Button>
         </DialogFooter>

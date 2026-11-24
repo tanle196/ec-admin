@@ -8,8 +8,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDeleteUser } from '../hooks'
 import { type User } from '../data/schema'
+import { useDeleteUser } from '../hooks'
 
 type UserMultiDeleteDialogProps<TData> = {
   open: boolean
@@ -38,15 +38,18 @@ export function UsersMultiDeleteDialog<TData>({
     const selectedUsers = selectedRows.map((row) => row.original as User)
     onOpenChange(false)
 
-    toast.promise(Promise.all(selectedUsers.map((user) => deleteUser(user.id))), {
-      loading: 'Deleting users...',
-      success: () => {
-        setValue('')
-        table.resetRowSelection()
-        return `Deleted ${selectedUsers.length} ${selectedUsers.length > 1 ? 'users' : 'user'}`
-      },
-      error: 'Error deleting users',
-    })
+    toast.promise(
+      Promise.all(selectedUsers.map((user) => deleteUser(user.id))),
+      {
+        loading: 'Deleting users...',
+        success: () => {
+          setValue('')
+          table.resetRowSelection()
+          return `Deleted ${selectedUsers.length} ${selectedUsers.length > 1 ? 'users' : 'user'}`
+        },
+        error: 'Error deleting users',
+      }
+    )
   }
 
   return (

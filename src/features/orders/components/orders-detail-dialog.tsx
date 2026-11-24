@@ -14,10 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useOrder } from '../hooks'
 import { type OrderListItem, type OrderStatus } from '../data/schema'
+import { useOrder } from '../hooks'
 
-const statusVariant: Record<OrderStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  OrderStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   confirmed: 'default',
   processing: 'default',
@@ -29,7 +32,9 @@ const statusVariant: Record<OrderStatus, 'default' | 'secondary' | 'outline' | '
 }
 
 const formatVND = (amount: number) =>
-  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+    amount
+  )
 
 type OrdersDetailDialogProps = {
   open: boolean
@@ -37,7 +42,11 @@ type OrdersDetailDialogProps = {
   currentRow: OrderListItem
 }
 
-export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDetailDialogProps) {
+export function OrdersDetailDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: OrdersDetailDialogProps) {
   const { data: order, isLoading } = useOrder(open ? currentRow.id : null)
 
   return (
@@ -54,17 +63,22 @@ export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDet
         )}
 
         {order && (
-          <div className='space-y-4 overflow-y-auto max-h-[70vh] pe-1'>
+          <div className='max-h-[70vh] space-y-4 overflow-y-auto pe-1'>
             <div className='grid grid-cols-2 gap-3 text-sm'>
               <div>
                 <p className='text-muted-foreground'>Status</p>
-                <Badge variant={statusVariant[order.status]} className='mt-1 capitalize'>
+                <Badge
+                  variant={statusVariant[order.status]}
+                  className='mt-1 capitalize'
+                >
                   {order.status}
                 </Badge>
               </div>
               <div>
                 <p className='text-muted-foreground'>Created</p>
-                <p className='mt-1 font-medium'>{format(order.createdAt, 'dd/MM/yyyy HH:mm')}</p>
+                <p className='mt-1 font-medium'>
+                  {format(order.createdAt, 'dd/MM/yyyy HH:mm')}
+                </p>
               </div>
               <div>
                 <p className='text-muted-foreground'>User ID</p>
@@ -86,7 +100,9 @@ export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDet
                     <TableRow>
                       <TableHead>Product</TableHead>
                       <TableHead className='w-20 text-right'>Qty</TableHead>
-                      <TableHead className='w-32 text-right'>Unit Price</TableHead>
+                      <TableHead className='w-32 text-right'>
+                        Unit Price
+                      </TableHead>
                       <TableHead className='w-32 text-right'>Total</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -96,12 +112,20 @@ export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDet
                         <TableCell>
                           <p className='font-medium'>{item.productName}</p>
                           {item.variantName && (
-                            <p className='text-xs text-muted-foreground'>{String(item.variantName)}</p>
+                            <p className='text-xs text-muted-foreground'>
+                              {String(item.variantName)}
+                            </p>
                           )}
                         </TableCell>
-                        <TableCell className='text-right'>{item.quantity}</TableCell>
-                        <TableCell className='text-right'>{formatVND(item.unitPrice)}</TableCell>
-                        <TableCell className='text-right'>{formatVND(item.total)}</TableCell>
+                        <TableCell className='text-right'>
+                          {item.quantity}
+                        </TableCell>
+                        <TableCell className='text-right'>
+                          {formatVND(item.unitPrice)}
+                        </TableCell>
+                        <TableCell className='text-right'>
+                          {formatVND(item.total)}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -111,13 +135,20 @@ export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDet
 
             {order.discounts.length > 0 && (
               <div>
-                <h4 className='mb-2 text-sm font-semibold'>Applied Discounts</h4>
+                <h4 className='mb-2 text-sm font-semibold'>
+                  Applied Discounts
+                </h4>
                 <div className='space-y-1'>
                   {order.discounts.map((d) => (
-                    <div key={d.id} className='flex items-center justify-between rounded-md bg-green-50 dark:bg-green-950 px-3 py-1.5 text-sm text-green-700 dark:text-green-300'>
+                    <div
+                      key={d.id}
+                      className='flex items-center justify-between rounded-md bg-green-50 px-3 py-1.5 text-sm text-green-700 dark:bg-green-950 dark:text-green-300'
+                    >
                       <span className='font-mono font-medium'>{d.code}</span>
                       <span>
-                        {d.type === 'percent' ? `${d.value}% off` : `-${formatVND(d.value)}`}
+                        {d.type === 'percent'
+                          ? `${d.value}% off`
+                          : `-${formatVND(d.value)}`}
                       </span>
                     </div>
                   ))}
@@ -125,7 +156,7 @@ export function OrdersDetailDialog({ open, onOpenChange, currentRow }: OrdersDet
               </div>
             )}
 
-            <div className='space-y-1 text-sm border-t pt-3'>
+            <div className='space-y-1 border-t pt-3 text-sm'>
               <div className='flex justify-between'>
                 <span className='text-muted-foreground'>Subtotal</span>
                 <span>{formatVND(order.subtotal)}</span>

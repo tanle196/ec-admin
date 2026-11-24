@@ -25,7 +25,7 @@ export interface AuthState {
 export const useAuthStore = create<AuthState>()(
   devtools(
     (set) => {
-      const cookieState = getCookie(ACCESS_TOKEN)
+      const cookieState = getCookie(ACCESS_TOKEN) ?? ''
       return {
         auth: {
           user: null,

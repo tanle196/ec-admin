@@ -1,11 +1,14 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { type OrderListItem, type OrderStatus } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
 
-const statusVariant: Record<OrderStatus, 'default' | 'secondary' | 'outline' | 'destructive'> = {
+const statusVariant: Record<
+  OrderStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
   pending: 'secondary',
   confirmed: 'default',
   processing: 'default',
@@ -34,7 +37,9 @@ export const ordersColumns: ColumnDef<OrderListItem>[] = [
       <DataTableColumnHeader column={column} title='Order #' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs font-medium'>{row.getValue('orderNumber')}</span>
+      <span className='font-mono text-xs font-medium'>
+        {row.getValue('orderNumber')}
+      </span>
     ),
     enableHiding: false,
   },
@@ -46,9 +51,7 @@ export const ordersColumns: ColumnDef<OrderListItem>[] = [
     cell: ({ row }) => {
       const status = row.getValue('status') as OrderStatus
       return (
-        <Badge variant={statusVariant[status]}>
-          {statusLabel[status]}
-        </Badge>
+        <Badge variant={statusVariant[status]}>{statusLabel[status]}</Badge>
       )
     },
     meta: { className: 'w-32' },
@@ -62,7 +65,10 @@ export const ordersColumns: ColumnDef<OrderListItem>[] = [
       const total = row.getValue('total') as number
       return (
         <span className='text-sm font-medium'>
-          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}
+          {new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          }).format(total)}
         </span>
       )
     },
@@ -74,7 +80,9 @@ export const ordersColumns: ColumnDef<OrderListItem>[] = [
       <DataTableColumnHeader column={column} title='User ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('user_id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('user_id')}
+      </span>
     ),
   },
   {

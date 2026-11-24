@@ -533,7 +533,7 @@ function VariantImagesPanel({
         <TabsContent value='upload'>
           <Form {...uploadForm}>
             <form
-              onSubmit={uploadForm.handleSubmit(onSubmitUpload)}
+              onSubmit={(e) => uploadForm.handleSubmit(onSubmitUpload)(e)}
               className='space-y-2'
             >
               <div className='flex items-center gap-2'>

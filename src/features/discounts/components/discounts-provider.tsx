@@ -27,6 +27,9 @@ export function DiscountsProvider({ children }: { children: React.ReactNode }) {
 // eslint-disable-next-line react-refresh/only-export-components
 export const useDiscountsContext = () => {
   const ctx = React.useContext(DiscountsContext)
-  if (!ctx) throw new Error('useDiscountsContext must be used within <DiscountsProvider>')
+  if (!ctx)
+    throw new Error(
+      'useDiscountsContext must be used within <DiscountsProvider>'
+    )
   return ctx
 }

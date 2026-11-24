@@ -17,7 +17,9 @@ export function TagsDialogs() {
       <TagsActionDialog
         key='tag-add'
         open={open === 'add'}
-        onOpenChange={(isOpen) => { if (!isOpen) setOpen(null) }}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setOpen(null)
+        }}
       />
 
       {currentRow && (

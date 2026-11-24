@@ -9,7 +9,9 @@ export const productSchema = z.object({
   sku: z.string(),
   status: z.enum(['draft', 'published', 'archived']),
   isFeatured: z.boolean(),
-  tags: z.array(z.object({ id: z.string(), name: z.string(), slug: z.string() })).optional(),
+  tags: z
+    .array(z.object({ id: z.string(), name: z.string(), slug: z.string() }))
+    .optional(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })

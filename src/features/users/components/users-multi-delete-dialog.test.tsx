@@ -5,13 +5,17 @@ import { render } from 'vitest-browser-react'
 import { userEvent } from 'vitest/browser'
 import { UsersMultiDeleteDialog } from './users-multi-delete-dialog'
 
-vi.mock('@/lib/utils', async (orig) => ({
-  ...(await orig()),
-  sleep: vi.fn(() => Promise.resolve()),
+const deleteUserMock = vi.hoisted(() => vi.fn())
+
+vi.mock('../hooks', () => ({
+  useDeleteUser: () => ({ mutateAsync: deleteUserMock, isPending: false }),
 }))
 
 describe('UsersMultiDeleteDialog', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    deleteUserMock.mockResolvedValue(undefined)
+  })
 
   it('renders the dialog with the correct title, description, input and buttons', async () => {
     const { table } = createTableMock()
@@ -133,6 +137,7 @@ describe('UsersMultiDeleteDialog', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false)
 
     await vi.waitFor(() => expect(resetRowSelection).toHaveBeenCalledOnce())
+    expect(deleteUserMock).toHaveBeenCalledTimes(2)
   })
 
   it('deletes successfully when press Enter key on the confirm delete input', async () => {

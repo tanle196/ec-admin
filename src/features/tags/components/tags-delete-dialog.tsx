@@ -6,8 +6,8 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDeleteTag } from '../hooks'
 import { type Tag } from '../data/schema'
+import { useDeleteTag } from '../hooks'
 
 type TagsDeleteDialogProps = {
   open: boolean

@@ -1,12 +1,25 @@
 import { z } from 'zod'
 
-export const PAYMENT_STATUSES = ['pending', 'completed', 'failed', 'partially_refunded', 'refunded'] as const
-export const PAYMENT_METHODS = ['cod', 'vnpay', 'momo', 'zalopay', 'stripe', 'bank_transfer'] as const
+export const PAYMENT_STATUSES = [
+  'pending',
+  'completed',
+  'failed',
+  'partially_refunded',
+  'refunded',
+] as const
+export const PAYMENT_METHODS = [
+  'cod',
+  'vnpay',
+  'momo',
+  'zalopay',
+  'stripe',
+  'bank_transfer',
+] as const
 export const REFUND_STATUSES = ['pending', 'succeeded', 'failed'] as const
 
-export type PaymentStatus = typeof PAYMENT_STATUSES[number]
-export type PaymentMethod = typeof PAYMENT_METHODS[number]
-export type RefundStatus = typeof REFUND_STATUSES[number]
+export type PaymentStatus = (typeof PAYMENT_STATUSES)[number]
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number]
+export type RefundStatus = (typeof REFUND_STATUSES)[number]
 
 export const paymentSchema = z.object({
   id: z.string(),

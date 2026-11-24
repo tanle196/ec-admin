@@ -23,9 +23,7 @@ export function Products() {
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Products</h2>
-            <p className='text-muted-foreground'>
-              Manage your products here.
-            </p>
+            <p className='text-muted-foreground'>Manage your products here.</p>
           </div>
           <ProductsPrimaryButtons />
         </div>

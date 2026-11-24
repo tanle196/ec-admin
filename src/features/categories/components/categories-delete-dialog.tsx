@@ -7,8 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useDeleteCategory } from '../hooks'
 import { type Category } from '../data/schema'
+import { useDeleteCategory } from '../hooks'
 
 type CategoriesDeleteDialogProps = {
   open: boolean
@@ -31,7 +31,10 @@ export function CategoriesDeleteDialog({
         toast.success('Category deleted successfully.')
         onOpenChange(false)
       },
-      onError: () => toast.error('Failed to delete category. Make sure it has no sub-categories.'),
+      onError: () =>
+        toast.error(
+          'Failed to delete category. Make sure it has no sub-categories.'
+        ),
     })
   }
 

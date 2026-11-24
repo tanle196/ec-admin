@@ -1,5 +1,5 @@
-import { useReviewsContext } from './reviews-provider'
 import { ReviewsApproveDialog } from './reviews-approve-dialog'
+import { useReviewsContext } from './reviews-provider'
 
 export function ReviewsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useReviewsContext()

@@ -25,8 +25,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { SelectDropdown } from '@/components/select-dropdown'
-import { useCreateDiscount, useUpdateDiscount } from '../hooks'
 import { type Discount } from '../data/schema'
+import { useCreateDiscount, useUpdateDiscount } from '../hooks'
 
 const formSchema = z.object({
   code: z.string().min(1, 'Discount code is required.').toUpperCase(),
@@ -94,7 +94,9 @@ export function DiscountsActionDialog({
       code: values.code,
       type: values.type,
       value: values.value,
-      ...(values.minOrderValue != null && { minOrderValue: values.minOrderValue }),
+      ...(values.minOrderValue != null && {
+        minOrderValue: values.minOrderValue,
+      }),
       ...(values.usageLimit != null && { usageLimit: values.usageLimit }),
       isActive: values.isActive,
       ...(values.startsAt && { startsAt: new Date(values.startsAt) }),
@@ -133,13 +135,17 @@ export function DiscountsActionDialog({
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-start'>
-          <DialogTitle>{isEdit ? 'Edit Discount' : 'Add New Discount'}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? 'Edit Discount' : 'Add New Discount'}
+          </DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Update the discount here. ' : 'Create a new discount code here. '}
+            {isEdit
+              ? 'Update the discount here. '
+              : 'Create a new discount code here. '}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className='w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3 max-h-[60vh]'>
+        <div className='max-h-[60vh] w-[calc(100%+0.75rem)] overflow-y-auto py-1 pe-3'>
           <Form {...form}>
             <form
               id='discount-form'
@@ -158,7 +164,9 @@ export function DiscountsActionDialog({
                         className='col-span-4 font-mono uppercase'
                         autoComplete='off'
                         {...field}
-                        onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                        onChange={(e) =>
+                          field.onChange(e.target.value.toUpperCase())
+                        }
                       />
                     </FormControl>
                     <FormMessage className='col-span-4 col-start-3' />
@@ -195,7 +203,11 @@ export function DiscountsActionDialog({
                       <Input
                         type='number'
                         min={0}
-                        placeholder={form.watch('type') === 'percent' ? '0–100' : 'Amount in VND'}
+                        placeholder={
+                          form.watch('type') === 'percent'
+                            ? '0–100'
+                            : 'Amount in VND'
+                        }
                         className='col-span-4'
                         {...field}
                       />
@@ -209,7 +221,9 @@ export function DiscountsActionDialog({
                 name='minOrderValue'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Min Order</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Min Order
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -218,7 +232,9 @@ export function DiscountsActionDialog({
                         className='col-span-4'
                         value={field.value ?? ''}
                         onChange={(e) =>
-                          field.onChange(e.target.value === '' ? undefined : e.target.value)
+                          field.onChange(
+                            e.target.value === '' ? undefined : e.target.value
+                          )
                         }
                       />
                     </FormControl>
@@ -231,7 +247,9 @@ export function DiscountsActionDialog({
                 name='usageLimit'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Usage Limit</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Usage Limit
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -240,7 +258,9 @@ export function DiscountsActionDialog({
                         className='col-span-4'
                         value={field.value ?? ''}
                         onChange={(e) =>
-                          field.onChange(e.target.value === '' ? undefined : e.target.value)
+                          field.onChange(
+                            e.target.value === '' ? undefined : e.target.value
+                          )
                         }
                       />
                     </FormControl>
@@ -253,7 +273,9 @@ export function DiscountsActionDialog({
                 name='startsAt'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Starts At</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Starts At
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type='datetime-local'
@@ -270,7 +292,9 @@ export function DiscountsActionDialog({
                 name='expiresAt'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Expires At</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Expires At
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type='datetime-local'
@@ -287,7 +311,9 @@ export function DiscountsActionDialog({
                 name='isActive'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
-                    <FormLabel className='col-span-2 text-end'>Active</FormLabel>
+                    <FormLabel className='col-span-2 text-end'>
+                      Active
+                    </FormLabel>
                     <FormControl>
                       <Switch
                         checked={field.value}

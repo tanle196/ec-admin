@@ -19,7 +19,8 @@ type DataTableRowActionsProps = {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { setOpen, setCurrentRow } = usePaymentsContext()
   const payment = row.original
-  const canRefund = payment.status === 'completed' || payment.status === 'partially_refunded'
+  const canRefund =
+    payment.status === 'completed' || payment.status === 'partially_refunded'
 
   return (
     <DropdownMenu modal={false}>

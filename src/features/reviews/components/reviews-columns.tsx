@@ -1,5 +1,5 @@
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { type ColumnDef } from '@tanstack/react-table'
 import { Star } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
@@ -13,7 +13,11 @@ function StarRating({ rating }: { rating: number }) {
         <Star
           key={i}
           size={13}
-          className={i < rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/30'}
+          className={
+            i < rating
+              ? 'fill-yellow-400 text-yellow-400'
+              : 'text-muted-foreground/30'
+          }
         />
       ))}
       <span className='ml-1 text-xs text-muted-foreground'>{rating}</span>
@@ -28,7 +32,9 @@ export const reviewsColumns: ColumnDef<Review>[] = [
       <DataTableColumnHeader column={column} title='User ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('user_id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('user_id')}
+      </span>
     ),
   },
   {
@@ -37,7 +43,9 @@ export const reviewsColumns: ColumnDef<Review>[] = [
       <DataTableColumnHeader column={column} title='Product ID' />
     ),
     cell: ({ row }) => (
-      <span className='font-mono text-xs text-muted-foreground'>{row.getValue('product_id')}</span>
+      <span className='font-mono text-xs text-muted-foreground'>
+        {row.getValue('product_id')}
+      </span>
     ),
   },
   {

@@ -5,8 +5,8 @@ import { toast } from 'sonner'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/confirm-dialog'
-import { useRejectRefundRequest } from '../hooks'
 import { type RefundRequestListItem } from '../data/schema'
+import { useRejectRefundRequest } from '../hooks'
 
 type RefundRequestsRejectDialogProps = {
   open: boolean
@@ -14,7 +14,11 @@ type RefundRequestsRejectDialogProps = {
   currentRow: RefundRequestListItem
 }
 
-export function RefundRequestsRejectDialog({ open, onOpenChange, currentRow }: RefundRequestsRejectDialogProps) {
+export function RefundRequestsRejectDialog({
+  open,
+  onOpenChange,
+  currentRow,
+}: RefundRequestsRejectDialogProps) {
   const [note, setNote] = useState('')
   const { mutate: rejectRefundRequest, isPending } = useRejectRefundRequest()
 
