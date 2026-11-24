@@ -31,9 +31,9 @@ import { type Discount } from '../data/schema'
 const formSchema = z.object({
   code: z.string().min(1, 'Discount code is required.').toUpperCase(),
   type: z.enum(['percent', 'fixed']),
-  value: z.coerce.number().min(0, 'Value must be positive.'),
-  minOrderValue: z.coerce.number().min(0).optional(),
-  usageLimit: z.coerce.number().int().min(1).optional(),
+  value: z.coerce.number<number>().min(0, 'Value must be positive.'),
+  minOrderValue: z.coerce.number<number>().min(0).optional(),
+  usageLimit: z.coerce.number<number>().int().min(1).optional(),
   isActive: z.boolean().optional(),
   startsAt: z.string().optional(),
   expiresAt: z.string().optional(),

@@ -7,6 +7,7 @@ const permissionActionSchema = z.union([
   z.literal('delete'),
   z.literal('cancel'),
   z.literal('publish'),
+  z.literal('upload'),
   z.literal('assign.role'),
 ])
 

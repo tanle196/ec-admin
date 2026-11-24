@@ -9,7 +9,7 @@ export const reviewAuthorSchema = z.object({
 export const reviewSchema = z.object({
   id: z.string(),
   user_id: z.string(),
-  user: reviewAuthorSchema,
+  user: reviewAuthorSchema.nullable().optional(),
   product_id: z.string(),
   rating: z.number().min(1).max(5),
   title: z.unknown().nullable().optional(),

@@ -55,9 +55,9 @@ import {
 const variantSchema = z.object({
   name: z.string().min(1, 'Variant name is required.'),
   sku: z.string().min(1, 'SKU is required.'),
-  price: z.coerce.number().min(0, 'Price must be non-negative.'),
+  price: z.coerce.number<number>().min(0, 'Price must be non-negative.'),
   stock: z.coerce
-    .number()
+    .number<number>()
     .int()
     .min(0, 'Stock must be non-negative.')
     .optional(),

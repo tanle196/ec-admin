@@ -41,7 +41,7 @@ const formSchema = z.object({
   slug: z.string().optional(),
   parent_id: z.string().optional(),
   description: z.string().optional(),
-  sortOrder: z.coerce.number().int().min(0).optional(),
+  sortOrder: z.coerce.number<number>().int().min(0).optional(),
   isActive: z.boolean().optional(),
 })
 

@@ -40,7 +40,7 @@ const refundItemFormSchema = z.object({
   order_item_id: z.string(),
   productName: z.string(),
   maxQuantity: z.number(),
-  quantity: z.coerce.number().int().min(0),
+  quantity: z.coerce.number<number>().int().min(0),
 })
 
 const formSchema = z

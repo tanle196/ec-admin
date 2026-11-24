@@ -44,7 +44,7 @@ const formSchema = z.object({
   slug: z.string().optional(),
   category_id: z.string().min(1, 'Category is required.'),
   description: z.string().optional(),
-  basePrice: z.coerce.number().min(0, 'Price must be a non-negative number.'),
+  basePrice: z.coerce.number<number>().min(0, 'Price must be a non-negative number.'),
   sku: z.string().min(1, 'SKU is required.'),
   status: z.enum(['draft', 'published', 'archived']).optional(),
   isFeatured: z.boolean().optional(),

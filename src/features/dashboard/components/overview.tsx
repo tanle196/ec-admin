@@ -35,8 +35,10 @@ export function Overview({ data = EMPTY_DATA }: OverviewProps) {
           width={70}
         />
         <Tooltip
-          formatter={(value: number) =>
-            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)
+          formatter={(value) =>
+            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+              Number(value)
+            )
           }
           cursor={{ fill: 'hsl(var(--muted))' }}
           contentStyle={{
