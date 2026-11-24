@@ -22,6 +22,7 @@ export function TagsTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const { data, isLoading, isError, error } = useTags()
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: data ?? [],
     columns,

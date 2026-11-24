@@ -1,29 +1,10 @@
 import { format } from 'date-fns'
 import { type ColumnDef } from '@tanstack/react-table'
-import { Star } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { type Review } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
-
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className='flex items-center gap-0.5'>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          size={13}
-          className={
-            i < rating
-              ? 'fill-yellow-400 text-yellow-400'
-              : 'text-muted-foreground/30'
-          }
-        />
-      ))}
-      <span className='ml-1 text-xs text-muted-foreground'>{rating}</span>
-    </div>
-  )
-}
+import { StarRating } from './star-rating'
 
 export const reviewsColumns: ColumnDef<Review>[] = [
   {

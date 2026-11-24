@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { z } from 'zod'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -84,6 +84,7 @@ export function DiscountsActionDialog({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues(),
   })
+  const discountType = useWatch({ control: form.control, name: 'type' })
 
   useEffect(() => {
     if (open) form.reset(defaultValues())
@@ -204,9 +205,7 @@ export function DiscountsActionDialog({
                         type='number'
                         min={0}
                         placeholder={
-                          form.watch('type') === 'percent'
-                            ? '0–100'
-                            : 'Amount in VND'
+                          discountType === 'percent' ? '0–100' : 'Amount in VND'
                         }
                         className='col-span-4'
                         {...field}

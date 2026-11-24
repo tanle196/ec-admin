@@ -22,6 +22,7 @@ export function RolesTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const { data: rolesRaw, isLoading, isError, error } = useRoles()
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: rolesRaw?.data ?? [],
     columns,

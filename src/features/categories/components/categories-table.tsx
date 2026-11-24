@@ -22,6 +22,7 @@ export function CategoriesTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const { data, isLoading, isError, error } = useCategories()
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: data?.data ?? [],
     columns,

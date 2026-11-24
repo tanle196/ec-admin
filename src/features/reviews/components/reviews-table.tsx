@@ -22,6 +22,7 @@ export function ReviewsTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const { data, isLoading, isError, error } = useReviews()
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: data?.data ?? [],
     columns,
