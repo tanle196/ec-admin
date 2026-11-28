@@ -34,6 +34,7 @@ import {
   Receipt,
   Contact,
   Undo2,
+  GalleryHorizontal,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -104,6 +105,11 @@ export const sidebarData: SidebarData = {
               title: 'Discounts',
               url: '/discounts',
               icon: Ticket,
+            },
+            {
+              title: 'Banners',
+              url: '/banners',
+              icon: GalleryHorizontal,
             },
           ],
         },
