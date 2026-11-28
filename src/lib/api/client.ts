@@ -116,6 +116,18 @@ const createService = (client: typeof apiClient) => ({
       if (res.data) return res.data
       throw res
     },
+  // For endpoints that answer 204 No Content: success has no body, so only
+  // an `error` on the result means the call failed.
+  requestVoid:
+    <F extends ApiFn>(fn: F) =>
+    async (...[options]: Parameters<F>): Promise<void> => {
+      const res = await fn({
+        ...options,
+        client,
+      })
+
+      if (res.error) throw res
+    },
 })
 
 export const mainService = createService(apiClient)
